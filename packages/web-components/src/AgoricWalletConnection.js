@@ -11,7 +11,8 @@ import { E } from '@endo/eventual-send';
 import { Far } from '@endo/marshal';
 import { makePromiseKit } from '@endo/promise-kit';
 
-import 'robot3/debug';
+// XXX broke in repo refactoring
+// import 'robot3/debug';
 import { interpret } from 'robot3';
 
 import { makeConnectionMachine } from './states.js';

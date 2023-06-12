@@ -8,11 +8,8 @@
   "module": "index.js",
   "scripts": {
     "build": "exit 0",
-    "test": "node -e 'process.exit(process.env.SKIP_BROWSER_TESTS==\"true\" ? 0 : 1)' || web-test-runner --coverage",
-    "test:c8": "exit 0",
-    "test:xs": "exit 0",
+    "test": "web-test-runner --coverage",
     "test:watch": "web-test-runner --watch",
-    "lint-fix": "yarn lint:eslint --fix",
     "lint": "run-s --continue-on-error lint:*",
     "lint:types": "tsc -p jsconfig.json",
     "lint:eslint": "eslint . --ignore-path .gitignore",
@@ -33,7 +30,7 @@
     "@endo/promise-kit": "^0.2.56",
     "@lit-labs/react": "^1.0.1",
     "lit": "2.0.2",
-    "robot3": "^0.2.19",
+    "robot3": "^0.4.0",
     "rollup-plugin-polyfill-node": "^0.9.0"
   },
   "devDependencies": {
@@ -42,8 +39,9 @@
     "@keplr-wallet/types": "^0.11.37",
     "@open-wc/eslint-config": "^10.0.0",
     "@open-wc/testing": "^3.1.7",
-    "@web/dev-server": "^0.1.22",
-    "@web/test-runner": "^0.13.23",
+    "@rollup/plugin-commonjs": "^25.0.1",
+    "@web/dev-server": "^0.2.2",
+    "@web/test-runner": "^0.16.1",
     "eslint": "^8.36.0",
     "eslint-plugin-lit": "^1.8.2",
     "eslint-plugin-lit-a11y": "^2.4.0",
