@@ -12,11 +12,6 @@
     "@endo/nat": "^4.1.27",
     "clsx": "^1.1.1"
   },
-  "peerDependencies": {
-    "@material-ui/core": "^4.11.3",
-    "react": "^16.14.0",
-    "react-dom": "^16.8.0"
-  },
   "scripts": {
     "test": "BABEL_ENV='test' ava",
     "test:xs": "exit 0",
@@ -59,7 +54,6 @@
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.6",
     "eslint-config-react-app": "^7.0.0",
-    "eslint-plugin-flowtype": "^5.2.0",
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
     "react": "^16.14.0",

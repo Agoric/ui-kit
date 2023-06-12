@@ -1,0 +1,45 @@
+{
+  "name": "@agoric/ui-kit",
+  "private": true,
+  "useWorkspaces": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "type": "module",
+  "packageManager": "yarn@1.22.19",
+  "scripts": {
+    "format": "yarn prettier --write packages",
+    "lint": "yarn workspaces run lint",
+    "test": "yarn workspaces run test",
+    "build": "yarn workspaces run build"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.0.0-0",
+    "@babel/plugin-syntax-flow": "^7.14.5",
+    "@babel/plugin-transform-react-jsx": "^7.14.9",
+    "@endo/ses-ava": "^0.2.40",
+    "@typescript-eslint/parser": "^5.0.0",
+    "ava": "^5.3.0",
+    "eslint": "^8.1.0",
+    "eslint-plugin-html": "^7.1.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-no-only-tests": "^3.1.0",
+    "lerna": "^7.0.1",
+    "prettier": "^2.8.8",
+    "rollup": "^2.0.0"
+  },
+  "engines": {
+    "node": "^16.13 || ^18.12"
+  },
+  "prettier": {
+    "arrowParens": "avoid",
+    "trailingComma": "all",
+    "singleQuote": true
+  },
+  "ava": {
+    "files": [
+      "packages/*/test/**/test-*.js"
+    ],
+    "timeout": "30m"
+  }
+}
