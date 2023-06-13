@@ -21,7 +21,7 @@
     "@agoric/cache": "^0.3.2",
     "@agoric/casting": "^0.4.2",
     "@agoric/ertp": "^0.16.2",
-    "@agoric/notifier": "^0.6.2",
+    "@agoric/notifier": "^0.6.3-dev-8c14632.0",
     "@agoric/smart-wallet": "^0.5.3",
     "@agoric/wallet": "^0.18.3",
     "@endo/captp": "^3.1.1",

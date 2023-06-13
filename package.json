@@ -29,6 +29,9 @@
     "prettier": "^2.8.8",
     "rollup": "^2.0.0"
   },
+  "resolutions": {
+    "**/@agoric/swingset-liveslots": "0.10.3-dev-8c14632.0"
+  },
   "engines": {
     "node": "^16.13 || ^18.12"
   },
