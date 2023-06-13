@@ -63,7 +63,6 @@ export const stringifyValue = (
   placesToShow,
 ) => {
   if (assetKind === AssetKind.NAT) {
-    // @ts-expect-error AmountValue is a Nat
     return stringifyNat(value, decimalPlaces, placesToShow);
   }
   if (assetKind === AssetKind.SET) {

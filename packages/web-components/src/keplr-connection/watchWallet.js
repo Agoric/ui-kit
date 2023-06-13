@@ -6,6 +6,9 @@ import { assertHasData } from '@agoric/smart-wallet/src/utils';
 import { Errors } from './errors.js';
 import { queryBankBalances } from './queryBankBalances.js';
 
+// Import ambient types
+import '@agoric/ertp/exported.js';
+
 /** @typedef {import('@agoric/smart-wallet/src/types.js').Petname} Petname */
 
 /**
@@ -21,7 +24,7 @@ import { queryBankBalances } from './queryBankBalances.js';
 const POLL_INTERVAL_MS = 6000;
 
 /**
- * @param {ERef<import('@agoric/casting').Leader>} leader
+ * @param {import('@endo/eventual-send').ERef<import('@agoric/casting').Leader>} leader
  * @param {string} address
  * @param {import('@agoric/smart-wallet/src/marshal-contexts.js').ImportContext} context
  * @param {string[]} rpcs
