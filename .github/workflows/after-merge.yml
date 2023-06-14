@@ -1,0 +1,46 @@
+# Run after merge to trunk
+# Note that this relies on branch protection having:
+#  Require branches to be up to date before merging
+on:
+  push:
+    branches:
+      # $default-branch var isn't available in triggers
+      - main
+
+jobs:
+  build:
+    if: ${{ github.repository_owner == 'agoric' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'yarn'
+          cache-dependency-path: yarn.lock
+
+  dev-canary:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'yarn'
+          cache-dependency-path: yarn.lock
+
+      # Adapted from https://johnny.sh/notes/publish-canary-lerna-cicd/
+      - name: configure NPM token
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: check credentials
+        run: npm whoami
+      - name: publish to NPM tag
+        run: |
+          TAG=dev
+          yarn lerna publish --conventional-prerelease --canary --exact \
+            --dist-tag=$TAG --preid=$TAG-$(git rev-parse --short=7 HEAD) \
+            --no-push --no-verify-access --yes
