@@ -1,5 +1,5 @@
 // @ts-check
-import { onLoadP } from './onLoad.js';
+import { onLoadP } from './keplr-connection/onLoad.js';
 import { Errors } from './errors.js';
 
 /**
