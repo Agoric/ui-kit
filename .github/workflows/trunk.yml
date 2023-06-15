@@ -31,6 +31,8 @@ jobs:
           cache: 'yarn'
           cache-dependency-path: yarn.lock
 
+      - run: yarn install --frozen-lockfile
+
       # Adapted from https://johnny.sh/notes/publish-canary-lerna-cicd/
       - name: configure NPM token
         run: |
@@ -44,4 +46,4 @@ jobs:
           TAG=dev
           yarn lerna publish --conventional-prerelease --canary --exact \
             --dist-tag=$TAG --preid=$TAG-$(git rev-parse --short=7 HEAD) \
-            --no-push --no-verify-access --yes
+            --no-push --yes
