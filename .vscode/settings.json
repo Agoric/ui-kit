@@ -1,0 +1,6 @@
+{
+  "eslint.workingDirectories": [
+    "./packages/ui-components",
+    "./packages/web-components",
+  ]
+}
