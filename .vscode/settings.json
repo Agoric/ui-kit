@@ -1,7 +1,7 @@
 {
-  "eslint.workingDirectories": [
-    "./packages/ui-components",
-    "./packages/web-components",
-  ],
+  "eslint.workingDirectories": [{
+    "pattern":  "./packages/*",
+  }],
+  // UNTIL https://github.com/prettier/prettier-vscode/issues/3019
   "prettier.prettierPath": "./node_modules/prettier"
 }
