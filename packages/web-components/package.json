@@ -12,7 +12,8 @@
     "lint:types": "tsc -p jsconfig.json",
     "lint:eslint": "eslint . --ignore-path .gitignore",
     "analyze": "cem analyze --litelement",
-    "test": "exit 0"
+    "test": "vitest",
+    "coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@agoric/assert": "^0.6.0",
@@ -38,7 +39,8 @@
     "@web/test-runner": "^0.16.1",
     "eslint": "^8.36.0",
     "eslint-plugin-lit": "^1.8.2",
-    "eslint-plugin-lit-a11y": "^2.4.0"
+    "eslint-plugin-lit-a11y": "^2.4.0",
+    "vitest": "^0.32.0"
   },
   "customElements": "custom-elements.json",
   "eslintConfig": {

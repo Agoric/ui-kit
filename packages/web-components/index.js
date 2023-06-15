@@ -1,7 +1,8 @@
 // @ts-check
 
 export { makeAgoricKeplrConnection } from './src/keplr-connection/KeplrConnection.js';
-export { Errors as AgoricKeplrConnectionErrors } from './src/keplr-connection/errors.js';
+export { makeAgoricWalletConnection } from './src/wallet-connection/walletConnection.js';
+export { Errors as AgoricKeplrConnectionErrors } from './src/errors.js';
 export {
   DappWalletBridge,
   BridgeProtocol,
