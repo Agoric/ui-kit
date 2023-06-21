@@ -98,10 +98,10 @@
     "@endo/nat" "^4.1.27"
     "@endo/promise-kit" "^0.2.56"
 
-"@agoric/eslint-config@^0.4.0":
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/@agoric/eslint-config/-/eslint-config-0.4.0.tgz#bdc00d035d6d43a32a02d5ae608176dd756d4ec6"
-  integrity sha512-bOmbVhZQvRYn6YCcllk9glkfprYeQsRisrsOLN1/+WFt7QUP+1Ym1Eo386SGQuTVptC8iarPlFYtI8x4+tXYCw==
+"@agoric/eslint-config@^0.4.1-dev-4b79eb6.0":
+  version "0.4.1-dev-ff36f02.0"
+  resolved "https://registry.yarnpkg.com/@agoric/eslint-config/-/eslint-config-0.4.1-dev-ff36f02.0.tgz#4b3d90b5f45f24addca370becf340f06a4e949c3"
+  integrity sha512-nerMMKAKjtw9dygnZqeTpIvVXVg1N4Q9F17kCC+lBCbetcIm5cMFtzfFyCkScLTFbTBxtbxciqiWnsWRTkZKOw==
 
 "@agoric/governance@^0.10.3":
   version "0.10.3"
