@@ -17,7 +17,6 @@
     "vite-tsconfig-paths": "^4.2.0"
   },
   "devDependencies": {
-    "patch-package": "^7.0.0",
     "postinstall-postinstall": "^2.1.0",
     "@typescript-eslint/eslint-plugin": "^5.35.1",
     "@typescript-eslint/parser": "^5.35.1",
