@@ -1,30 +1,12 @@
 /* eslint-disable no-restricted-syntax */
-/* eslint-env node */
-const process = require('process');
-
-const lintTypes = !!process.env.AGORIC_ESLINT_TYPES;
 
 module.exports = {
   root: true,
   parser: '@typescript-eslint/parser',
-  parserOptions: lintTypes
-    ? {
-        sourceType: 'module',
-        project: [
-          './packages/*/jsconfig.json',
-          './packages/*/tsconfig.json',
-          './packages/wallet/*/jsconfig.json',
-          './tsconfig.json',
-        ],
-        tsconfigRootDir: __dirname,
-        extraFileExtensions: ['.cjs'],
-      }
-    : undefined,
   plugins: ['@typescript-eslint', 'prettier'],
   extends: ['@agoric', 'plugin:jsdoc/recommended-typescript'],
   rules: {
     '@typescript-eslint/prefer-ts-expect-error': 'warn',
-    '@typescript-eslint/no-floating-promises': lintTypes ? 'warn' : 'off',
     'jsdoc/require-param-description': 'off',
     'jsdoc/require-returns-description': 'off',
     // so that floating-promises can be explicitly permitted with void operator
@@ -49,15 +31,5 @@ module.exports = {
       mode: 'typescript',
     },
   },
-  ignorePatterns: [
-    'coverage/**',
-    '**/output/**',
-    'bundles/**',
-    'bundle-*',
-    'dist/**',
-    'examples/**',
-    'test262/**',
-    '*.html',
-    'ava*.config.js',
-  ],
+  ignorePatterns: ['coverage/**', '**/dist/**', '*.html', 'ava*.config.js'],
 };
