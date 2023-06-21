@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 /* eslint-disable import/extensions */
 import type { FromCapData } from '@endo/marshal';
 import type { UpdateHandler } from './types';
@@ -33,7 +34,6 @@ const makePathSubscriber = <T>(
 /**
  * Periodically queries the most recent data from chain storage, batching RPC
  * requests for efficiency.
- *
  * @param rpcAddr RPC server URL
  * @param chainId the chain id to use
  * @param unserialize CapData unserializer to use
@@ -108,9 +108,8 @@ export const makeAgoricChainStorageWatcher = (
 
         if (data[path].error) {
           subscribers.forEach(s => {
-            const { onError } = s;
-            if (onError) {
-              onError(harden(data[path].error));
+            if (s.onError) {
+              s.onError(harden(data[path].error));
             }
           });
           return;
@@ -170,10 +169,10 @@ export const makeAgoricChainStorageWatcher = (
   const watchLatest = <T>(
     path: [AgoricChainStoragePathKind, string],
     onUpdate: (latestValue: T) => void,
-    onError?: (log: string) => void,
+    onPathError?: (log: string) => void,
   ) => {
     const pathKey = pathToKey(path);
-    const subscriber = makePathSubscriber(onUpdate, onError);
+    const subscriber = makePathSubscriber(onUpdate, onPathError);
 
     const latestValue = latestValueCache.get(pathKey);
     if (latestValue) {
