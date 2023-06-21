@@ -7,7 +7,7 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
-    "lint": "eslint . && prettier --check .",
+    "lint": "eslint . && prettier --check . && tsc",
     "lint:fix": "eslint . --fix && prettier --write .",
     "test": "vitest",
     "coverage": "vitest run --coverage"

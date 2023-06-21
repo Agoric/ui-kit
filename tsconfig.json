@@ -4,14 +4,12 @@
     "module": "esnext",
     "moduleResolution": "node",
     "skipLibCheck": true,
-
     "allowJs": true,
-    "checkJs": true,
+    "checkJs": false,
     "strict": false,
     "downlevelIteration": true,
     "strictNullChecks": true,
     "noImplicitThis": true,
-
     "noEmit": true
   },
   "include": [

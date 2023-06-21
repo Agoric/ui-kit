@@ -38,7 +38,7 @@
     "compiled"
   ],
   "devDependencies": {
-    "@agoric/eslint-config": "^0.4.0",
+    "@agoric/eslint-config": "^0.4.1-dev-4b79eb6.0",
     "@babel/cli": "^7.12.13",
     "@babel/core": "^7.12.13",
     "@babel/plugin-syntax-jsx": "^7.12.1",
