@@ -4,33 +4,6 @@ const process = require('process');
 
 const lintTypes = !!process.env.AGORIC_ESLINT_TYPES;
 
-const deprecatedForLoanContract = [
-  ['currency', 'brand, asset or another descriptor'],
-  ['blacklist', 'denylist'],
-  ['whitelist', 'allowlist'],
-  ['RUN', 'IST', '/RUN/'],
-];
-const allDeprecated = [...deprecatedForLoanContract, ['loan', 'debt']];
-
-const deprecatedTerminology = Object.fromEntries(
-  Object.entries({
-    all: allDeprecated,
-    loanContract: deprecatedForLoanContract,
-  }).map(([category, deprecated]) => [
-    category,
-    deprecated.flatMap(([bad, good, badRgx = `/${bad}/i`]) =>
-      [
-        ['Literal', 'value'],
-        ['TemplateElement', 'value.raw'],
-        ['Identifier', 'name'],
-      ].map(([selectorType, field]) => ({
-        selector: `${selectorType}[${field}=${badRgx}]`,
-        message: `Use '${good}' instead of deprecated '${bad}'`,
-      })),
-    ),
-  ]),
-);
-
 module.exports = {
   root: true,
   parser: '@typescript-eslint/parser',
@@ -48,27 +21,24 @@ module.exports = {
       }
     : undefined,
   plugins: ['@typescript-eslint', 'prettier'],
-  extends: ['@agoric'],
+  extends: ['@agoric', 'plugin:jsdoc/recommended-typescript'],
   rules: {
     '@typescript-eslint/prefer-ts-expect-error': 'warn',
     '@typescript-eslint/no-floating-promises': lintTypes ? 'warn' : 'off',
+    'jsdoc/require-param-description': 'off',
+    'jsdoc/require-returns-description': 'off',
     // so that floating-promises can be explicitly permitted with void operator
     'no-void': ['error', { allowAsStatement: true }],
 
-    // The rule is “safe await separator" which implements the architectural
-    // goal of “clearly separate an async function's synchronous prelude from
-    // the part that runs in a future turn”. That is our architectural rule. It
-    // can be trivially satisfied by inserting a non-nested `await null` in an
-    // appropriate place to ensure the rest of the async function runs in a
-    // future turn.  “sometimes synchronous" is a bug farm for particularly
-    // pernicious bugs in which you can combine two correct pieces of code to
-    // have emergent incorrect behavior.  It’s absolutely critical for shared
-    // service code. That means contracts, but it also means kernel components
-    // that are used by multiple clients. So we enable it throughout the repo
-    // and aim for no exceptions.
-    //
-    // The default is 'warn', but we want to enforce 'error'.
-    '@jessie.js/safe-await-separator': 'error',
+    // TS has this covered and eslint gets it wrong
+    'no-undef': 'off',
+
+    // n/a to frontend
+    '@jessie.js/safe-await-separator': 'off',
+
+    // Note: you must disable the base rule as it can report incorrect errors
+    'no-shadow': 'off',
+    '@typescript-eslint/no-shadow': 'error',
 
     // CI has a separate format check but keep this warn to maintain that "eslint --fix" prettifies
     // UNTIL https://github.com/Agoric/agoric-sdk/issues/4339
@@ -89,56 +59,5 @@ module.exports = {
     'test262/**',
     '*.html',
     'ava*.config.js',
-  ],
-  overrides: [
-    {
-      // Tighten rules for exported code.
-      files: [
-        'packages/*/src/**/*.js',
-        'packages/*/tools/**/*.js',
-        'packages/*/*.js',
-        'packages/wallet/api/src/**/*.js',
-      ],
-      rules: {
-        'no-restricted-syntax': ['error', ...deprecatedTerminology.all],
-      },
-    },
-    {
-      files: [
-        'packages/**/demo/**/*.js',
-        'packages/*/test/**/*.js',
-        'packages/*/test/**/*.test.js',
-        'packages/wallet/api/test/**/*.js',
-      ],
-      rules: {
-        // NOTE: This rule is enabled for the repository in general.  We turn it
-        // off for test code for now.
-        '@jessie.js/safe-await-separator': 'off',
-      },
-    },
-    {
-      // Allow "loan" contracts to mention the word "loan".
-      files: ['packages/zoe/src/contracts/loan/*.js'],
-      rules: {
-        'no-restricted-syntax': [
-          'error',
-          ...deprecatedTerminology.loanContract,
-        ],
-      },
-    },
-    {
-      files: ['*.ts'],
-      rules: {
-        // TS has this covered and eslint gets it wrong
-        'no-undef': 'off',
-      },
-    },
-    {
-      // disable type-aware linting in HTML
-      files: ['*.html'],
-      parserOptions: {
-        project: false,
-      },
-    },
   ],
 };
