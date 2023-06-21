@@ -11,8 +11,7 @@
     "format": "yarn prettier --write packages",
     "lint": "yarn workspaces run lint",
     "test": "yarn workspaces run test",
-    "build": "yarn workspaces run build",
-    "postinstall": "patch-package"
+    "build": "yarn workspaces run build"
   },
   "devDependencies": {
     "@agoric/eslint-config": "^0.4.1-dev-4b79eb6.0",
@@ -39,7 +38,6 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "lerna": "^7.0.1",
     "npm-run-all": "^4.1.5",
-    "patch-package": "^7.0.0",
     "prettier": "^2.8.8",
     "rollup": "^2.0.0"
   },
