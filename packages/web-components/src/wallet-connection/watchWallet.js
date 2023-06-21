@@ -8,11 +8,11 @@ import { queryBankBalances } from '../queryBankBalances.js';
 
 /**
  * @typedef {{
- *  brand?: Brand,
+ *  brand?: unknown,
  *  brandPetname?: Petname,
- *  currentAmount: Amount,
+ *  currentAmount: unknown,
  *  pursePetname?: Petname,
- *  displayInfo?: DisplayInfo,
+ *  displayInfo?: unknown,
  * }} PurseInfo
  */
 

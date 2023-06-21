@@ -6,18 +6,15 @@ import { assertHasData } from '@agoric/smart-wallet/src/utils';
 import { Errors } from '../errors.js';
 import { queryBankBalances } from '../queryBankBalances.js';
 
-// Import ambient types
-import '@agoric/ertp/exported.js';
-
 /** @typedef {import('@agoric/smart-wallet/src/types.js').Petname} Petname */
 
 /**
  * @typedef {{
- *  brand?: Brand,
+ *  brand?: unknown,
  *  brandPetname?: Petname,
- *  currentAmount: Amount,
+ *  currentAmount: unknown,
  *  pursePetname?: Petname,
- *  displayInfo?: DisplayInfo,
+ *  displayInfo?: unknown,
  * }} PurseInfo
  */
 
