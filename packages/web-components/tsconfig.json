@@ -1,6 +1,7 @@
 // This file can contain .js-specific Typescript compiler config.
 {
   "extends": "../../tsconfig.json",
+  "outDir": "./dist",
   "compilerOptions": {
     "checkJs": false,
   },
@@ -8,5 +9,8 @@
     "*.js",
     "src/**/*.js",
     "test/**/*.js",
+    "*.ts",
+    "src/**/*.ts",
+    "test/**/*.ts",
   ],
 }

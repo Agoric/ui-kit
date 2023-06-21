@@ -68,6 +68,7 @@ export const makeAgoricIframeMessenger = (registerThis = _that => {}) =>
       const iframe = this.renderRoot.querySelector('iframe');
       assert(iframe);
       // Detect the content window of the iframe to verify message sources.
+      // @ts-expect-error asserted above
       this._contentWindow = iframe.contentWindow;
       this._timeout = window.setTimeout(() => {
         const ev = new CustomEvent('error', {
@@ -104,6 +105,7 @@ export const makeAgoricIframeMessenger = (registerThis = _that => {}) =>
     send(data) {
       assert(this._contentWindow);
       assert(this._origin);
+      // @ts-expect-error asserted above
       this._contentWindow.postMessage(data, this._origin);
     }
   };

@@ -4,13 +4,12 @@
   "license": "Apache-2.0",
   "author": "Agoric",
   "version": "0.6.3",
-  "main": "index.js",
-  "module": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "build": "exit 0",
+    "build": "tsc",
     "lint": "run-s --continue-on-error lint:*",
-    "lint:types": "tsc -p jsconfig.json",
-    "lint:eslint": "eslint . --ignore-path .gitignore",
+    "lint:types": "tsc -p tsconfig.json",
+    "lint:eslint": "eslint .",
     "analyze": "cem analyze --litelement",
     "test": "vitest",
     "coverage": "vitest run --coverage"
@@ -64,7 +63,7 @@
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
-      "project": "./jsconfig.json"
+      "project": "./tsconfig.json"
     }
   },
   "publishConfig": {
