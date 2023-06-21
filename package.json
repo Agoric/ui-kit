@@ -49,11 +49,6 @@
   "engines": {
     "node": "^16.13 || ^18.12"
   },
-  "prettier": {
-    "arrowParens": "avoid",
-    "trailingComma": "all",
-    "singleQuote": true
-  },
   "ava": {
     "files": [
       "packages/*/test/**/test-*.js"

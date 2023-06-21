@@ -3,11 +3,7 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "checkJs": false,
-    "jsx": "react",
+    "jsx": "react"
   },
-  "include": [
-    "src/**/*.js",
-    "src/**/*.jsx",
-    "test/**/*.js",
-  ],
+  "include": ["src/**/*.js", "src/**/*.jsx", "test/**/*.js"]
 }
