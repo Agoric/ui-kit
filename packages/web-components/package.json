@@ -51,16 +51,6 @@
       "import/no-extraneous-dependencies": "off",
       "prettier/prettier": "off"
     },
-    "overrides": [
-      {
-        "files": [
-          "test/**/*.test.js"
-        ],
-        "rules": {
-          "@jessie.js/safe-await-separator": "off"
-        }
-      }
-    ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
       "project": "./tsconfig.json"

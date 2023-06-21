@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 /* eslint-disable import/extensions */
 import { expect, it, describe, beforeEach, vi, afterEach } from 'vitest';
 import { makeAgoricChainStorageWatcher } from '../src/chainStorageWatcher';
@@ -277,9 +278,9 @@ const future = <T>() => {
   let resolve: (value: T) => void;
   let isComplete = false;
   const value = new Promise(res => {
-    resolve = (value: T) => {
+    resolve = (v: T) => {
       isComplete = true;
-      res(value);
+      res(v);
     };
   });
 
