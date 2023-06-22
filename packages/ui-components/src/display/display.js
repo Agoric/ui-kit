@@ -29,7 +29,9 @@ export const parseAsValue = (
   if (assetKind === AssetKind.COPY_BAG) {
     return parseAsCopyBag(str);
   }
-  assert.fail(details`AssetKind ${assetKind} must be NAT or SET or COPY_BAG`);
+  throw assert.fail(
+    details`AssetKind ${assetKind} must be NAT or SET or COPY_BAG`,
+  );
 };
 
 /**
@@ -71,12 +73,13 @@ export const stringifyValue = (
   if (assetKind === AssetKind.COPY_BAG) {
     return stringifyCopyBag(value);
   }
-  assert.fail(details`AssetKind ${assetKind} must be NAT or SET or COPY_BAG`);
+  throw assert.fail(
+    details`AssetKind ${assetKind} must be NAT or SET or COPY_BAG`,
+  );
 };
 
 /**
  * Stringify the value of a purse
- *
  * @param {any} purse
  * @returns {string}
  */
@@ -93,7 +96,6 @@ export const stringifyPurseValue = purse => {
 
 /**
  * Stringify the value in an amount
- *
  * @param {Amount} amount
  * @param {AssetKind} [assetKind] - assetKind of the value
  * @param {number} [decimalPlaces] - places to move the decimal to the
