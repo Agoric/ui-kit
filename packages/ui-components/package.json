@@ -24,13 +24,13 @@
   "eslintConfig": {
     "extends": [
       "react-app",
-      "@agoric"
+      "@agoric",
+      "plugin:jsdoc/recommended-typescript-flavor-error"
     ],
     "rules": {
-      "no-use-before-define": "off",
-      "@typescript-eslint/no-use-before-define": [
-        "error"
-      ]
+      "jsdoc/require-returns-description": "off",
+      "jsdoc/require-param-description": "off",
+      "jsdoc/require-property-description": "off"
     }
   },
   "eslintIgnore": [

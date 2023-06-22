@@ -17,9 +17,9 @@ import { roundToDecimalPlaces } from './helpers/roundToDecimalPlaces.js';
  * still 300n cents with decimalPlaces =2 because the thousandths place is dropped.
  *
  * In the future, we may add a parameter to change the rounding rules.
- *
  * @param {string} str
  * @param {number} decimalPlaces
+ * @returns {bigint}
  */
 export function parseAsNat(str, decimalPlaces = 0) {
   assert.typeof(str, 'string', details`value to parse ${str} must be a string`);

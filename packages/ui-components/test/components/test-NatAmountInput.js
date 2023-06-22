@@ -122,7 +122,7 @@ test('can simulate input - just calls onChange', t => {
   let receivedValue;
   const onChange = newValue => {
     receivedValue = newValue;
-    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    // eslint-disable-next-line no-use-before-define
     wrapper.setProps({ value: receivedValue });
   };
   const wrapper = makeShallowNatAmountInput({ onChange });
@@ -193,7 +193,7 @@ test('discards negative values', t => {
   let receivedValue;
   const onChange = newValue => {
     receivedValue = newValue;
-    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    // eslint-disable-next-line no-use-before-define
     wrapper.setProps({ value: receivedValue });
   };
   const wrapper = makeShallowNatAmountInput({ onChange });
