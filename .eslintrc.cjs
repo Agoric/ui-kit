@@ -4,8 +4,14 @@ module.exports = {
   root: true,
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint', 'prettier'],
-  extends: ['@agoric', 'plugin:jsdoc/recommended-typescript'],
+  extends: [
+    '@agoric',
+    'plugin:jsdoc/recommended-typescript',
+    'plugin:@typescript-eslint/recommended',
+  ],
   rules: {
+    '@typescript-eslint/no-empty-function': 'off',
+    '@typescript-eslint/no-unused-vars': 'off',
     '@typescript-eslint/prefer-ts-expect-error': 'warn',
     'jsdoc/require-param-description': 'off',
     'jsdoc/require-returns-description': 'off',
