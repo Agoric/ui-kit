@@ -30,6 +30,7 @@
     "lit": "2.0.2"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@custom-elements-manifest/analyzer": "^0.4.17",
     "@keplr-wallet/types": "^0.11.37",
     "@open-wc/eslint-config": "^10.0.0",
