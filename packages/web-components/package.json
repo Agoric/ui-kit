@@ -1,7 +1,7 @@
 {
   "name": "@agoric/web-components",
   "description": "Webcomponents for Agoric dapps",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "author": "Agoric",
   "version": "0.6.3",
   "main": "index.js",
