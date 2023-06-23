@@ -65,13 +65,19 @@ export const batchVstorageQuery = (
           }
 
           const value = JSON.parse(data.value);
+          const latestValueStr = Object.hasOwn(value, 'values')
+            ? value.values[value.values.length - 1]
+            : value;
+          const parsed = JSON.parse(latestValueStr);
+          const unserialized = Object.hasOwn(parsed, 'slots')
+            ? unserialize(parsed)
+            : parsed;
 
-          const latestValueStr = value.values[value.values.length - 1];
           return [
             pathToKey(paths[index]),
             {
               blockHeight: value.blockHeight,
-              value: unserialize(JSON.parse(latestValueStr)),
+              value: unserialized,
             },
           ];
         }),

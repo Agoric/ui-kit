@@ -79,6 +79,27 @@ describe('makeAgoricChainStorageWatcher', () => {
     });
   });
 
+  it('can handle unserialized values', async () => {
+    const expected = 126560000000;
+    const path = 'published.vitest.unserializedValue';
+
+    fetch.mockResolvedValue(
+      createUnserializedFetchResponse([
+        { value: expected, kind: AgoricChainStoragePathKind.Data, id: 0 },
+      ]),
+    );
+
+    const value = new Promise(res => {
+      watcher.watchLatest<string>(
+        [AgoricChainStoragePathKind.Data, path],
+        val => res(val),
+      );
+    });
+    vi.advanceTimersToNextTimer();
+
+    expect(await value).toEqual(expected);
+  });
+
   it('notifies for changed data values', async () => {
     const expected1 = 'test result';
     const path = 'published.vitest.fakePath';
@@ -258,6 +279,39 @@ const createFetchResponse = (
                     blockHeight: String(blockHeight ?? 0),
                   }),
                 };
+
+          return {
+            id,
+            result: {
+              response: {
+                value: window.btoa(JSON.stringify(data)),
+                code,
+                log,
+              },
+            },
+          };
+        }),
+      ),
+    ),
+});
+
+const createUnserializedFetchResponse = (
+  values: {
+    kind?: AgoricChainStoragePathKind;
+    value: unknown;
+    blockHeight?: number;
+    code?: number;
+    log?: string;
+    id: number;
+  }[],
+) => ({
+  json: () =>
+    new Promise(res =>
+      res(
+        values.map(({ value, code = 0, log, id }) => {
+          const data = {
+            value: JSON.stringify(value),
+          };
 
           return {
             id,
