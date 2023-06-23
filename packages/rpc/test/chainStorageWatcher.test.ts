@@ -10,8 +10,8 @@ global.harden = val => val;
 
 const fakeRpcAddr = 'https://agoric-rpc.vitest-nodes.com:443';
 const fakeChainId = 'agoric-unit-test-1';
-const serialize = (val: unknown) => val;
-const unserialize = (val: unknown) => val;
+const marshal = (val: unknown) => val;
+const unmarshal = (val: unknown) => val;
 
 let watcher: ReturnType<typeof makeAgoricChainStorageWatcher>;
 
@@ -20,7 +20,7 @@ describe('makeAgoricChainStorageWatcher', () => {
     watcher = makeAgoricChainStorageWatcher(
       fakeRpcAddr,
       fakeChainId,
-      unserialize,
+      unmarshal,
     );
     vi.useFakeTimers();
   });
@@ -275,7 +275,7 @@ const createFetchResponse = (
               ? { children: value }
               : {
                   value: JSON.stringify({
-                    values: [JSON.stringify(serialize(value))],
+                    values: [JSON.stringify(marshal(value))],
                     blockHeight: String(blockHeight ?? 0),
                   }),
                 };
