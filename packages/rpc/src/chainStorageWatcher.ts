@@ -31,6 +31,10 @@ const makePathSubscriber = <T>(
   onError,
 });
 
+export type ChainStorageWatcher = ReturnType<
+  typeof makeAgoricChainStorageWatcher
+>;
+
 /**
  * Periodically queries the most recent data from chain storage, batching RPC
  * requests for efficiency.
