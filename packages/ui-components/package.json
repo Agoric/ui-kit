@@ -73,7 +73,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Agoric/agoric-sdk.git"
+    "url": "git+https://github.com/Agoric/ui-kit.git"
   },
   "keywords": [
     "smart",
@@ -85,9 +85,9 @@
   "author": "Agoric",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/Agoric/agoric-sdk/issues"
+    "url": "https://github.com/Agoric/ui-kit/issues"
   },
-  "homepage": "https://github.com/Agoric/agoric-sdk#readme",
+  "homepage": "https://github.com/Agoric/ui-kit#readme",
   "files": [
     "src",
     "dist",
