@@ -40,7 +40,7 @@ export type ChainStorageWatcher = ReturnType<
  * requests for efficiency.
  * @param rpcAddr RPC server URL
  * @param chainId the chain id to use
- * @param unserialize CapData unserializer to use
+ * @param unmarshal CapData unserializer to use
  * @param onError
  * @param newPathQueryDelayMs
  * @param refreshLowerBoundMs
@@ -50,7 +50,7 @@ export type ChainStorageWatcher = ReturnType<
 export const makeAgoricChainStorageWatcher = (
   rpcAddr: string,
   chainId: string,
-  unserialize: FromCapData<string>,
+  unmarshal: FromCapData<string>,
   onError?: (e: Error) => void,
   newPathQueryDelayMs = defaults.newPathQueryDelayMs,
   refreshLowerBoundMs = defaults.refreshLowerBoundMs,
@@ -105,7 +105,7 @@ export const makeAgoricChainStorageWatcher = (
     }
 
     try {
-      const data = await batchVstorageQuery(rpcAddr, unserialize, paths);
+      const data = await batchVstorageQuery(rpcAddr, unmarshal, paths);
       watchedPathsToSubscribers.forEach((subscribers, path) => {
         // Path was watched after query fired, wait until next round.
         if (!data[path]) return;

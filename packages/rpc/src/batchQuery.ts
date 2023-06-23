@@ -15,7 +15,7 @@ export const keyToPath = (key: string) => {
 
 export const batchVstorageQuery = (
   node: string,
-  unserialize: FromCapData<string>,
+  unmarshal: FromCapData<string>,
   paths: [AgoricChainStoragePathKind, string][],
 ) => {
   const options = {
@@ -70,7 +70,7 @@ export const batchVstorageQuery = (
             : value;
           const parsed = JSON.parse(latestValueStr);
           const unserialized = Object.hasOwn(parsed, 'slots')
-            ? unserialize(parsed)
+            ? unmarshal(parsed)
             : parsed;
 
           return [
