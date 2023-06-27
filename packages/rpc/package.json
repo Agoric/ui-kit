@@ -9,7 +9,7 @@
     "access": "public"
   },
   "scripts": {
-    "build": "tsc",
+    "prepack": "tsc --build tsconfig.build.json",
     "lint": "eslint . && tsc",
     "lint:fix": "eslint . --fix",
     "test": "vitest",
