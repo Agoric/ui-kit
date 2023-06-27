@@ -6,7 +6,7 @@
   "version": "0.6.3",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc",
+    "prepack": "tsc --build tsconfig.build.json",
     "lint": "run-s --continue-on-error lint:*",
     "lint:types": "tsc -p tsconfig.json",
     "lint:eslint": "eslint .",
