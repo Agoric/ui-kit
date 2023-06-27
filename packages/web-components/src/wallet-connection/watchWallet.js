@@ -52,10 +52,10 @@ export const watchWallet = async (chainStorageWatcher, address) => {
       chainStorageWatcher.watchLatest(
         ['data', `published.wallet.${address}.current`],
         value => {
+          res();
           const { offerToPublicSubscriberPaths: currentPaths } = value;
           if (currentPaths === lastPaths) return;
 
-          res();
           publicSubscriberPathsNotifierKit.updater.updateState(
             harden(currentPaths),
           );
