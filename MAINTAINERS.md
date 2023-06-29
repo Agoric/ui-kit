@@ -38,12 +38,12 @@ Creating this PR will also kick off the CI tests.
 
 - [ ] Build the NPM-installed SDK packages.
 
-While the above CI tests run, build the SDK:
+While the above CI tests run, verify that packaging will work:
 
 ```sh
 # Build all package generated files.
 yarn install --force
-yarn build
+yarn workspaces run prepack
 ```
 
 - [ ] Wait for the release PR's CI tests to pass.

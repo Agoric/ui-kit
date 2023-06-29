@@ -10,8 +10,7 @@
   "scripts": {
     "format": "yarn prettier --write packages",
     "lint": "yarn workspaces run lint",
-    "test": "yarn workspaces run test",
-    "build": "yarn workspaces run build"
+    "test": "yarn workspaces run test"
   },
   "devDependencies": {
     "@agoric/eslint-config": "^0.4.1-dev-4b79eb6.0",

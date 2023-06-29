@@ -16,7 +16,7 @@
     "test": "BABEL_ENV='test' ava",
     "build:tests": "rm -rf compiled && BABEL_ENV='test' ./node_modules/.bin/babel test/components --out-dir compiled/test/components",
     "build:src": "rm -rf dist && BABEL_ENV='test' ./node_modules/.bin/babel src --out-dir dist",
-    "build": "yarn build:src && yarn build:tests",
+    "prepack": "yarn build:src && yarn build:tests",
     "lint": "run-s --continue-on-error lint:*",
     "lint:eslint": "eslint .",
     "lint:types": "tsc -p jsconfig.json"
