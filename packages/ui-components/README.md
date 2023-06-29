@@ -29,6 +29,5 @@ import { NatAmountInput } from '@agoric/ui-components';
 ## Yarn Test
 
 ```sh
-yarn build
 yarn test
 ```
