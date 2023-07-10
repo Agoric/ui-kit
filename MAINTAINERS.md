@@ -19,11 +19,11 @@ user ID to the `@agoric` organization and the `agoric` package.
 
 - [ ] Bump release versions and update CHANGELOG.md
 
-Use `--conventional-prerelease` instead of `--conventional-graduate` if you just want to generate a dev release.
+Use `--conventional-prerelease` instead of `--conventional-commits` if you just want to generate a dev release.
 
 ```sh
 # Create the final release CHANGELOGs.
-yarn lerna version --no-push --conventional-graduate
+yarn lerna version --no-push --conventional-commits
 # look it over before pushing
 git push
 ```
