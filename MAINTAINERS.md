@@ -54,6 +54,12 @@ These steps cannot be undone, so be sure that you are ready to proceed.
 In particular, be sure that you have waited for the release PR's CI tests
 to pass.
 
+If you get E404, you're probably not logged in. Your .npmrc should have a line like,
+```
+//registry.npmjs.org/:_authToken=npm_randomstring
+```
+If it doesn't, use `npm login` to authenticate before running publish.
+
 - [ ] Publish to NPM
 
 ```sh
