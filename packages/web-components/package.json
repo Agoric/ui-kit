@@ -27,7 +27,7 @@
     "@endo/marshal": "^0.8.5",
     "@endo/promise-kit": "^0.2.56",
     "@lit-labs/react": "^1.0.1",
-    "lit": "2.0.2"
+    "lit": "2.7.6"
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
