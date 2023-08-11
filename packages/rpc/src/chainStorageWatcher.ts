@@ -1,9 +1,10 @@
 /* eslint-disable no-use-before-define */
 /* eslint-disable import/extensions */
-import type { FromCapData } from '@endo/marshal';
-import type { UpdateHandler } from './types';
+/* eslint-disable import/no-extraneous-dependencies */
+import { makeImportContext } from '@agoric/smart-wallet/src/marshal-contexts';
 import { AgoricChainStoragePathKind } from './types';
 import { batchVstorageQuery, keyToPath, pathToKey } from './batchQuery';
+import type { UpdateHandler } from './types';
 
 type Subscriber<T> = {
   onUpdate: UpdateHandler<T>;
@@ -40,8 +41,8 @@ export type ChainStorageWatcher = ReturnType<
  * requests for efficiency.
  * @param rpcAddr RPC server URL
  * @param chainId the chain id to use
- * @param unmarshal CapData unserializer to use
  * @param onError
+ * @param marshal CapData marshal to use
  * @param newPathQueryDelayMs
  * @param refreshLowerBoundMs
  * @param refreshUpperBoundMs
@@ -50,8 +51,8 @@ export type ChainStorageWatcher = ReturnType<
 export const makeAgoricChainStorageWatcher = (
   rpcAddr: string,
   chainId: string,
-  unmarshal: FromCapData<string>,
   onError?: (e: Error) => void,
+  marshal = makeImportContext().fromBoard,
   newPathQueryDelayMs = defaults.newPathQueryDelayMs,
   refreshLowerBoundMs = defaults.refreshLowerBoundMs,
   refreshUpperBoundMs = defaults.refreshUpperBoundMs,
@@ -105,7 +106,11 @@ export const makeAgoricChainStorageWatcher = (
     }
 
     try {
-      const data = await batchVstorageQuery(rpcAddr, unmarshal, paths);
+      const data = await batchVstorageQuery(
+        rpcAddr,
+        marshal.fromCapData,
+        paths,
+      );
       watchedPathsToSubscribers.forEach((subscribers, path) => {
         // Path was watched after query fired, wait until next round.
         if (!data[path]) return;
@@ -201,5 +206,6 @@ export const makeAgoricChainStorageWatcher = (
     watchLatest,
     chainId,
     rpcAddr,
+    marshal,
   };
 };

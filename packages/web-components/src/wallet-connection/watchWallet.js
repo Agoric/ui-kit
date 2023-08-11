@@ -1,6 +1,7 @@
 // @ts-check
 import { makeNotifierKit } from '@agoric/notifier';
 import { AmountMath } from '@agoric/ertp';
+import { iterateLatest, makeFollower, makeLeader } from '@agoric/casting';
 import { Errors } from '../errors.js';
 import { queryBankBalances } from '../queryBankBalances.js';
 
@@ -41,6 +42,12 @@ export const watchWallet = async (chainStorageWatcher, address) => {
 
   const publicSubscriberPathsNotifierKit = makeNotifierKit(
     /** @type {  import('@agoric/smart-wallet/src/smartWallet.js').CurrentWalletRecord['offerToPublicSubscriberPaths'] | null } */ (
+      null
+    ),
+  );
+
+  const walletUpdatesNotifierKit = makeNotifierKit(
+    /** @type {  import('@agoric/smart-wallet/src/smartWallet.js').UpdateRecord | null } */ (
       null
     ),
   );
@@ -122,10 +129,24 @@ export const watchWallet = async (chainStorageWatcher, address) => {
     void watchBank();
   };
 
+  const watchWalletUpdates = async () => {
+    const leader = makeLeader(chainStorageWatcher.rpcAddr);
+    const follower = makeFollower(`:published.wallet.${address}`, leader, {
+      proof: 'none',
+    });
+
+    for await (const { value } of iterateLatest(follower)) {
+      console.debug('wallet update', value);
+      walletUpdatesNotifierKit.updater.updateState(harden(value));
+    }
+  };
+
   watchChainBalances();
+  watchWalletUpdates();
 
   return {
     pursesNotifier: pursesNotifierKit.notifier,
     publicSubscribersNotifier: publicSubscriberPathsNotifierKit.notifier,
+    walletUpdatesNotifier: walletUpdatesNotifierKit.notifier,
   };
 };
