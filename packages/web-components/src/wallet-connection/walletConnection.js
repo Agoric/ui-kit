@@ -29,8 +29,8 @@ export const makeAgoricWalletConnection = async chainStorageWatcher => {
     onStatusChange,
     id = new Date().getTime(),
   ) => {
-    const { marshal } = chainStorageWatcher;
-    const spendAction = marshal.serialize(
+    const { marshaller } = chainStorageWatcher;
+    const spendAction = marshaller.toCapData(
       harden({
         method: 'executeOffer',
         offer: {
@@ -42,8 +42,8 @@ export const makeAgoricWalletConnection = async chainStorageWatcher => {
       }),
     );
 
+    await null;
     try {
-      // eslint-disable-next-line @jessie.js/safe-await-separator
       const txn = await submitSpendAction(JSON.stringify(spendAction));
       onStatusChange({ status: 'seated', data: { txn, offerId: id } });
     } catch (e) {

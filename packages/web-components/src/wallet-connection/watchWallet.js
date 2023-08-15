@@ -133,6 +133,7 @@ export const watchWallet = async (chainStorageWatcher, address) => {
     const leader = makeLeader(chainStorageWatcher.rpcAddr);
     const follower = makeFollower(`:published.wallet.${address}`, leader, {
       proof: 'none',
+      unserializer: chainStorageWatcher.marshaller,
     });
 
     for await (const { value } of iterateLatest(follower)) {

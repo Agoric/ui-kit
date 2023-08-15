@@ -1,5 +1,4 @@
-/* eslint-disable import/no-extraneous-dependencies */
-import { Far, makeMarshal as endoMakeMarshal } from '@endo/marshal';
+import { Far, makeMarshal } from '@endo/marshal';
 
 const makeTranslationTable = (
   makeSlot: (val: unknown, size: number) => unknown,
@@ -34,7 +33,7 @@ const { convertValToSlot, convertSlotToVal } = makeTranslationTable(slot => {
   throw new Error(`unknown id: ${slot}`);
 }, synthesizeRemotable);
 
-export const makeMarshal = () =>
-  endoMakeMarshal(convertValToSlot, convertSlotToVal, {
+export const makeClientMarshaller = () =>
+  makeMarshal(convertValToSlot, convertSlotToVal, {
     serializeBodyFormat: 'smallcaps',
   });

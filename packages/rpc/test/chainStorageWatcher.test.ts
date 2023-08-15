@@ -25,8 +25,10 @@ describe('makeAgoricChainStorageWatcher', () => {
       undefined,
       {
         fromCapData: unmarshal,
+        // @ts-expect-error mock doesnt require capdata type
         toCapData: marshal,
         unserialize: unmarshal,
+        // @ts-expect-error mock doesnt require capdata type
         serialize: marshal,
       },
     );

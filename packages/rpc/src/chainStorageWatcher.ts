@@ -1,7 +1,6 @@
 /* eslint-disable no-use-before-define */
 /* eslint-disable import/extensions */
-/* eslint-disable import/no-extraneous-dependencies */
-import { makeMarshal } from 'marshal';
+import { makeClientMarshaller } from './marshal';
 import { AgoricChainStoragePathKind } from './types';
 import { batchVstorageQuery, keyToPath, pathToKey } from './batchQuery';
 import type { UpdateHandler } from './types';
@@ -42,7 +41,7 @@ export type ChainStorageWatcher = ReturnType<
  * @param rpcAddr RPC server URL
  * @param chainId the chain id to use
  * @param onError
- * @param marshal CapData marshal to use
+ * @param marshaller CapData marshal to use
  * @param newPathQueryDelayMs
  * @param refreshLowerBoundMs
  * @param refreshUpperBoundMs
@@ -52,7 +51,7 @@ export const makeAgoricChainStorageWatcher = (
   rpcAddr: string,
   chainId: string,
   onError?: (e: Error) => void,
-  marshal = makeMarshal(),
+  marshaller = makeClientMarshaller(),
   newPathQueryDelayMs = defaults.newPathQueryDelayMs,
   refreshLowerBoundMs = defaults.refreshLowerBoundMs,
   refreshUpperBoundMs = defaults.refreshUpperBoundMs,
@@ -108,7 +107,7 @@ export const makeAgoricChainStorageWatcher = (
     try {
       const data = await batchVstorageQuery(
         rpcAddr,
-        marshal.fromCapData,
+        marshaller.fromCapData,
         paths,
       );
       watchedPathsToSubscribers.forEach((subscribers, path) => {
@@ -206,6 +205,6 @@ export const makeAgoricChainStorageWatcher = (
     watchLatest,
     chainId,
     rpcAddr,
-    marshal,
+    marshaller,
   };
 };
