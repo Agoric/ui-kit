@@ -77,24 +77,25 @@ describe('makeAgoricWalletConnection', () => {
       watchLatest: (_path, onUpdate) => {
         onUpdate({ offerToPublicSubscriberPaths: 'foo' });
       },
-      marshal: {
-        serialize: val => val,
+      marshaller: {
+        toCapData: val => val,
       },
     };
 
     const connection = await makeAgoricWalletConnection(watcher);
 
-    const onStatusChange = vi.fn();
+    const onStatusChange = () => {
+      expect(mockSubmitSpendAction).toHaveBeenCalledWith(
+        '{"method":"executeOffer","offer":{"id":123,"invitationSpec":{"invitationSpec":"foo"},"proposal":{"give":"bar","want":"fizz"},"offerArgs":{"arg":"buzz"}}}',
+      );
+    };
+
     connection.makeOffer(
       { invitationSpec: 'foo' },
       { give: 'bar', want: 'fizz' },
       { arg: 'buzz' },
       onStatusChange,
       123,
-    );
-
-    expect(mockSubmitSpendAction).toHaveBeenCalledWith(
-      '{"method":"executeOffer","offer":{"id":123,"invitationSpec":{"invitationSpec":"foo"},"proposal":{"give":"bar","want":"fizz"},"offerArgs":{"arg":"buzz"}}}',
     );
   });
 });

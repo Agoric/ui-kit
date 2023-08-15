@@ -87,8 +87,8 @@ export const makeInteractiveSigner = async (
   keplr,
   connectWithSigner,
 ) => {
+  await null;
   try {
-    // eslint-disable-next-line @jessie.js/safe-await-separator
     await keplr.enable(chainId);
   } catch {
     throw Error(Errors.enableKeplr);
