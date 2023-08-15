@@ -27,9 +27,9 @@ export const makeAgoricWalletConnection = async chainStorageWatcher => {
     proposal,
     offerArgs,
     onStatusChange,
+    id = new Date().getTime(),
   ) => {
     const { marshal } = chainStorageWatcher;
-    const id = new Date().getTime();
     const spendAction = marshal.serialize(
       harden({
         method: 'executeOffer',
@@ -53,7 +53,7 @@ export const makeAgoricWalletConnection = async chainStorageWatcher => {
 
     const iterator = subscribeLatest(walletNotifiers.walletUpdatesNotifier);
     for await (const update of iterator) {
-      if (update.updated !== 'offerStatus' || update.status.id !== id) {
+      if (update?.updated !== 'offerStatus' || update.status.id !== id) {
         continue;
       }
       if (update.status.error !== undefined) {
