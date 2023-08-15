@@ -4,10 +4,6 @@ import { expect, it, describe, beforeEach, vi, afterEach } from 'vitest';
 import { makeAgoricChainStorageWatcher } from '../src/chainStorageWatcher';
 import { AgoricChainStoragePathKind } from '../src/types';
 
-vi.mock('@agoric/smart-wallet/src/marshal-contexts', () => ({
-  makeImportContext: () => {},
-}));
-
 const fetch = vi.fn();
 global.fetch = fetch;
 global.harden = val => val;
@@ -19,6 +15,8 @@ const unmarshal = (val: unknown) => val;
 
 let watcher: ReturnType<typeof makeAgoricChainStorageWatcher>;
 
+vi.mock('../src/marshal', () => ({ makeMarshal: () => {} }));
+
 describe('makeAgoricChainStorageWatcher', () => {
   beforeEach(() => {
     watcher = makeAgoricChainStorageWatcher(
@@ -27,10 +25,8 @@ describe('makeAgoricChainStorageWatcher', () => {
       undefined,
       {
         fromCapData: unmarshal,
-        // @ts-expect-error mock
         toCapData: marshal,
         unserialize: unmarshal,
-        // @ts-expect-error mock
         serialize: marshal,
       },
     );

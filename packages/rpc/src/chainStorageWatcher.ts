@@ -1,7 +1,7 @@
 /* eslint-disable no-use-before-define */
 /* eslint-disable import/extensions */
 /* eslint-disable import/no-extraneous-dependencies */
-import { makeImportContext } from '@agoric/smart-wallet/src/marshal-contexts';
+import { makeMarshal } from 'marshal';
 import { AgoricChainStoragePathKind } from './types';
 import { batchVstorageQuery, keyToPath, pathToKey } from './batchQuery';
 import type { UpdateHandler } from './types';
@@ -52,7 +52,7 @@ export const makeAgoricChainStorageWatcher = (
   rpcAddr: string,
   chainId: string,
   onError?: (e: Error) => void,
-  marshal = makeImportContext().fromBoard,
+  marshal = makeMarshal(),
   newPathQueryDelayMs = defaults.newPathQueryDelayMs,
   refreshLowerBoundMs = defaults.refreshLowerBoundMs,
   refreshUpperBoundMs = defaults.refreshUpperBoundMs,
