@@ -16,6 +16,7 @@ const makeTranslationTable = (
   };
 
   const convertSlotToVal = (slot: unknown, iface: string | undefined) => {
+    if (slot === null) return makeVal(slot, iface);
     if (slotToVal.has(slot)) return slotToVal.get(slot);
     const val = makeVal(slot, iface);
     valToSlot.set(val, slot);
