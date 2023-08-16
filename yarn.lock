@@ -2530,21 +2530,21 @@
     axios "^0.27.2"
     long "^4.0.0"
 
-"@lerna/child-process@7.0.1":
-  version "7.0.1"
-  resolved "https://registry.yarnpkg.com/@lerna/child-process/-/child-process-7.0.1.tgz#b4edc965c88b2247ccc1c9bfb3dce1f42baec928"
-  integrity sha512-lov3hXcX+g76fjQ5kg6+QdffL6kFw/aH3sG7NGk61mZfsWCDum9kcp9biqIRAmD6xJbrQsr1i0i9YeCMnHJ6pA==
+"@lerna/child-process@7.1.1":
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/@lerna/child-process/-/child-process-7.1.1.tgz#60eddd6dc4b6ba0fd51851c78b6dbdc4e1614220"
+  integrity sha512-mR8PaTkckYPLmEBG2VsVsJq2UuzEvjXevOB1rKLKUZ/dPCGcottVhbiEzTxickc+s7Y/1dTTLn/1BKj3B1a5BA==
   dependencies:
     chalk "^4.1.0"
     execa "^5.0.0"
     strong-log-transformer "^2.1.0"
 
-"@lerna/create@7.0.1":
-  version "7.0.1"
-  resolved "https://registry.yarnpkg.com/@lerna/create/-/create-7.0.1.tgz#a204a087b3b7a2ea7bb00d374faf4f306cd48aca"
-  integrity sha512-vv9gtbrn/gBwQLdDlUeatO3uY58nxMktv9h9/5GEFcBesV9MAeQ0zRz8zkr2C0DX/m25lE+J5KTzJqZtMb03kw==
+"@lerna/create@7.1.1":
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/@lerna/create/-/create-7.1.1.tgz#2af94afb01971c1b594c06347b6998607aefe5c4"
+  integrity sha512-1PY2OgwGxp7b91JzLKEhONVl69mCt1IyYEc6pzKy3Sv+UOdeK2QFq1SX/85hNOR3iitiyZ75bNWUTcBly1ZlZg==
   dependencies:
-    "@lerna/child-process" "7.0.1"
+    "@lerna/child-process" "7.1.1"
     dedent "0.7.0"
     fs-extra "^11.1.1"
     init-package-json "5.0.0"
@@ -8251,13 +8251,13 @@ language-tags@^1.0.5:
   dependencies:
     language-subtag-registry "^0.3.20"
 
-lerna@^7.0.1:
-  version "7.0.1"
-  resolved "https://registry.yarnpkg.com/lerna/-/lerna-7.0.1.tgz#056fc44f0e4852a06e943197d3d0d05d59d84559"
-  integrity sha512-kX279o8N/L2URwoR3Pf4TdIl5P8G443qAFy095ZD+Vu1tOMo8U6xOc221EgHoMuYhdqlT3f0vgn5bMMr/xNYhQ==
+lerna@^7.1.1:
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/lerna/-/lerna-7.1.1.tgz#6703062e6c4ddefdaf41e8890e9200690924fd71"
+  integrity sha512-rjivAl3bYu2+lWOi90vy0tYFgwBYPMiNkR/DuEWZC08wle5dsbOZ/SlXeLk9+kzbF89Bt5P6p+qF78A2tJsWPA==
   dependencies:
-    "@lerna/child-process" "7.0.1"
-    "@lerna/create" "7.0.1"
+    "@lerna/child-process" "7.1.1"
+    "@lerna/create" "7.1.1"
     "@npmcli/run-script" "6.0.2"
     "@nx/devkit" ">=16.1.3 < 17"
     "@octokit/plugin-enterprise-rest" "6.0.1"

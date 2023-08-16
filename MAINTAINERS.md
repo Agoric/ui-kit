@@ -19,11 +19,11 @@ user ID to the `@agoric` organization and the `agoric` package.
 
 - [ ] Bump release versions and update CHANGELOG.md
 
-Use `--conventional-prerelease` instead of `--conventional-graduate` if you just want to generate a dev release.
+Use `--conventional-prerelease` instead of `--conventional-commits` if you just want to generate a dev release.
 
 ```sh
 # Create the final release CHANGELOGs.
-yarn lerna version --no-push --conventional-graduate
+yarn lerna version --no-push --conventional-commits
 # look it over before pushing
 git push
 ```
@@ -53,6 +53,12 @@ yarn workspaces run prepack
 These steps cannot be undone, so be sure that you are ready to proceed.
 In particular, be sure that you have waited for the release PR's CI tests
 to pass.
+
+If you get E404, you're probably not logged in. Your .npmrc should have a line like,
+```
+//registry.npmjs.org/:_authToken=npm_randomstring
+```
+If it doesn't, use `npm login` to authenticate before running publish.
 
 - [ ] Publish to NPM
 
