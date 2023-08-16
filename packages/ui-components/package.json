@@ -10,7 +10,7 @@
     "@endo/eventual-send": "^0.17.2",
     "@endo/init": "^0.5.56",
     "@endo/nat": "^4.1.27",
-    "clsx": "^1.1.1"
+    "clsx": "^2.0.0"
   },
   "scripts": {
     "test": "BABEL_ENV='test' ava",
