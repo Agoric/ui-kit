@@ -66,7 +66,7 @@ import { makeAgoricWalletConnection } from '@agoric/web-components';
 
 const watcher = makeAgoricChainStorageWatcher(rpc, chainName);
 const connection = await makeAgoricWalletConnection(watcher);
-const [pursesNotifier, publicSubscribersNotifier] = chainConnection;
+const {pursesNotifier, publicSubscribersNotifier} = chainConnection;
 
 for await (const purses of subscribeLatest(pursesNotifier)) {
   console.log('Got purses:', purses);
