@@ -44,7 +44,7 @@ stopWatching();
 watcher.watchLatest<Brands>(
   [Kind.Data, 'published.agoricNames.brand',
   brands => {
-    console.log('Do something the brands');
+    console.log('Do something with the brands');
   }
 )
 ```
