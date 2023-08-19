@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.8.0 (2023-08-19)
+
+### Features
+
+- add ui-components package ([#2321](https://github.com/Agoric/ui-kit/issues/2321)) ([18ebb34](https://github.com/Agoric/ui-kit/commit/18ebb34c112d63854138f5a2b573870372d95131))
+- better rendering for initial state ([#2745](https://github.com/Agoric/ui-kit/issues/2745)) ([cf5fe35](https://github.com/Agoric/ui-kit/commit/cf5fe354ab1e3e8e979e4223bb752a8214f5ff6d))
+- **react-wallet:** Render empty requests and basic purse amounts ([f5e6947](https://github.com/Agoric/ui-kit/commit/f5e69478c9e87234e470a62f54b8dae20941d4e0))
+- separate purse filtering by brand ([#2798](https://github.com/Agoric/ui-kit/issues/2798)) ([880705a](https://github.com/Agoric/ui-kit/commit/880705afec4e107229e56c317fc290a4e3ef6543))
+- **ses-ava:** support full API of Ava ([3d77536](https://github.com/Agoric/ui-kit/commit/3d77536aefb3a47e9391427eedec79cbbb7865f3))
+- **wallet-ui:** display set amounts ([#5654](https://github.com/Agoric/ui-kit/issues/5654)) ([22c10c2](https://github.com/Agoric/ui-kit/commit/22c10c23100b04d2973a8edbcc12f45b27edd187))
+
+### Bug Fixes
+
+- Enhance TypeScript node_modules traversal depth ([4407822](https://github.com/Agoric/ui-kit/commit/440782258b8f849c851d403ca2e38e781a52c5a3))
+- improve amount UI entry ([#2737](https://github.com/Agoric/ui-kit/issues/2737)) ([f29d3a2](https://github.com/Agoric/ui-kit/commit/f29d3a28ef82ccf9e18f8bcb9f2661205b3d62a5))
+- Many more tests use ses-ava ([#2733](https://github.com/Agoric/ui-kit/issues/2733)) ([7014ac8](https://github.com/Agoric/ui-kit/commit/7014ac8e2320d10f6807a70d668025ff51f8525b))
+- Pin ESM to forked version ([6f7e31e](https://github.com/Agoric/ui-kit/commit/6f7e31e1771a6b13128874ac68c089c32ab49b67))
+- tests use debug settings ([#5567](https://github.com/Agoric/ui-kit/issues/5567)) ([5a203ce](https://github.com/Agoric/ui-kit/commit/5a203ced6b80d8e4a894351afae4acbc5c643ee4))
+- **ui-components:** add dummy test:xs target ([2763e84](https://github.com/Agoric/ui-kit/commit/2763e84ece12b5ff55050d52d913fb9b71f5a1f6))
+- **ui-components:** dont throw on negative nat input ([#5050](https://github.com/Agoric/ui-kit/issues/5050)) ([2b44f2a](https://github.com/Agoric/ui-kit/commit/2b44f2a96acc7a9ff93092a92e71465adac560a0))
+- **ui:** limit decimals displayed for nats ([93b9e01](https://github.com/Agoric/ui-kit/commit/93b9e014c674d823dadb9791977de69e9ff3163c))
+- update to depend on ses 0.12.5 ([#2718](https://github.com/Agoric/ui-kit/issues/2718)) ([9185443](https://github.com/Agoric/ui-kit/commit/9185443faa8df0083289309953cc7ebcf99b0aee))
+- use ses-ava in SwingSet where possible ([#2709](https://github.com/Agoric/ui-kit/issues/2709)) ([e444716](https://github.com/Agoric/ui-kit/commit/e444716ac6d75fc3658952392cbfa0a51efd0f56))
+- **wallet-ui:** show all significant digits in nat amounts ([69b8639](https://github.com/Agoric/ui-kit/commit/69b8639f3c8a5da9e61bb3406011455d4fd91fee))
+
 ## 0.7.0 (2023-07-10)
 
 ### Features
