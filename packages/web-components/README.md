@@ -1,18 +1,19 @@
-## Linting and formatting
+For complete examples and setup see [Agoric/ui-kit](https://github.com/Agoric/ui-kit)
 
-To scan the package for linting and formatting errors, run
+```ts
+import { subscribeLatest } from '@agoric/notifier';
+import { makeAgoricChainStorageWatcher } from '@agoric/rpc';
+import { makeAgoricWalletConnection } from '@agoric/web-components';
 
-```bash
-yarn lint
+const watcher = makeAgoricChainStorageWatcher(rpc, chainName);
+const connection = await makeAgoricWalletConnection(watcher);
+const {pursesNotifier, publicSubscribersNotifier} = chainConnection;
+
+// Sign an on-chain offer transaction.
+connection.makeOffer(...offer);
+
+// Read the user's token balances.
+for await (const purses of subscribeLatest(pursesNotifier)) {
+  console.log('Got user purses:', purses);
+}
 ```
-
-To automatically fix linting and formatting errors, run
-
-```bash
-yarn format
-```
-
-## Tooling configs
-
-For most of the tools, the configuration is in the `package.json` to minimize
-the amount of files in this package.
