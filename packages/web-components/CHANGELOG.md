@@ -12,6 +12,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Features
 
+- suggest chain ([8e1d7e9](https://github.com/Agoric/ui-kit/commit/8e1d7e9dfc2704f0fd2aebac732ba53384da99b6))
 - batch rpc wallet connection ([933b31c](https://github.com/Agoric/ui-kit/commit/933b31c388b9908c1a6ca569dc3974effb7ddab6))
 - show default wallet url in connection component ([58ce9e0](https://github.com/Agoric/ui-kit/commit/58ce9e02af89b798674347926c00b37090115889))
 - support offer signing with keplr ([8ccda1d](https://github.com/Agoric/ui-kit/commit/8ccda1d1019201ba00691237fa594b91b73de92c))
