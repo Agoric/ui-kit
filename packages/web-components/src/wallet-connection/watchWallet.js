@@ -7,6 +7,8 @@ import { queryBankBalances } from '../queryBankBalances.js';
 
 /** @typedef {import('@agoric/smart-wallet/src/types.js').Petname} Petname */
 
+/** @typedef {import('@keplr-wallet/types').Coin} Coin */
+
 /**
  * @typedef {{
  *  brand?: unknown,
@@ -15,6 +17,17 @@ import { queryBankBalances } from '../queryBankBalances.js';
  *  pursePetname?: Petname,
  *  displayInfo?: unknown,
  * }} PurseInfo
+ */
+
+/**
+ * @typedef {[
+ *  string,
+ *  {
+ *    brand: unknown,
+ *    issuerName: string,
+ *    displayInfo: unknown
+ *  }
+ * ][]} VBankAssets
  */
 
 const POLL_INTERVAL_MS = 6000;
@@ -82,51 +95,124 @@ export const watchWallet = async (chainStorageWatcher, address) => {
 
   const watchChainBalances = () => {
     const brandToPurse = new Map();
-    let vbankAssets;
-    let bank;
 
-    const possiblyUpdateBankPurses = () => {
-      if (!vbankAssets || !bank) return;
+    {
+      /** @type {VBankAssets} */
+      let vbankAssets;
+      /** @type {Coin[]} */
+      let bank;
 
-      const bankMap = new Map(bank.map(({ denom, amount }) => [denom, amount]));
+      const possiblyUpdateBankPurses = () => {
+        if (!vbankAssets || !bank) return;
 
-      vbankAssets.forEach(([denom, info]) => {
-        const amount = bankMap.get(denom) ?? 0n;
-        const purseInfo = {
-          brand: info.brand,
-          currentAmount: AmountMath.make(info.brand, BigInt(amount)),
-          brandPetname: info.issuerName,
-          pursePetname: info.issuerName,
-          displayInfo: info.displayInfo,
-        };
-        brandToPurse.set(info.brand, purseInfo);
-      });
+        const bankMap = new Map(
+          bank.map(({ denom, amount }) => [denom, amount]),
+        );
 
-      updatePurses(brandToPurse);
-    };
+        vbankAssets.forEach(([denom, info]) => {
+          const amount = bankMap.get(denom) ?? 0n;
+          const purseInfo = {
+            brand: info.brand,
+            currentAmount: AmountMath.make(info.brand, BigInt(amount)),
+            brandPetname: info.issuerName,
+            pursePetname: info.issuerName,
+            displayInfo: info.displayInfo,
+          };
+          brandToPurse.set(info.brand, purseInfo);
+        });
 
-    const watchBank = async () => {
-      const balances = await queryBankBalances(
-        address,
-        chainStorageWatcher.rpcAddr,
-      );
-      bank = balances;
-      possiblyUpdateBankPurses();
-      setTimeout(watchBank, POLL_INTERVAL_MS);
-    };
+        updatePurses(brandToPurse);
+      };
 
-    const watchVbankAssets = async () => {
-      chainStorageWatcher.watchLatest(
-        ['data', 'published.agoricNames.vbankAsset'],
-        value => {
-          vbankAssets = value;
-          possiblyUpdateBankPurses();
-        },
-      );
-    };
+      const watchBank = async () => {
+        const balances = await queryBankBalances(
+          address,
+          chainStorageWatcher.rpcAddr,
+        );
+        bank = balances;
+        possiblyUpdateBankPurses();
+        setTimeout(watchBank, POLL_INTERVAL_MS);
+      };
 
-    void watchVbankAssets();
-    void watchBank();
+      const watchVbankAssets = () => {
+        chainStorageWatcher.watchLatest(
+          ['data', 'published.agoricNames.vbankAsset'],
+          value => {
+            vbankAssets = value;
+            possiblyUpdateBankPurses();
+          },
+        );
+      };
+
+      void watchVbankAssets();
+      void watchBank();
+    }
+
+    {
+      /** @type { [string, unknown][] } */
+      let agoricBrands;
+      /** @type { {balance: unknown, brand: unknown}[] } */
+      let nonBankPurses;
+      /** @type { Map<unknown, { displayInfo: unknown }> } */
+      let brandToBoardAux;
+
+      const possiblyUpdateNonBankPurses = () => {
+        if (!agoricBrands || !nonBankPurses || !brandToBoardAux) return;
+
+        nonBankPurses.forEach(({ balance, brand }) => {
+          const petname = agoricBrands
+            ?.find(([_petname, b]) => b === brand)
+            ?.at(0);
+          const { displayInfo } = brandToBoardAux.get(brand) ?? {};
+          const purseInfo = {
+            brand,
+            currentAmount: balance,
+            brandPetname: petname,
+            pursePetname: petname,
+            displayInfo,
+          };
+          brandToPurse.set(brand, purseInfo);
+        });
+
+        updatePurses(brandToPurse);
+      };
+
+      const watchBrands = () => {
+        chainStorageWatcher.watchLatest(
+          ['data', 'published.agoricNames.brand'],
+          value => {
+            agoricBrands = value;
+            possiblyUpdateNonBankPurses();
+          },
+        );
+      };
+
+      const watchPurses = () =>
+        chainStorageWatcher.watchLatest(
+          ['data', `published.wallet.${address}.current`],
+          async value => {
+            const { purses } = value;
+            if (nonBankPurses === purses) return;
+
+            await null;
+            if (purses.length !== nonBankPurses?.length) {
+              const brands = purses.map(p => p.brand);
+              const boardAux = await Promise.all(
+                chainStorageWatcher.queryBoardAux(brands),
+              );
+              brandToBoardAux = new Map(
+                brands.map((brand, index) => [brand, boardAux[index]]),
+              );
+            }
+
+            nonBankPurses = purses;
+            possiblyUpdateNonBankPurses();
+          },
+        );
+
+      void watchBrands();
+      void watchPurses();
+    }
   };
 
   const watchWalletUpdates = async () => {
