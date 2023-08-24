@@ -1,6 +1,6 @@
 {
   "name": "@agoric/ui-components",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Reusable UI Components for Agoric Dapps, built with React and MaterialUI",
   "type": "module",
   "main": "dist/index.js",

@@ -3,7 +3,7 @@
   "description": "Webcomponents for Agoric dapps",
   "license": "Apache-2.0",
   "author": "Agoric",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "main": "dist/index.js",
   "scripts": {
     "prepack": "tsc --build tsconfig.build.json",
@@ -40,8 +40,8 @@
     "eslint": "^8.36.0",
     "eslint-plugin-lit": "^1.8.2",
     "eslint-plugin-lit-a11y": "^2.4.0",
-    "vitest": "^0.34.1",
-    "ses": "0.18.7"
+    "ses": "0.18.7",
+    "vitest": "^0.34.1"
   },
   "customElements": "custom-elements.json",
   "eslintConfig": {
