@@ -202,11 +202,15 @@ export const makeAgoricChainStorageWatcher = (
   };
 
   const queryOnce = <T>(path: [AgoricChainStoragePathKind, string]) =>
-    new Promise<T>(res => {
-      const stop = watchLatest<T>(path, val => {
-        stop();
-        res(val);
-      });
+    new Promise<T>((res, rej) => {
+      const stop = watchLatest<T>(
+        path,
+        val => {
+          stop();
+          res(val);
+        },
+        e => rej(e),
+      );
     });
 
   // Assumes argument is an unserialized presence.

@@ -197,12 +197,16 @@ export const watchWallet = async (chainStorageWatcher, address) => {
             await null;
             if (purses.length !== nonBankPurses?.length) {
               const brands = purses.map(p => p.brand);
-              const boardAux = await Promise.all(
-                chainStorageWatcher.queryBoardAux(brands),
-              );
-              brandToBoardAux = new Map(
-                brands.map((brand, index) => [brand, boardAux[index]]),
-              );
+              try {
+                const boardAux = await Promise.all(
+                  chainStorageWatcher.queryBoardAux(brands),
+                );
+                brandToBoardAux = new Map(
+                  brands.map((brand, index) => [brand, boardAux[index]]),
+                );
+              } catch (e) {
+                console.error('Error getting boardAux for brands', brands, e);
+              }
             }
 
             nonBankPurses = purses;
