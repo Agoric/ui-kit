@@ -43,7 +43,7 @@ describe('makeAgoricChainStorageWatcher', () => {
   it('can handle multiple paths at once', async () => {
     const expected1 = 'test result';
     const expected2 = ['child1', 'child2'];
-    const path = 'published.vitest.fakePath';
+    const path = 'vitest.fakePath';
 
     fetch.mockResolvedValue(
       createFetchResponse([
@@ -91,7 +91,7 @@ describe('makeAgoricChainStorageWatcher', () => {
 
   it('can handle unserialized values', async () => {
     const expected = 126560000000;
-    const path = 'published.vitest.unserializedValue';
+    const path = 'vitest.unserializedValue';
 
     fetch.mockResolvedValue(
       createUnserializedFetchResponse([
@@ -110,9 +110,32 @@ describe('makeAgoricChainStorageWatcher', () => {
     expect(await value).toEqual(expected);
   });
 
+  it('can do single queries', async () => {
+    const expected = 126560000000;
+    const path = 'vitest.unserializedValue';
+
+    fetch.mockResolvedValue(
+      createUnserializedFetchResponse([
+        { value: expected, kind: AgoricChainStoragePathKind.Data, id: 0 },
+      ]),
+    );
+
+    const value = watcher.queryOnce<string>([
+      AgoricChainStoragePathKind.Data,
+      path,
+    ]);
+
+    vi.advanceTimersToNextTimer();
+    expect(await value).toEqual(expected);
+    expect(fetch).toHaveBeenCalledOnce();
+
+    vi.advanceTimersToNextTimer();
+    expect(fetch).toHaveBeenCalledOnce();
+  });
+
   it('notifies for changed data values', async () => {
     const expected1 = 'test result';
-    const path = 'published.vitest.fakePath';
+    const path = 'vitest.fakePath';
 
     fetch.mockResolvedValue(
       createFetchResponse([
@@ -159,7 +182,7 @@ describe('makeAgoricChainStorageWatcher', () => {
 
   it('notifies for changed children values', async () => {
     const expected1 = ['child1', 'child2'];
-    const path = 'published.vitest.fakePath';
+    const path = 'vitest.fakePath';
 
     fetch.mockResolvedValue(
       createFetchResponse([
@@ -204,7 +227,7 @@ describe('makeAgoricChainStorageWatcher', () => {
 
   it('handles errors', async () => {
     const expected = 'test error log';
-    const path = 'published.vitest.fakePath';
+    const path = 'vitest.fakePath';
 
     fetch.mockResolvedValue(
       createFetchResponse([
@@ -232,7 +255,7 @@ describe('makeAgoricChainStorageWatcher', () => {
 
   it('can unsubscribe from paths', async () => {
     const expected1 = ['child1', 'child2'];
-    const path = 'published.vitest.fakePath';
+    const path = 'vitest.fakePath';
 
     fetch.mockResolvedValue(
       createFetchResponse([

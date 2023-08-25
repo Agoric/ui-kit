@@ -201,10 +201,37 @@ export const makeAgoricChainStorageWatcher = (
     return () => stopWatching(pathKey, subscriber as Subscriber<unknown>);
   };
 
+  const queryOnce = <T>(path: [AgoricChainStoragePathKind, string]) =>
+    new Promise<T>((res, rej) => {
+      const stop = watchLatest<T>(
+        path,
+        val => {
+          stop();
+          res(val);
+        },
+        e => rej(e),
+      );
+    });
+
+  // Assumes argument is an unserialized presence.
+  const presenceToSlot = (o: unknown) => marshaller.toCapData(o).slots[0];
+
+  const queryBoardAux = <T>(boardObjects: unknown[]) => {
+    const boardIds = boardObjects.map(presenceToSlot);
+    return boardIds.map(id =>
+      queryOnce<T>([
+        AgoricChainStoragePathKind.Data,
+        `published.boardAux.${id}`,
+      ]),
+    );
+  };
+
   return {
     watchLatest,
     chainId,
     rpcAddr,
     marshaller,
+    queryOnce,
+    queryBoardAux,
   };
 };
