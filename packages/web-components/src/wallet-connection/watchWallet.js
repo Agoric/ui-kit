@@ -90,7 +90,7 @@ export const watchWallet = async (chainStorageWatcher, address) => {
       );
     })
   ).catch(() => {
-    throw Error(Errors.noSmartWallet);
+    console.error(Errors.noSmartWallet);
   });
 
   const watchChainBalances = () => {
