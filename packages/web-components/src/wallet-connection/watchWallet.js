@@ -2,7 +2,6 @@
 import { makeNotifierKit } from '@agoric/notifier';
 import { AmountMath } from '@agoric/ertp';
 import { iterateLatest, makeFollower, makeLeader } from '@agoric/casting';
-import { Errors } from '../errors.js';
 import { queryBankBalances } from '../queryBankBalances.js';
 
 /** @typedef {import('@agoric/smart-wallet/src/types.js').Petname} Petname */
