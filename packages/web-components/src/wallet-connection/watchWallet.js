@@ -65,33 +65,21 @@ export const watchWallet = async (chainStorageWatcher, address) => {
     ),
   );
 
-  // NB: this watches '.current' but only notifies of changes to offerToPublicSubscriberPaths
-  await /** @type {Promise<void>} */ (
-    new Promise((res, rej) => {
-      let lastPaths;
-      chainStorageWatcher.watchLatest(
-        ['data', `published.wallet.${address}.current`],
-        value => {
-          res();
-          const { offerToPublicSubscriberPaths: currentPaths } = value;
-          if (currentPaths === lastPaths) return;
+  let lastPaths;
+  chainStorageWatcher.watchLatest(
+    ['data', `published.wallet.${address}.current`],
+    value => {
+      const { offerToPublicSubscriberPaths: currentPaths } = value;
+      if (currentPaths === lastPaths) return;
 
-          publicSubscriberPathsNotifierKit.updater.updateState(
-            harden(currentPaths),
-          );
-        },
-        err => {
-          if (!lastPaths) {
-            rej();
-          } else {
-            throw Error(err);
-          }
-        },
+      publicSubscriberPathsNotifierKit.updater.updateState(
+        harden(currentPaths),
       );
-    })
-  ).catch(() => {
-    console.error(Errors.noSmartWallet);
-  });
+    },
+    err => {
+      throw Error(err);
+    },
+  );
 
   const watchChainBalances = () => {
     const brandToPurse = new Map();

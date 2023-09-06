@@ -7,8 +7,8 @@ import {
   // @ts-expect-error exported by mock below
   // eslint-disable-next-line import/named
   submitSpendAction as mockSubmitSpendAction,
+  provisionSmartWallet as mockProvisionSmartWallet,
 } from '../src/wallet-connection/makeInteractiveSigner.js';
-import { Errors } from '../src/errors.js';
 
 const testAddress = 'agoric123test';
 
@@ -18,13 +18,16 @@ global.window = { keplr: {} };
 
 vi.mock('../src/wallet-connection/makeInteractiveSigner.js', () => {
   const submitSpendAction = vi.fn();
+  const provisionSmartWallet = vi.fn();
 
   return {
     makeInteractiveSigner: vi.fn(() => ({
       address: testAddress,
       submitSpendAction,
+      provisionSmartWallet,
     })),
     submitSpendAction,
+    provisionSmartWallet,
   };
 });
 
@@ -56,17 +59,6 @@ describe('makeAgoricWalletConnection', () => {
     expect(connection.address).toEqual(testAddress);
   });
 
-  // Currently ignoring this test as not throwing on no smart-wallet, just catching
-  it('throws if no smart wallet found', async () => {
-    const watcher = {
-      chainId: 'agoric-foo',
-      rpcAddr: 'https://foo.agoric.net:443',
-      watchLatest: (_path, _onUpdate) => {},
-    };
-
-    await expect(makeAgoricWalletConnection(watcher));
-  });
-
   it('submits a spend action', async () => {
     const watcher = {
       chainId: 'agoric-foo',
@@ -95,4 +87,22 @@ describe('makeAgoricWalletConnection', () => {
       123,
     );
   });
+});
+
+it('submits a spend action', async () => {
+  const watcher = {
+    chainId: 'agoric-foo',
+    rpcAddr: 'https://foo.agoric.net:443',
+    watchLatest: (_path, onUpdate) => {
+      onUpdate({ offerToPublicSubscriberPaths: 'foo' });
+    },
+    marshaller: {
+      toCapData: val => val,
+    },
+  };
+
+  const connection = await makeAgoricWalletConnection(watcher);
+
+  connection.provisionSmartWallet();
+  expect(mockProvisionSmartWallet).toHaveBeenCalled();
 });

@@ -13,7 +13,7 @@ export const makeAgoricWalletConnection = async chainStorageWatcher => {
   // @ts-expect-error cast (checked above)
   const keplr = window.keplr;
 
-  const { address, submitSpendAction, submitProvision } =
+  const { address, submitSpendAction, provisionSmartWallet } =
     await makeInteractiveSigner(
       chainStorageWatcher.chainId,
       chainStorageWatcher.rpcAddr,
@@ -49,6 +49,7 @@ export const makeAgoricWalletConnection = async chainStorageWatcher => {
       onStatusChange({ status: 'seated', data: { txn, offerId: id } });
     } catch (e) {
       onStatusChange({ status: 'error', data: e });
+      return;
     }
 
     const iterator = subscribeLatest(walletNotifiers.walletUpdatesNotifier);
@@ -74,7 +75,7 @@ export const makeAgoricWalletConnection = async chainStorageWatcher => {
   return {
     makeOffer,
     address,
-    submitProvision,
+    provisionSmartWallet,
     ...walletNotifiers,
   };
 };

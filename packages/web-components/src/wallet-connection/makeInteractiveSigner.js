@@ -184,7 +184,7 @@ export const makeInteractiveSigner = async (
      *         RPC connection fails, RPC service fails to broadcast (
      *         for example, if signature verification fails)
      */
-    submitProvision: async () => {
+    provisionSmartWallet: async () => {
       const { accountNumber, sequence } = await signingClient.getSequence(
         address,
       );
