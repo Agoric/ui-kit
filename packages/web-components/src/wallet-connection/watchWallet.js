@@ -71,7 +71,6 @@ export const watchWallet = async (chainStorageWatcher, address) => {
     ['data', `published.wallet.${address}.current`],
     value => {
       smartWalletStatusNotifierKit.provisioned = true;
-
       const { offerToPublicSubscriberPaths: currentPaths } = value;
       if (currentPaths === lastPaths) return;
 
