@@ -7,6 +7,8 @@ import {
   // @ts-expect-error exported by mock below
   // eslint-disable-next-line import/named
   submitSpendAction as mockSubmitSpendAction,
+  // @ts-expect-error exported by mock below
+  // eslint-disable-next-line import/named
   provisionSmartWallet as mockProvisionSmartWallet,
 } from '../src/wallet-connection/makeInteractiveSigner.js';
 

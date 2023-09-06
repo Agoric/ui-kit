@@ -179,7 +179,6 @@ export const makeInteractiveSigner = async (
     /**
      * Sign and broadcast Provision for a new smart wallet
      *
-     * @param async
      * @throws if account does not exist on chain, user cancels,
      *         RPC connection fails, RPC service fails to broadcast (
      *         for example, if signature verification fails)
