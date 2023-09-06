@@ -64,10 +64,14 @@ export const watchWallet = async (chainStorageWatcher, address) => {
     ),
   );
 
+  const smartWalletStatusNotifierKit = {};
+
   let lastPaths;
   chainStorageWatcher.watchLatest(
     ['data', `published.wallet.${address}.current`],
     value => {
+      smartWalletStatusNotifierKit.provisioned = true;
+
       const { offerToPublicSubscriberPaths: currentPaths } = value;
       if (currentPaths === lastPaths) return;
 
@@ -76,7 +80,11 @@ export const watchWallet = async (chainStorageWatcher, address) => {
       );
     },
     err => {
-      throw Error(err);
+      if (!lastPaths) {
+        smartWalletStatusNotifierKit.provisioned = false;
+      } else {
+        throw Error(err);
+      }
     },
   );
 
@@ -226,5 +234,6 @@ export const watchWallet = async (chainStorageWatcher, address) => {
     pursesNotifier: pursesNotifierKit.notifier,
     publicSubscribersNotifier: publicSubscriberPathsNotifierKit.notifier,
     walletUpdatesNotifier: walletUpdatesNotifierKit.notifier,
+    smartWalletStatusNotifierKit,
   };
 };
