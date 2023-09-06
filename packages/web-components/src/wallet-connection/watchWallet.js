@@ -64,13 +64,17 @@ export const watchWallet = async (chainStorageWatcher, address) => {
     ),
   );
 
-  const smartWalletStatusNotifierKit = {};
+  const smartWalletStatusNotifierKit = makeNotifierKit(
+    /** @type { {provisioned: boolean} | null } */ (null),
+  );
 
   let lastPaths;
   chainStorageWatcher.watchLatest(
     ['data', `published.wallet.${address}.current`],
     value => {
-      smartWalletStatusNotifierKit.provisioned = true;
+      smartWalletStatusNotifierKit.updater.updateState(
+        harden({ provisioned: true }),
+      );
       const { offerToPublicSubscriberPaths: currentPaths } = value;
       if (currentPaths === lastPaths) return;
 
@@ -79,8 +83,13 @@ export const watchWallet = async (chainStorageWatcher, address) => {
       );
     },
     err => {
-      if (!lastPaths) {
-        smartWalletStatusNotifierKit.provisioned = false;
+      if (
+        !lastPaths &&
+        err === 'could not get vstorage path: unknown request'
+      ) {
+        smartWalletStatusNotifierKit.updater.updateState(
+          harden({ provisioned: false }),
+        );
       } else {
         throw Error(err);
       }
