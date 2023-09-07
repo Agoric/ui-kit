@@ -242,6 +242,6 @@ export const watchWallet = async (chainStorageWatcher, address) => {
     pursesNotifier: pursesNotifierKit.notifier,
     publicSubscribersNotifier: publicSubscriberPathsNotifierKit.notifier,
     walletUpdatesNotifier: walletUpdatesNotifierKit.notifier,
-    smartWalletStatusNotifierKit,
+    smartWalletStatusNotifier: smartWalletStatusNotifierKit.notifier,
   };
 };
