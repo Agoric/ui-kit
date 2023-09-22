@@ -90,7 +90,7 @@ describe('makeAgoricChainStorageWatcher', () => {
   });
 
   it('can handle unserialized values', async () => {
-    const expected = 126560000000;
+    const expected = 'abc123';
     const path = 'vitest.unserializedValue';
 
     fetch.mockResolvedValue(
@@ -343,7 +343,7 @@ const createUnserializedFetchResponse = (
       res(
         values.map(({ value, code = 0, log, id }) => {
           const data = {
-            value: JSON.stringify(value),
+            value,
           };
 
           return {

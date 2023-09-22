@@ -16,7 +16,7 @@
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
-    "@endo/marshal": "^0.8.8",
+    "@endo/marshal": "^0.8.9",
     "vite": "^4.3.2",
     "vite-tsconfig-paths": "^4.2.0"
   },

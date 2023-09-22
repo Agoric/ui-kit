@@ -36,7 +36,6 @@ export const batchVstorageQuery = (
       Object.fromEntries(
         (Array.isArray(res) ? res : [res]).map(entry => {
           const { id: index } = entry;
-
           if (entry.result.response.code) {
             return [
               pathToKey(paths[index]),
@@ -64,14 +63,23 @@ export const batchVstorageQuery = (
             ];
           }
 
-          const value = JSON.parse(data.value);
-          const latestValueStr = Object.hasOwn(value, 'values')
-            ? value.values[value.values.length - 1]
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const parseIfJSON = (d: any) => {
+            try {
+              return JSON.parse(d);
+            } catch {
+              return d;
+            }
+          };
+          const value = parseIfJSON(data.value);
+
+          const latestValue = Object.hasOwn(value, 'values')
+            ? parseIfJSON(value.values[value.values.length - 1])
             : value;
-          const parsed = JSON.parse(latestValueStr);
-          const unserialized = Object.hasOwn(parsed, 'slots')
-            ? unmarshal(parsed)
-            : parsed;
+
+          const unserialized = Object.hasOwn(latestValue, 'slots')
+            ? unmarshal(latestValue)
+            : latestValue;
 
           return [
             pathToKey(paths[index]),
