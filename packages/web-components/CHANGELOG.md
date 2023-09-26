@@ -3,6 +3,55 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.13.0 (2023-09-26)
+
+### ⚠ BREAKING CHANGES
+
+- remove web dev server
+- remove obsolete web components
+
+### Features
+
+- batch rpc wallet connection ([933b31c](https://github.com/Agoric/ui-kit/commit/933b31c388b9908c1a6ca569dc3974effb7ddab6))
+- show default wallet url in connection component ([58ce9e0](https://github.com/Agoric/ui-kit/commit/58ce9e02af89b798674347926c00b37090115889))
+- suggest chain ([8e1d7e9](https://github.com/Agoric/ui-kit/commit/8e1d7e9dfc2704f0fd2aebac732ba53384da99b6))
+- support non-vbank purses ([#37](https://github.com/Agoric/ui-kit/issues/37)) ([e2665de](https://github.com/Agoric/ui-kit/commit/e2665deeb83c335fd672dba8b17a453ea1498250))
+- support offer signing with keplr ([8ccda1d](https://github.com/Agoric/ui-kit/commit/8ccda1d1019201ba00691237fa594b91b73de92c))
+- **wallet-connection:** Connect dapp directly to wallet UI ([#5750](https://github.com/Agoric/ui-kit/issues/5750)) ([7b3dfee](https://github.com/Agoric/ui-kit/commit/7b3dfeef17c779f1604499f2d86ef1b161c86fa5))
+- **WalletConnection:** reset connection after connect timeout ([f9360d4](https://github.com/Agoric/ui-kit/commit/f9360d4dcb51239d76a51d5483b09806844791be))
+- **WalletConnection:** reset connection if bridge is closed ([4787fde](https://github.com/Agoric/ui-kit/commit/4787fde6075db1c380148aa16f3b883b1ee49332))
+- **web-components:** add 'makeAgoricKeplrConnection' util ([#6452](https://github.com/Agoric/ui-kit/issues/6452)) ([68e3539](https://github.com/Agoric/ui-kit/commit/68e35394f4db2ce03283a9cef1b1194bc51ce979))
+- **web-components:** add petimage component ([5b3d097](https://github.com/Agoric/ui-kit/commit/5b3d0978ee57433fe0521c3f59db0f202cc49481))
+- **web-components:** Add Powerbox-compatible petname component ([20796d1](https://github.com/Agoric/ui-kit/commit/20796d125b3b4a489a19202f87405031370eea34))
+- **web-components:** allow custom import context ([f764e8c](https://github.com/Agoric/ui-kit/commit/f764e8c8569664766144042475686bcad8514694))
+- **web-components:** provide `makeDefaultLeader` for Casting ([5a4f4f4](https://github.com/Agoric/ui-kit/commit/5a4f4f4bd4ae9e7103305cba359b68fe46f56d0e))
+- **web-components:** read purses from bank instead of smart wallet ([#6861](https://github.com/Agoric/ui-kit/issues/6861)) ([63ad6bc](https://github.com/Agoric/ui-kit/commit/63ad6bc5eb7c5e785c253d7a2568cb8dbbc7d978))
+- **web-components:** read wallet offer public subscribers ([b1aeafc](https://github.com/Agoric/ui-kit/commit/b1aeafcfa83b1038f34dfe63cc50d10a80838749))
+- **web-components:** reset after connection problem ([01d84cb](https://github.com/Agoric/ui-kit/commit/01d84cb9fff5d0d6792235be88f1e3d216931b91))
+- **web-components:** send a cache function in the events ([514fc04](https://github.com/Agoric/ui-kit/commit/514fc04fa3d8a77b3a57fa37ff388f9240051dff))
+
+### Bug Fixes
+
+- ALWAYS default to safe ([#6079](https://github.com/Agoric/ui-kit/issues/6079)) ([872af6f](https://github.com/Agoric/ui-kit/commit/872af6fb5d68970b570086847532a0ff931330c2))
+- Enhance TypeScript node_modules traversal depth ([4407822](https://github.com/Agoric/ui-kit/commit/440782258b8f849c851d403ca2e38e781a52c5a3))
+- less unsafe. what breaks? ([#5922](https://github.com/Agoric/ui-kit/issues/5922)) ([57a5eb0](https://github.com/Agoric/ui-kit/commit/57a5eb0736d3d6582dbfc9a15bf9cd1a496dbcf4))
+- log warning instead of throwing ([6247311](https://github.com/Agoric/ui-kit/commit/6247311e55d4dd10b67d7357ba4ad8b557614d51))
+- makePublishKit ([#5435](https://github.com/Agoric/ui-kit/issues/5435)) ([ba1365f](https://github.com/Agoric/ui-kit/commit/ba1365fbafb8e71bd3221fe593dc13c49167d5cb))
+- publish notifier not notifierKit ([74299fa](https://github.com/Agoric/ui-kit/commit/74299fa620f2c374e0c393e936ba055fb7a026a7))
+- Remove lockdown unsafe monkey-patching hack ([18eaeb5](https://github.com/Agoric/ui-kit/commit/18eaeb5c7c7df5278dc3bf99aa47c3e83724927f))
+- resolve wallet connection for empty wallet data ([#11](https://github.com/Agoric/ui-kit/issues/11)) ([ebf5d0a](https://github.com/Agoric/ui-kit/commit/ebf5d0afa1d832ef5f99b1d7a83da82debd1f9de))
+- update for `[@jessie](https://github.com/jessie).js/safe-await-separator` ([6d7e287](https://github.com/Agoric/ui-kit/commit/6d7e287fccf77d8a5a7a33812c0b935734d7c611))
+- **wallet-connection:** retry on websocket not bridge ([#5485](https://github.com/Agoric/ui-kit/issues/5485)) ([d199f4a](https://github.com/Agoric/ui-kit/commit/d199f4ad1378cf037fe337b1cbca307096a39e61))
+- **wallet/ui:** style connection component better ([#5984](https://github.com/Agoric/ui-kit/issues/5984)) ([134a7eb](https://github.com/Agoric/ui-kit/commit/134a7eb4938623ac8f322cc6883b27a22b62568b))
+- **web-components:** add 100ms delay to deflake test ([3d3853c](https://github.com/Agoric/ui-kit/commit/3d3853cd18390057824536c454e052e0a67e6052))
+- **web-components:** attempt to de-flake test ([c38c572](https://github.com/Agoric/ui-kit/commit/c38c572d4fe50719933ca29e4367e1337d786208))
+- **web-components:** fix change in update warning ([80971a1](https://github.com/Agoric/ui-kit/commit/80971a13b741022bba3febf023fa3a00dd3d07df))
+
+### Miscellaneous Chores
+
+- remove obsolete web components ([ac00c0d](https://github.com/Agoric/ui-kit/commit/ac00c0d8d044eeec97f672b3bb6415342f1e2a87))
+- remove web dev server ([368bc1f](https://github.com/Agoric/ui-kit/commit/368bc1f33dcee146790db8c3aca7db4aa067a416))
+
 ## 0.12.0 (2023-08-31)
 
 ### ⚠ BREAKING CHANGES
