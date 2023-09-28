@@ -83,10 +83,8 @@ export const watchWallet = async (chainStorageWatcher, address) => {
       );
     },
     err => {
-      if (
-        !lastPaths &&
-        err === 'could not get vstorage path: unknown request'
-      ) {
+      // !lastPaths expectation is that there is no smart-wallet
+      if (!lastPaths) {
         smartWalletStatusNotifierKit.updater.updateState(
           harden({ provisioned: false }),
         );
