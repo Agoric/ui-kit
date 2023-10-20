@@ -2524,9 +2524,9 @@
     yargs-parser "20.2.4"
 
 "@lit-labs/react@^1.0.1":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@lit-labs/react/-/react-1.2.0.tgz#06a7917b0dbbab48921932cdb5f8181162e4aa4b"
-  integrity sha512-AIfHLsy4Uk0MSxZTVLrtmdkGnAgCOoAvBCAvTdOXsqp60Vb4zZTUpc0C3CJQ6e8FjM6JL0avOFFBo3XcfARq2Q==
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@lit-labs/react/-/react-1.2.1.tgz#5b421502cdf68a3639dec431318eeed2285f1c0e"
+  integrity sha512-DiZdJYFU0tBbdQkfwwRSwYyI/mcWkg3sWesKRsHUd4G+NekTmmeq9fzsurvcKTNVa0comNljwtg4Hvi1ds3V+A==
 
 "@lit-labs/ssr-dom-shim@^1.0.0", "@lit-labs/ssr-dom-shim@^1.1.0":
   version "1.1.1"
