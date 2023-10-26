@@ -13,82 +13,68 @@ export const keyToPath = (key: string) => {
   ];
 };
 
-export const batchVstorageQuery = (
+export const batchVstorageQuery = async (
   node: string,
   unmarshal: FromCapData<string>,
   paths: [AgoricChainStoragePathKind, string][],
 ) => {
-  const options = {
-    method: 'POST',
-    body: JSON.stringify(
-      paths.map((path, index) => ({
-        jsonrpc: '2.0',
-        id: index,
-        method: 'abci_query',
-        params: { path: `/custom/vstorage/${path[0]}/${path[1]}` },
-      })),
-    ),
-  };
+  const urls = paths.map(
+    path => new URL(`${node}/agoric/vstorage/${path[0]}/${path[1]}`).href,
+  );
+  const requests = urls.map(url => fetch(url));
 
-  return fetch(node, options)
-    .then(res => res.json())
-    .then(res =>
-      Object.fromEntries(
-        (Array.isArray(res) ? res : [res]).map(entry => {
-          const { id: index } = entry;
-          if (entry.result.response.code) {
-            return [
-              pathToKey(paths[index]),
-              { error: entry.result.response.log },
-            ];
-          }
+  return Promise.all(requests)
+    .then(responseDatas => {
+      return Promise.all(responseDatas.map(res => res.json()));
+    })
+    .then(responses =>
+      responses.map((res, index) => {
+        if (paths[index][0] === AgoricChainStoragePathKind.Children) {
+          return [
+            pathToKey(paths[index]),
+            { value: res.children, blockHeight: undefined },
+          ];
+        }
 
-          if (!entry.result.response.value) {
-            return [
-              pathToKey(paths[index]),
-              {
-                error: `Cannot parse value of response for path [${
-                  paths[index]
-                }]: ${JSON.stringify(entry)}`,
-              },
-            ];
-          }
-
-          const data = JSON.parse(window.atob(entry.result.response.value));
-
-          if (paths[index][0] === AgoricChainStoragePathKind.Children) {
-            return [
-              pathToKey(paths[index]),
-              { value: data.children, blockHeight: undefined },
-            ];
-          }
-
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const parseIfJSON = (d: any) => {
-            try {
-              return JSON.parse(d);
-            } catch {
-              return d;
-            }
-          };
-          const value = parseIfJSON(data.value);
-
-          const latestValue = Object.hasOwn(value, 'values')
-            ? parseIfJSON(value.values[value.values.length - 1])
-            : value;
-
-          const unserialized = Object.hasOwn(latestValue, 'slots')
-            ? unmarshal(latestValue)
-            : latestValue;
-
+        if (!res.value) {
           return [
             pathToKey(paths[index]),
             {
-              blockHeight: value.blockHeight,
-              value: unserialized,
+              error: `Cannot parse value of response for path [${
+                paths[index]
+              }]: ${JSON.stringify(res)}`,
             },
           ];
-        }),
-      ),
+        }
+
+        const parseIfJSON = (d: string | unknown) => {
+          if (typeof d !== 'string') return d;
+          try {
+            return JSON.parse(d);
+          } catch {
+            return d;
+          }
+        };
+
+        const data = parseIfJSON(res.value);
+
+        const latestValue =
+          typeof data.values !== 'undefined'
+            ? parseIfJSON(data.values[data.values.length - 1])
+            : parseIfJSON(data.value);
+
+        const unserialized =
+          typeof latestValue.slots !== 'undefined'
+            ? unmarshal(latestValue)
+            : latestValue;
+
+        return [
+          pathToKey(paths[index]),
+          {
+            blockHeight: data.blockHeight,
+            value: unserialized,
+          },
+        ];
+      }),
     );
 };

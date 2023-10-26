@@ -12,8 +12,8 @@ type Subscriber<T> = {
 
 const defaults = {
   newPathQueryDelayMs: 20,
-  refreshLowerBoundMs: 2000,
-  refreshUpperBoundMs: 4000,
+  refreshLowerBoundMs: 4000,
+  refreshUpperBoundMs: 8000,
 };
 
 const randomRefreshPeriod = (
@@ -36,9 +36,8 @@ export type ChainStorageWatcher = ReturnType<
 >;
 
 /**
- * Periodically queries the most recent data from chain storage, batching RPC
- * requests for efficiency.
- * @param rpcAddr RPC server URL
+ * Periodically queries the most recent data from chain storage.
+ * @param apiAddr API server URL
  * @param chainId the chain id to use
  * @param onError
  * @param marshaller CapData marshal to use
@@ -48,7 +47,7 @@ export type ChainStorageWatcher = ReturnType<
  * @returns
  */
 export const makeAgoricChainStorageWatcher = (
-  rpcAddr: string,
+  apiAddr: string,
   chainId: string,
   onError?: (e: Error) => void,
   marshaller = makeClientMarshaller(),
@@ -105,11 +104,12 @@ export const makeAgoricChainStorageWatcher = (
     }
 
     try {
-      const data = await batchVstorageQuery(
-        rpcAddr,
+      const responses = await batchVstorageQuery(
+        apiAddr,
         marshaller.fromCapData,
         paths,
       );
+      const data = Object.fromEntries(responses);
       watchedPathsToSubscribers.forEach((subscribers, path) => {
         // Path was watched after query fired, wait until next round.
         if (!data[path]) return;
@@ -229,7 +229,7 @@ export const makeAgoricChainStorageWatcher = (
   return {
     watchLatest,
     chainId,
-    rpcAddr,
+    apiAddr,
     marshaller,
     queryOnce,
     queryBoardAux,

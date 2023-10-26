@@ -8,7 +8,7 @@ const fetch = vi.fn();
 global.fetch = fetch;
 global.harden = val => val;
 
-const fakeRpcAddr = 'https://agoric-rpc.vitest-nodes.com:443';
+const fakeApiAddr = 'https://fake.api';
 const fakeChainId = 'agoric-unit-test-1';
 const marshal = (val: unknown) => val;
 const unmarshal = (val: unknown) => val;
@@ -20,7 +20,7 @@ vi.mock('../src/marshal', () => ({ makeMarshal: () => {} }));
 describe('makeAgoricChainStorageWatcher', () => {
   beforeEach(() => {
     watcher = makeAgoricChainStorageWatcher(
-      fakeRpcAddr,
+      fakeApiAddr,
       fakeChainId,
       undefined,
       {
@@ -43,14 +43,19 @@ describe('makeAgoricChainStorageWatcher', () => {
   it('can handle multiple paths at once', async () => {
     const expected1 = 'test result';
     const expected2 = ['child1', 'child2'];
-    const path = 'vitest.fakePath';
+    const path = 'test.fakePath';
+    const requestUrl1 = `${fakeApiAddr}/agoric/vstorage/data/${path}`;
+    const requestUrl2 = `${fakeApiAddr}/agoric/vstorage/children/${path}`;
 
-    fetch.mockResolvedValue(
-      createFetchResponse([
-        { value: expected1, kind: AgoricChainStoragePathKind.Data, id: 0 },
-        { value: expected2, kind: AgoricChainStoragePathKind.Children, id: 1 },
-      ]),
-    );
+    fetch.mockImplementation(requestUrl => {
+      if (requestUrl === requestUrl1) {
+        return createFetchResponse(AgoricChainStoragePathKind.Data, expected1);
+      }
+      return createFetchResponse(
+        AgoricChainStoragePathKind.Children,
+        expected2,
+      );
+    });
 
     const value1 = new Promise(res => {
       watcher.watchLatest<string>(
@@ -69,56 +74,24 @@ describe('makeAgoricChainStorageWatcher', () => {
 
     expect(await value1).toEqual(expected1);
     expect(await value2).toEqual(expected2);
-    expect(fetch).toHaveBeenCalledOnce();
-    expect(fetch).toHaveBeenCalledWith(fakeRpcAddr, {
-      method: 'POST',
-      body: JSON.stringify([
-        {
-          jsonrpc: '2.0',
-          id: 0,
-          method: 'abci_query',
-          params: { path: `/custom/vstorage/data/${path}` },
-        },
-        {
-          jsonrpc: '2.0',
-          id: 1,
-          method: 'abci_query',
-          params: { path: `/custom/vstorage/children/${path}` },
-        },
-      ]),
-    });
-  });
 
-  it('can handle unserialized values', async () => {
-    const expected = 'abc123';
-    const path = 'vitest.unserializedValue';
-
-    fetch.mockResolvedValue(
-      createUnserializedFetchResponse([
-        { value: expected, kind: AgoricChainStoragePathKind.Data, id: 0 },
-      ]),
-    );
-
-    const value = new Promise(res => {
-      watcher.watchLatest<string>(
-        [AgoricChainStoragePathKind.Data, path],
-        val => res(val),
-      );
-    });
-    vi.advanceTimersToNextTimer();
-
-    expect(await value).toEqual(expected);
+    expect(fetch).toHaveBeenCalledTimes(2);
+    expect(fetch).toHaveBeenCalledWith(requestUrl1);
+    expect(fetch).toHaveBeenCalledWith(requestUrl2);
   });
 
   it('can do single queries', async () => {
     const expected = 126560000000;
-    const path = 'vitest.unserializedValue';
+    const path = 'test.fakePath';
 
-    fetch.mockResolvedValue(
-      createUnserializedFetchResponse([
-        { value: expected, kind: AgoricChainStoragePathKind.Data, id: 0 },
-      ]),
-    );
+    fetch.mockImplementation(_ => {
+      return createFetchResponse(
+        AgoricChainStoragePathKind.Data,
+        JSON.stringify(expected),
+        undefined,
+        false,
+      );
+    });
 
     const value = watcher.queryOnce<string>([
       AgoricChainStoragePathKind.Data,
@@ -135,18 +108,15 @@ describe('makeAgoricChainStorageWatcher', () => {
 
   it('notifies for changed data values', async () => {
     const expected1 = 'test result';
-    const path = 'vitest.fakePath';
+    const path = 'test.fakePath';
 
-    fetch.mockResolvedValue(
-      createFetchResponse([
-        {
-          id: 0,
-          value: expected1,
-          kind: AgoricChainStoragePathKind.Data,
-          blockHeight: 123,
-        },
-      ]),
-    );
+    fetch.mockImplementation(_ => {
+      return createFetchResponse(
+        AgoricChainStoragePathKind.Data,
+        expected1,
+        123,
+      );
+    });
 
     const values = [future(), future()];
     watcher.watchLatest<string>(
@@ -164,16 +134,13 @@ describe('makeAgoricChainStorageWatcher', () => {
     expect(fetch).toHaveBeenCalledOnce();
 
     const expected2 = `${expected1}foo`;
-    fetch.mockResolvedValue(
-      createFetchResponse([
-        {
-          id: 0,
-          value: expected2,
-          kind: AgoricChainStoragePathKind.Data,
-          blockHeight: 456,
-        },
-      ]),
-    );
+    fetch.mockImplementation(_ => {
+      return createFetchResponse(
+        AgoricChainStoragePathKind.Data,
+        expected2,
+        456,
+      );
+    });
 
     vi.advanceTimersToNextTimer();
     expect(await values[1].value).toEqual(expected2);
@@ -182,17 +149,14 @@ describe('makeAgoricChainStorageWatcher', () => {
 
   it('notifies for changed children values', async () => {
     const expected1 = ['child1', 'child2'];
-    const path = 'vitest.fakePath';
+    const path = 'test.fakePath';
 
-    fetch.mockResolvedValue(
-      createFetchResponse([
-        {
-          id: 0,
-          value: expected1,
-          kind: AgoricChainStoragePathKind.Children,
-        },
-      ]),
-    );
+    fetch.mockImplementation(_ => {
+      return createFetchResponse(
+        AgoricChainStoragePathKind.Children,
+        expected1,
+      );
+    });
 
     const values = [future<string[]>(), future<string[]>()];
     watcher.watchLatest<string[]>(
@@ -210,62 +174,28 @@ describe('makeAgoricChainStorageWatcher', () => {
     expect(fetch).toHaveBeenCalledOnce();
 
     const expected2 = [...expected1, 'child3'];
-    fetch.mockResolvedValue(
-      createFetchResponse([
-        {
-          id: 0,
-          value: expected2,
-          kind: AgoricChainStoragePathKind.Children,
-        },
-      ]),
-    );
+    fetch.mockImplementation(_ => {
+      return createFetchResponse(
+        AgoricChainStoragePathKind.Children,
+        expected2,
+      );
+    });
 
     vi.advanceTimersToNextTimer();
     expect(await values[1].value).toEqual(expected2);
     expect(fetch).toHaveBeenCalledTimes(2);
   });
 
-  it('handles errors', async () => {
-    const expected = 'test error log';
-    const path = 'vitest.fakePath';
-
-    fetch.mockResolvedValue(
-      createFetchResponse([
-        {
-          id: 0,
-          value: null,
-          kind: AgoricChainStoragePathKind.Children,
-          code: 6,
-          log: expected,
-        },
-      ]),
-    );
-
-    const result = future<string>();
-    watcher.watchLatest<string>(
-      [AgoricChainStoragePathKind.Children, path],
-      _value => {
-        /* noop */
-      },
-      result.resolve,
-    );
-    vi.advanceTimersToNextTimer();
-    expect(await result.value).toEqual(expected);
-  });
-
   it('can unsubscribe from paths', async () => {
     const expected1 = ['child1', 'child2'];
-    const path = 'vitest.fakePath';
+    const path = 'test.fakePath';
 
-    fetch.mockResolvedValue(
-      createFetchResponse([
-        {
-          id: 0,
-          value: expected1,
-          kind: AgoricChainStoragePathKind.Children,
-        },
-      ]),
-    );
+    fetch.mockImplementation(_ => {
+      return createFetchResponse(
+        AgoricChainStoragePathKind.Children,
+        expected1,
+      );
+    });
 
     const values = [future<string[]>(), future<string[]>()];
     const unsub = watcher.watchLatest<string[]>(
@@ -290,73 +220,23 @@ describe('makeAgoricChainStorageWatcher', () => {
 });
 
 const createFetchResponse = (
-  values: {
-    kind?: AgoricChainStoragePathKind;
-    value: unknown;
-    blockHeight?: number;
-    code?: number;
-    log?: string;
-    id: number;
-  }[],
+  kind: AgoricChainStoragePathKind,
+  value: unknown,
+  blockHeight?: number,
+  json = true,
 ) => ({
   json: () =>
     new Promise(res =>
       res(
-        values.map(({ kind, value, blockHeight, code = 0, log, id }) => {
-          const data =
-            kind === AgoricChainStoragePathKind.Children
-              ? { children: value }
-              : {
-                  value: JSON.stringify({
-                    values: [JSON.stringify(marshal(value))],
-                    blockHeight: String(blockHeight ?? 0),
-                  }),
-                };
-
-          return {
-            id,
-            result: {
-              response: {
-                value: window.btoa(JSON.stringify(data)),
-                code,
-                log,
-              },
+        kind === AgoricChainStoragePathKind.Children
+          ? { children: value }
+          : {
+              value: JSON.stringify({
+                values: json ? [JSON.stringify(marshal(value))] : undefined,
+                value: !json ? value : undefined,
+                blockHeight: String(blockHeight ?? 0),
+              }),
             },
-          };
-        }),
-      ),
-    ),
-});
-
-const createUnserializedFetchResponse = (
-  values: {
-    kind?: AgoricChainStoragePathKind;
-    value: unknown;
-    blockHeight?: number;
-    code?: number;
-    log?: string;
-    id: number;
-  }[],
-) => ({
-  json: () =>
-    new Promise(res =>
-      res(
-        values.map(({ value, code = 0, log, id }) => {
-          const data = {
-            value,
-          };
-
-          return {
-            id,
-            result: {
-              response: {
-                value: window.btoa(JSON.stringify(data)),
-                code,
-                log,
-              },
-            },
-          };
-        }),
       ),
     ),
 });
