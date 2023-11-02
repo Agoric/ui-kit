@@ -5,7 +5,7 @@ import { makeInteractiveSigner } from './makeInteractiveSigner.js';
 import { watchWallet } from './watchWallet.js';
 import { Errors } from '../errors.js';
 
-export const makeAgoricWalletConnection = async chainStorageWatcher => {
+export const makeAgoricWalletConnection = async (chainStorageWatcher, rpc) => {
   if (!('keplr' in window)) {
     throw Error(Errors.noKeplr);
   }
@@ -16,12 +16,12 @@ export const makeAgoricWalletConnection = async chainStorageWatcher => {
   const { address, submitSpendAction, provisionSmartWallet } =
     await makeInteractiveSigner(
       chainStorageWatcher.chainId,
-      chainStorageWatcher.rpcAddr,
+      rpc,
       keplr,
       SigningStargateClient.connectWithSigner,
     );
 
-  const walletNotifiers = await watchWallet(chainStorageWatcher, address);
+  const walletNotifiers = watchWallet(chainStorageWatcher, address, rpc);
 
   const makeOffer = async (
     invitationSpec,

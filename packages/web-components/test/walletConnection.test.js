@@ -13,6 +13,7 @@ import {
 } from '../src/wallet-connection/makeInteractiveSigner.js';
 
 const testAddress = 'agoric123test';
+const rpc = 'https://fake.rpc';
 
 // @ts-expect-error shim keplr
 // eslint-disable-next-line no-undef
@@ -43,17 +44,16 @@ describe('makeAgoricWalletConnection', () => {
   it('gets the address from keplr', async () => {
     const watcher = {
       chainId: 'agoric-foo',
-      rpcAddr: 'https://foo.agoric.net:443',
       watchLatest: (_path, onUpdate) => {
         onUpdate({ offerToPublicSubscriberPaths: 'foo' });
       },
     };
 
-    const connection = await makeAgoricWalletConnection(watcher);
+    const connection = await makeAgoricWalletConnection(watcher, rpc);
 
     expect(makeInteractiveSigner).toHaveBeenCalledWith(
       watcher.chainId,
-      watcher.rpcAddr,
+      rpc,
       // @ts-expect-error shim keplr
       window.keplr,
       SigningStargateClient.connectWithSigner,
@@ -64,7 +64,6 @@ describe('makeAgoricWalletConnection', () => {
   it('submits a spend action', async () => {
     const watcher = {
       chainId: 'agoric-foo',
-      rpcAddr: 'https://foo.agoric.net:443',
       watchLatest: (_path, onUpdate) => {
         onUpdate({ offerToPublicSubscriberPaths: 'foo' });
       },
@@ -73,7 +72,7 @@ describe('makeAgoricWalletConnection', () => {
       },
     };
 
-    const connection = await makeAgoricWalletConnection(watcher);
+    const connection = await makeAgoricWalletConnection(watcher, rpc);
 
     const onStatusChange = () => {
       expect(mockSubmitSpendAction).toHaveBeenCalledWith(
@@ -94,7 +93,6 @@ describe('makeAgoricWalletConnection', () => {
 it('submits a spend action', async () => {
   const watcher = {
     chainId: 'agoric-foo',
-    rpcAddr: 'https://foo.agoric.net:443',
     watchLatest: (_path, onUpdate) => {
       onUpdate({ offerToPublicSubscriberPaths: 'foo' });
     },
@@ -103,7 +101,7 @@ it('submits a spend action', async () => {
     },
   };
 
-  const connection = await makeAgoricWalletConnection(watcher);
+  const connection = await makeAgoricWalletConnection(watcher, rpc);
 
   connection.provisionSmartWallet();
   expect(mockProvisionSmartWallet).toHaveBeenCalled();

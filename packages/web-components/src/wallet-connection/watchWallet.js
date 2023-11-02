@@ -34,8 +34,9 @@ const POLL_INTERVAL_MS = 6000;
 /**
  * @param {any} chainStorageWatcher
  * @param {string} address
+ * @param {string} rpc
  */
-export const watchWallet = async (chainStorageWatcher, address) => {
+export const watchWallet = (chainStorageWatcher, address, rpc) => {
   const pursesNotifierKit = makeNotifierKit(
     /** @type {PurseInfo[] | null} */ (null),
   );
@@ -128,10 +129,7 @@ export const watchWallet = async (chainStorageWatcher, address) => {
       };
 
       const watchBank = async () => {
-        const balances = await queryBankBalances(
-          address,
-          chainStorageWatcher.rpcAddr,
-        );
+        const balances = await queryBankBalances(address, rpc);
         bank = balances;
         possiblyUpdateBankPurses();
         setTimeout(watchBank, POLL_INTERVAL_MS);
@@ -223,7 +221,7 @@ export const watchWallet = async (chainStorageWatcher, address) => {
   };
 
   const watchWalletUpdates = async () => {
-    const leader = makeLeader(chainStorageWatcher.rpcAddr);
+    const leader = makeLeader(rpc);
     const follower = makeFollower(`:published.wallet.${address}`, leader, {
       proof: 'none',
       unserializer: chainStorageWatcher.marshaller,
