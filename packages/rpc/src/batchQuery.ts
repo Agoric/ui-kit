@@ -24,9 +24,7 @@ export const batchVstorageQuery = async (
   const requests = urls.map(url => fetch(url));
 
   return Promise.all(requests)
-    .then(responseDatas => {
-      return Promise.all(responseDatas.map(res => res.json()));
-    })
+    .then(responseDatas => Promise.all(responseDatas.map(res => res.json())))
     .then(responses =>
       responses.map((res, index) => {
         if (paths[index][0] === AgoricChainStoragePathKind.Children) {
