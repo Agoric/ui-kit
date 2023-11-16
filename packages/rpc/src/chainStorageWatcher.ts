@@ -7,7 +7,7 @@ import type { UpdateHandler } from './types';
 
 type Subscriber<T> = {
   onUpdate: UpdateHandler<T>;
-  onError?: (log: string) => void;
+  onError?: (message: string, code?: number, codespace?: string) => void;
 };
 
 const defaults = {
@@ -25,7 +25,7 @@ const randomRefreshPeriod = (
 
 const makePathSubscriber = <T>(
   onUpdate: UpdateHandler<T>,
-  onError?: (log: string) => void,
+  onError?: (message: string, code?: number, codespace?: string) => void,
 ) => ({
   onUpdate,
   onError,
@@ -116,8 +116,9 @@ export const makeAgoricChainStorageWatcher = (
 
         if (data[path].error) {
           subscribers.forEach(s => {
+            const { message, code, codespace } = harden(data[path].error);
             if (s.onError) {
-              s.onError(harden(data[path].error));
+              s.onError(message, code, codespace);
             }
           });
           return;
@@ -177,7 +178,7 @@ export const makeAgoricChainStorageWatcher = (
   const watchLatest = <T>(
     path: [AgoricChainStoragePathKind, string],
     onUpdate: (latestValue: T) => void,
-    onPathError?: (log: string) => void,
+    onPathError?: (message: string, code?: number, codespace?: string) => void,
   ) => {
     const pathKey = pathToKey(path);
     const subscriber = makePathSubscriber(onUpdate, onPathError);

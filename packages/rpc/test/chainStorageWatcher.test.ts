@@ -226,7 +226,9 @@ describe('makeAgoricChainStorageWatcher', () => {
   });
 
   it('handles errors', async () => {
-    const expected = 'test error log';
+    const expectedLog = 'test error log';
+    const expectedCodespace = 'sdk';
+    const expectedCode = 6;
     const path = 'vitest.fakePath';
 
     fetch.mockResolvedValue(
@@ -235,22 +237,27 @@ describe('makeAgoricChainStorageWatcher', () => {
           id: 0,
           value: null,
           kind: AgoricChainStoragePathKind.Children,
-          code: 6,
-          log: expected,
+          code: expectedCode,
+          log: expectedLog,
+          codespace: 'sdk',
         },
       ]),
     );
 
-    const result = future<string>();
+    const result = future<{ log: string; codespace?: string; code?: number }>();
     watcher.watchLatest<string>(
       [AgoricChainStoragePathKind.Children, path],
       _value => {
         /* noop */
       },
-      result.resolve,
+      (log: string, code?: number, codespace?: string) =>
+        result.resolve({ log, code, codespace }),
     );
     vi.advanceTimersToNextTimer();
-    expect(await result.value).toEqual(expected);
+    const { log, code, codespace } = await result.value;
+    expect(log).toEqual(expectedLog);
+    expect(code).toEqual(expectedCode);
+    expect(codespace).toEqual(expectedCodespace);
   });
 
   it('can unsubscribe from paths', async () => {
@@ -291,39 +298,43 @@ describe('makeAgoricChainStorageWatcher', () => {
 
 const createFetchResponse = (
   values: {
-    kind?: AgoricChainStoragePathKind;
+    id: number;
     value: unknown;
+    kind?: AgoricChainStoragePathKind;
     blockHeight?: number;
     code?: number;
     log?: string;
-    id: number;
+    codespace?: string;
   }[],
 ) => ({
   json: () =>
     new Promise(res =>
       res(
-        values.map(({ kind, value, blockHeight, code = 0, log, id }) => {
-          const data =
-            kind === AgoricChainStoragePathKind.Children
-              ? { children: value }
-              : {
-                  value: JSON.stringify({
-                    values: [JSON.stringify(marshal(value))],
-                    blockHeight: String(blockHeight ?? 0),
-                  }),
-                };
+        values.map(
+          ({ kind, value, blockHeight, code = 0, log, id, codespace }) => {
+            const data =
+              kind === AgoricChainStoragePathKind.Children
+                ? { children: value }
+                : {
+                    value: JSON.stringify({
+                      values: [JSON.stringify(marshal(value))],
+                      blockHeight: String(blockHeight ?? 0),
+                    }),
+                  };
 
-          return {
-            id,
-            result: {
-              response: {
-                value: window.btoa(JSON.stringify(data)),
-                code,
-                log,
+            return {
+              id,
+              result: {
+                response: {
+                  value: window.btoa(JSON.stringify(data)),
+                  code,
+                  log,
+                  codespace,
+                },
               },
-            },
-          };
-        }),
+            };
+          },
+        ),
       ),
     ),
 });
@@ -364,7 +375,7 @@ const createUnserializedFetchResponse = (
 const future = <T>() => {
   let resolve: (value: T) => void;
   let isComplete = false;
-  const value = new Promise(res => {
+  const value = new Promise<T>(res => {
     resolve = (v: T) => {
       isComplete = true;
       res(v);
