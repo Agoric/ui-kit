@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.7.2](https://github.com/Agoric/ui-kit/compare/@agoric/rpc@0.7.0...@agoric/rpc@0.7.2) (2023-11-16)
+
+### Bug Fixes
+
+- dont throw on missing smart wallet ([7efe070](https://github.com/Agoric/ui-kit/commit/7efe0701e04148c7d6af3c2218cf4b655bc86c57))
+
 ## 0.7.0 (2023-09-26)
 
 ### Features
