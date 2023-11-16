@@ -37,9 +37,10 @@ export const batchVstorageQuery = (
         (Array.isArray(res) ? res : [res]).map(entry => {
           const { id: index } = entry;
           if (entry.result.response.code) {
+            const { code, codespace, log: message } = entry.result.response;
             return [
               pathToKey(paths[index]),
-              { error: entry.result.response.log },
+              { error: { code, codespace, message } },
             ];
           }
 
@@ -47,9 +48,11 @@ export const batchVstorageQuery = (
             return [
               pathToKey(paths[index]),
               {
-                error: `Cannot parse value of response for path [${
-                  paths[index]
-                }]: ${JSON.stringify(entry)}`,
+                error: {
+                  message: `Cannot parse value of response for path [${
+                    paths[index]
+                  }]: ${JSON.stringify(entry)}`,
+                },
               },
             ];
           }
