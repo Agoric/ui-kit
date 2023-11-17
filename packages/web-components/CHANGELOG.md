@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.13.2](https://github.com/Agoric/ui-kit/compare/@agoric/web-components@0.13.0...@agoric/web-components@0.13.2) (2023-11-16)
+
+### Bug Fixes
+
+- dont throw on missing smart wallet ([7efe070](https://github.com/Agoric/ui-kit/commit/7efe0701e04148c7d6af3c2218cf4b655bc86c57))
+
 ## 0.13.0 (2023-09-26)
 
 ### ⚠ BREAKING CHANGES
