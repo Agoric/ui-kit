@@ -1,7 +1,7 @@
 // @ts-check
 import { makeNotifierKit } from '@agoric/notifier';
 import { AmountMath } from '@agoric/ertp';
-import { iterateLatest, makeFollower, makeLeader } from '@agoric/casting';
+import { iterateEach, makeFollower, makeLeader } from '@agoric/casting';
 import { queryBankBalances } from '../queryBankBalances.js';
 
 /** @typedef {import('@agoric/smart-wallet/src/types.js').Petname} Petname */
@@ -227,9 +227,11 @@ export const watchWallet = (chainStorageWatcher, address, rpc) => {
       unserializer: chainStorageWatcher.marshaller,
     });
 
-    for await (const { value } of iterateLatest(follower)) {
-      console.debug('wallet update', value);
-      walletUpdatesNotifierKit.updater.updateState(harden(value));
+    for await (const update of iterateEach(follower)) {
+      console.debug('wallet update', update);
+      if ('error' in update) continue;
+
+      walletUpdatesNotifierKit.updater.updateState(harden(update.value));
     }
   };
 
