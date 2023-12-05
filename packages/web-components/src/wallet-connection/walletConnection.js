@@ -43,33 +43,57 @@ export const makeAgoricWalletConnection = async (chainStorageWatcher, rpc) => {
       }),
     );
 
+    let isFinished = false;
+    const watchUpdates = async () => {
+      const iterator = subscribeLatest(walletNotifiers.walletUpdatesNotifier);
+      for await (const update of iterator) {
+        if (isFinished) {
+          // If tx fails, don't wait for status updates.
+          return;
+        }
+        if (update?.updated !== 'offerStatus' || update.status.id !== id) {
+          continue;
+        }
+        if (update.status.error !== undefined) {
+          isFinished = true;
+          onStatusChange({ status: 'error', data: update.status.error });
+          return;
+        }
+        if (update.status.numWantsSatisfied === 0) {
+          isFinished = true;
+          onStatusChange({ status: 'refunded' });
+          return;
+        }
+        // numWantsSatisfied can either be 1 or 0 until "multiples" are
+        // supported.
+        //
+        // https://github.com/Agoric/agoric-sdk/blob/1b5e57f17a043a43171621bbe3ef68131954f714/packages/zoe/src/zoeService/types.js#L213
+        if (update.status.numWantsSatisfied > 0) {
+          isFinished = true;
+          onStatusChange({ status: 'accepted' });
+          return;
+        }
+      }
+    };
+    const watchP = watchUpdates();
+
     await null;
     try {
       const txn = await submitSpendAction(JSON.stringify(spendAction));
+      if (isFinished) {
+        // Don't update again if wallet update happens before tx result is returned.
+        return;
+      }
       onStatusChange({ status: 'seated', data: { txn, offerId: id } });
     } catch (e) {
+      if (isFinished) {
+        // Don't update again if wallet update happens before tx result is returned.
+        return;
+      }
+      isFinished = true;
       onStatusChange({ status: 'error', data: e });
-      return;
     }
-
-    const iterator = subscribeLatest(walletNotifiers.walletUpdatesNotifier);
-    for await (const update of iterator) {
-      if (update?.updated !== 'offerStatus' || update.status.id !== id) {
-        continue;
-      }
-      if (update.status.error !== undefined) {
-        onStatusChange({ status: 'error', data: update.status.error });
-        return;
-      }
-      if (update.status.numWantsSatisfied === 0) {
-        onStatusChange({ status: 'refunded' });
-        return;
-      }
-      if (update.status.numWantsSatisfied === 1) {
-        onStatusChange({ status: 'accepted' });
-        return;
-      }
-    }
+    await watchP;
   };
 
   return {
