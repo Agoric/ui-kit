@@ -2,7 +2,7 @@
 /* eslint-disable import/extensions */
 import { makeClientMarshaller } from './marshal';
 import { AgoricChainStoragePathKind } from './types';
-import { batchVstorageQuery, keyToPath, pathToKey } from './batchQuery';
+import { vstorageQuery, keyToPath, pathToKey } from './vstorageQuery';
 import type { UpdateHandler } from './types';
 
 type Subscriber<T> = {
@@ -36,12 +36,19 @@ export type ChainStorageWatcher = ReturnType<
 >;
 
 /**
+ This is used to avoid notifying subscribers for already-seen
+ values. For `data` queries, it is the stringified blockheight of where the
+ value appeared. For `children` queries, it is the stringified array of
+ children.
+ */
+type LatestValueIdentifier = string;
+
+/**
  * Periodically queries the most recent data from chain storage.
  * @param apiAddr API server URL
  * @param chainId the chain id to use
  * @param onError
  * @param marshaller CapData marshal to use
- * @param newPathQueryDelayMs
  * @param refreshLowerBoundMs
  * @param refreshUpperBoundMs
  * @returns
@@ -51,136 +58,101 @@ export const makeAgoricChainStorageWatcher = (
   chainId: string,
   onError?: (e: Error) => void,
   marshaller = makeClientMarshaller(),
-  newPathQueryDelayMs = defaults.newPathQueryDelayMs,
   refreshLowerBoundMs = defaults.refreshLowerBoundMs,
   refreshUpperBoundMs = defaults.refreshUpperBoundMs,
 ) => {
-  // Map of paths to [identifier, value] pairs of most recent response values.
-  //
-  // The 'identifier' is used to avoid notifying subscribers for already-seen
-  // values. For 'data' queries, 'identifier' is the blockheight of the
-  // response. For 'children' queries, 'identifier' is the stringified array
-  // of children.
+  /**
+   * Map from vstorage paths to `[identifier, value]` pairs containing their
+   * most recent response values and their {@link LatestValueIdentifier}.
+   */
   const latestValueCache = new Map<
     string,
-    [identifier: string, value: unknown]
+    [identifier: LatestValueIdentifier, value: unknown]
   >();
 
   const watchedPathsToSubscribers = new Map<string, Set<Subscriber<unknown>>>();
-  let isNewPathWatched = false;
-  let isQueryInProgress = false;
-  let nextQueryTimeout: number | null = null;
+  const watchedPathsToRefreshTimeouts = new Map<string, number>();
 
-  const queueNextQuery = () => {
-    if (isQueryInProgress || !watchedPathsToSubscribers.size) {
-      return;
-    }
-
-    if (isNewPathWatched) {
-      // If there is any new path to watch, schedule another query very soon.
-      if (nextQueryTimeout) {
-        window.clearTimeout(nextQueryTimeout);
-      }
-      nextQueryTimeout = window.setTimeout(queryUpdates, newPathQueryDelayMs);
-    } else {
-      // Otherwise, refresh after a normal interval.
-      nextQueryTimeout = window.setTimeout(
-        queryUpdates,
+  const refreshDataForPath = async (
+    path: [AgoricChainStoragePathKind, string],
+  ) => {
+    const queueNextRefresh = () => {
+      window.clearTimeout(watchedPathsToRefreshTimeouts.get(pathKey));
+      const timeout = window.setTimeout(
+        () => refreshDataForPath(path),
         randomRefreshPeriod(refreshLowerBoundMs, refreshUpperBoundMs),
       );
-    }
-  };
+      watchedPathsToRefreshTimeouts.set(pathKey, timeout);
+    };
 
-  const queryUpdates = async () => {
-    isQueryInProgress = true;
-    nextQueryTimeout = null;
-    isNewPathWatched = false;
-
-    const paths = [...watchedPathsToSubscribers.keys()].map(keyToPath);
-
-    if (!paths.length) {
-      isQueryInProgress = false;
+    const pathKey = pathToKey(path);
+    let response;
+    try {
+      response = await vstorageQuery(apiAddr, marshaller.fromCapData, path);
+    } catch (e: unknown) {
+      console.error(`Error querying vstorage for path ${path}:`, e);
+      if (onError && e instanceof Error) {
+        onError(e);
+      }
+      // Try again later until client tells us to stop.
+      queueNextRefresh();
       return;
     }
 
-    try {
-      const responses = await batchVstorageQuery(
-        apiAddr,
-        marshaller.fromCapData,
-        paths,
-      );
-      const data = Object.fromEntries(responses);
-      watchedPathsToSubscribers.forEach((subscribers, path) => {
-        // Path was watched after query fired, wait until next round.
-        if (!data[path]) return;
+    const { value, blockHeight } = response;
+    const [latestValueIdentifier, latestValue] =
+      latestValueCache.get(pathKey) || [];
 
-        if (data[path].error) {
-          subscribers.forEach(s => {
-            if (s.onError) {
-              s.onError(harden(data[path].error));
-            }
-          });
-          return;
-        }
-
-        const { blockHeight, value } = data[path];
-        const lastValue = latestValueCache.get(path);
-
-        if (
-          lastValue &&
-          (blockHeight === lastValue[0] ||
-            (blockHeight === undefined &&
-              JSON.stringify(value) === lastValue[0]))
-        ) {
-          // The value isn't new, don't emit.
-          return;
-        }
-
-        latestValueCache.set(path, [
-          blockHeight ?? JSON.stringify(value),
-          value,
-        ]);
-
-        subscribers.forEach(s => {
-          s.onUpdate(harden(value));
-        });
-      });
-    } catch (e) {
-      onError && onError(e as Error);
-    } finally {
-      isQueryInProgress = false;
-      queueNextQuery();
+    if (
+      latestValue &&
+      (blockHeight === latestValueIdentifier ||
+        // Blockheight is undefined so fallback to using the stringified value
+        // as the identifier, as is the case for `children` queries.
+        (blockHeight === undefined && JSON.stringify(value) === latestValue))
+    ) {
+      // The value isn't new, don't emit.
+      queueNextRefresh();
+      return;
     }
+
+    latestValueCache.set(pathKey, [
+      // Fallback to using stringified value as identifier if no blockHeight,
+      // as is the case for `children` queries.
+      blockHeight ?? JSON.stringify(value),
+      value,
+    ]);
+
+    const subscribersForPath = watchedPathsToSubscribers.get(pathKey);
+    subscribersForPath?.forEach(s => {
+      s.onUpdate(harden(value));
+    });
+    queueNextRefresh();
   };
 
   const stopWatching = (pathKey: string, subscriber: Subscriber<unknown>) => {
     const subscribersForPath = watchedPathsToSubscribers.get(pathKey);
     if (!subscribersForPath?.size) {
-      throw new Error(`cannot unsubscribe from unwatched path ${pathKey}`);
+      throw new Error(
+        `already stopped watching path ${pathKey}, nothing to do`,
+      );
     }
 
     if (subscribersForPath.size === 1) {
       watchedPathsToSubscribers.delete(pathKey);
       latestValueCache.delete(pathKey);
+      window.clearTimeout(watchedPathsToRefreshTimeouts.get(pathKey));
+      watchedPathsToRefreshTimeouts.delete(pathKey);
     } else {
       subscribersForPath.delete(subscriber);
-    }
-  };
-
-  const queueNewPathForQuery = () => {
-    if (!isNewPathWatched) {
-      isNewPathWatched = true;
-      queueNextQuery();
     }
   };
 
   const watchLatest = <T>(
     path: [AgoricChainStoragePathKind, string],
     onUpdate: (latestValue: T) => void,
-    onPathError?: (log: string) => void,
   ) => {
     const pathKey = pathToKey(path);
-    const subscriber = makePathSubscriber(onUpdate, onPathError);
+    const subscriber = makePathSubscriber(onUpdate);
 
     const latestValue = latestValueCache.get(pathKey);
     if (latestValue) {
@@ -195,23 +167,20 @@ export const makeAgoricChainStorageWatcher = (
         pathKey,
         new Set([subscriber as Subscriber<unknown>]),
       );
-      queueNewPathForQuery();
+      refreshDataForPath(path);
     }
 
     return () => stopWatching(pathKey, subscriber as Subscriber<unknown>);
   };
 
-  const queryOnce = <T>(path: [AgoricChainStoragePathKind, string]) =>
-    new Promise<T>((res, rej) => {
-      const stop = watchLatest<T>(
-        path,
-        val => {
-          stop();
-          res(val);
-        },
-        e => rej(e),
-      );
-    });
+  const queryOnce = async <T>(path: [AgoricChainStoragePathKind, string]) => {
+    const { value } = await vstorageQuery<T>(
+      apiAddr,
+      marshaller.fromCapData,
+      path,
+    );
+    return value;
+  };
 
   // Assumes argument is an unserialized presence.
   const presenceToSlot = (o: unknown) => marshaller.toCapData(o).slots[0];

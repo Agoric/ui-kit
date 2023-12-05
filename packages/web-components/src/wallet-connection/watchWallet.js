@@ -70,9 +70,18 @@ export const watchWallet = (chainStorageWatcher, address, rpc) => {
   );
 
   let lastPaths;
+  let isWalletMissing = false;
   chainStorageWatcher.watchLatest(
     ['data', `published.wallet.${address}.current`],
     value => {
+      if (!value && !isWalletMissing) {
+        smartWalletStatusNotifierKit.updater.updateState(
+          harden({ provisioned: false }),
+        );
+        isWalletMissing = true;
+        return;
+      }
+
       smartWalletStatusNotifierKit.updater.updateState(
         harden({ provisioned: true }),
       );
@@ -82,18 +91,6 @@ export const watchWallet = (chainStorageWatcher, address, rpc) => {
       publicSubscriberPathsNotifierKit.updater.updateState(
         harden(currentPaths),
       );
-    },
-    err => {
-      if (
-        !lastPaths &&
-        err === 'could not get vstorage path: unknown request'
-      ) {
-        smartWalletStatusNotifierKit.updater.updateState(
-          harden({ provisioned: false }),
-        );
-      } else {
-        throw Error(err);
-      }
     },
   );
 
