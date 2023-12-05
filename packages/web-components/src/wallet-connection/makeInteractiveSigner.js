@@ -55,13 +55,6 @@ const SwingsetMsgs = {
 
 /** @typedef {{owner: string, spendAction: string}} WalletSpendAction */
 
-const SwingsetRegistry = new Registry([
-  ...defaultRegistryTypes,
-  // XXX should this list be "upstreamed" to @agoric/cosmic-proto?
-  [SwingsetMsgs.MsgWalletSpendAction.typeUrl, MsgWalletSpendAction],
-  [SwingsetMsgs.MsgProvision.typeUrl, MsgProvision],
-]);
-
 /**
  * @returns {StdFee}
  */
@@ -128,11 +121,19 @@ const SwingsetConverters = {
 };
 
 /**
+ * @typedef {object} MakeInteractiveSignerOpts
+ * @property {Array<[string, import('@cosmjs/proto-signing').GeneratedType]>} registryTypes
+ * @property {import('@cosmjs/stargate').SigningStargateClientOptions['gasPrice']} gasPrice
+ * @property {AminoConverters} converters
+ */
+
+/**
  * Use Keplr to sign offers and delegate object messaging to local storage key.
  * @param {string} chainId
  * @param {string} rpc
  * @param {Keplr} keplr
  * @param {typeof import('@cosmjs/stargate').SigningStargateClient.connectWithSigner} connectWithSigner
+ * @param {MakeInteractiveSignerOpts} [opts]
  * Ref: https://docs.keplr.app/api/
  */
 export const makeInteractiveSigner = async (
@@ -140,6 +141,7 @@ export const makeInteractiveSigner = async (
   rpc,
   keplr,
   connectWithSigner,
+  opts,
 ) => {
   await null;
   try {
@@ -163,10 +165,19 @@ export const makeInteractiveSigner = async (
     ...SwingsetConverters,
     ...createBankAminoConverters(),
     ...createAuthzAminoConverters(),
+    ...(opts?.converters || {}),
   };
+  const SwingsetRegistry = new Registry([
+    ...defaultRegistryTypes,
+    // XXX should this list be "upstreamed" to @agoric/cosmic-proto?
+    [SwingsetMsgs.MsgWalletSpendAction.typeUrl, MsgWalletSpendAction],
+    [SwingsetMsgs.MsgProvision.typeUrl, MsgProvision],
+    ...(opts?.registryTypes || []),
+  ]);
   const signingClient = await connectWithSigner(rpc, offlineSigner, {
     aminoTypes: new AminoTypes(converters),
     registry: SwingsetRegistry,
+    ...(opts?.gasPrice ? { gasPrice: opts.gasPrice } : {}),
   });
   console.debug('InteractiveSigner', { signingClient });
 
@@ -238,6 +249,29 @@ export const makeInteractiveSigner = async (
 
       const tx = await signingClient.signAndBroadcast(address, msgs, fee);
       console.debug('spend action result tx', tx);
+      assertIsDeliverTxSuccess(tx);
+
+      return tx;
+    },
+    /**
+     * Sign and broadcast any Action
+     *
+     * @param {import('@cosmjs/proto-signing').EncodeObject} msg encoded msg
+     * @throws if account does not exist on chain, user cancels,
+     *         RPC connection fails, RPC service fails to broadcast (
+     *         for example, if signature verification fails)
+     */
+    signAndBroadcast: async msg => {
+      const { accountNumber, sequence } = await signingClient.getSequence(
+        address,
+      );
+      console.debug({ accountNumber, sequence });
+
+      const msgs = [msg];
+      console.debug('sign msg', { address, msgs, fee });
+
+      const tx = await signingClient.signAndBroadcast(address, msgs, fee);
+      console.debug('msg result tx', tx);
       assertIsDeliverTxSuccess(tx);
 
       return tx;
