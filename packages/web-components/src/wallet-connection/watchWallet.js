@@ -2,7 +2,8 @@
 import { makeNotifierKit } from '@agoric/notifier';
 import { AmountMath } from '@agoric/ertp';
 import { iterateEach, makeFollower, makeLeader } from '@agoric/casting';
-import { queryBankBalances } from '../queryBankBalances.js';
+import { Tendermint34Client } from '@cosmjs/tendermint-rpc';
+import { queryBankBalances } from './queryBankBalances.js';
 
 /** @typedef {import('@agoric/smart-wallet/src/types.js').Petname} Petname */
 
@@ -30,13 +31,23 @@ import { queryBankBalances } from '../queryBankBalances.js';
  */
 
 const POLL_INTERVAL_MS = 6000;
+const RETRY_INTERVAL_MS = 200;
+const MAX_ATTEMPTS_TO_WATCH_BANK = 2;
 
 /**
  * @param {any} chainStorageWatcher
  * @param {string} address
  * @param {string} rpc
+ * @param {((error: unknown) => void)} [onError]
  */
-export const watchWallet = (chainStorageWatcher, address, rpc) => {
+export const watchWallet = (
+  chainStorageWatcher,
+  address,
+  rpc,
+  onError = () => {
+    /* noop */
+  },
+) => {
   const pursesNotifierKit = makeNotifierKit(
     /** @type {PurseInfo[] | null} */ (null),
   );
@@ -125,9 +136,23 @@ export const watchWallet = (chainStorageWatcher, address, rpc) => {
         updatePurses(brandToPurse);
       };
 
-      const watchBank = async () => {
-        const balances = await queryBankBalances(address, rpc);
-        bank = balances;
+      /** @type {Tendermint34Client} */
+      let tendermintClient;
+      const watchBank = async (attempts = 0) => {
+        await null;
+
+        try {
+          tendermintClient ||= await Tendermint34Client.connect(rpc);
+          bank = await queryBankBalances(address, tendermintClient);
+        } catch (e) {
+          console.error('Error querying bank balances for address', address);
+          if (attempts >= MAX_ATTEMPTS_TO_WATCH_BANK) {
+            onError(new Error(`RPC error - ${e.toString?.()}`));
+          } else {
+            setTimeout(() => watchBank(attempts + 1), RETRY_INTERVAL_MS);
+            return;
+          }
+        }
         possiblyUpdateBankPurses();
         setTimeout(watchBank, POLL_INTERVAL_MS);
       };
@@ -204,6 +229,7 @@ export const watchWallet = (chainStorageWatcher, address, rpc) => {
                 );
               } catch (e) {
                 console.error('Error getting boardAux for brands', brands, e);
+                onError(new Error(`API error - ${e.toString?.()}`));
               }
             }
 
@@ -218,17 +244,26 @@ export const watchWallet = (chainStorageWatcher, address, rpc) => {
   };
 
   const watchWalletUpdates = async () => {
-    const leader = makeLeader(rpc);
-    const follower = makeFollower(`:published.wallet.${address}`, leader, {
-      proof: 'none',
-      unserializer: chainStorageWatcher.marshaller,
-    });
+    const watch = async () => {
+      const leader = makeLeader(rpc);
+      const follower = makeFollower(`:published.wallet.${address}`, leader, {
+        proof: 'none',
+        unserializer: chainStorageWatcher.marshaller,
+      });
 
-    for await (const update of iterateEach(follower)) {
-      console.debug('wallet update', update);
-      if ('error' in update) continue;
+      for await (const update of iterateEach(follower)) {
+        console.debug('wallet update', update);
+        if ('error' in update) continue;
 
-      walletUpdatesNotifierKit.updater.updateState(harden(update.value));
+        walletUpdatesNotifierKit.updater.updateState(harden(update.value));
+      }
+    };
+
+    await null;
+    try {
+      await watch();
+    } catch (e) {
+      onError(new Error(`RPC error - ${e.toString?.()}`));
     }
   };
 
