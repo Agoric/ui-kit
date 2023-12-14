@@ -5,7 +5,16 @@ import { makeInteractiveSigner } from './makeInteractiveSigner.js';
 import { watchWallet } from './watchWallet.js';
 import { Errors } from '../errors.js';
 
-export const makeAgoricWalletConnection = async (chainStorageWatcher, rpc) => {
+/**
+ * @param {any} chainStorageWatcher
+ * @param {string} rpc
+ * @param {((error: unknown) => void)=} onRpcError
+ */
+export const makeAgoricWalletConnection = async (
+  chainStorageWatcher,
+  rpc,
+  onRpcError = undefined,
+) => {
   if (!('keplr' in window)) {
     throw Error(Errors.noKeplr);
   }
@@ -21,7 +30,12 @@ export const makeAgoricWalletConnection = async (chainStorageWatcher, rpc) => {
       SigningStargateClient.connectWithSigner,
     );
 
-  const walletNotifiers = watchWallet(chainStorageWatcher, address, rpc);
+  const walletNotifiers = watchWallet(
+    chainStorageWatcher,
+    address,
+    rpc,
+    onRpcError,
+  );
 
   const makeOffer = async (
     invitationSpec,
