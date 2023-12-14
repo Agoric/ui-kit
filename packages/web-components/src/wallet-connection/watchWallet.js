@@ -38,9 +38,16 @@ const MAX_ATTEMPTS_TO_WATCH_BANK = 2;
  * @param {any} chainStorageWatcher
  * @param {string} address
  * @param {string} rpc
- * @param {((error: unknown) => void)=} onRpcError
+ * @param {((error: unknown) => void)} [onError]
  */
-export const watchWallet = (chainStorageWatcher, address, rpc, onRpcError) => {
+export const watchWallet = (
+  chainStorageWatcher,
+  address,
+  rpc,
+  onError = () => {
+    /* noop */
+  },
+) => {
   const pursesNotifierKit = makeNotifierKit(
     /** @type {PurseInfo[] | null} */ (null),
   );
@@ -140,7 +147,7 @@ export const watchWallet = (chainStorageWatcher, address, rpc, onRpcError) => {
         } catch (e) {
           console.error('Error querying bank balances for address', address);
           if (attempts >= MAX_ATTEMPTS_TO_WATCH_BANK) {
-            onRpcError && onRpcError(e);
+            onError(new Error(`RPC error - ${e.toString?.()}`));
           } else {
             setTimeout(() => watchBank(attempts + 1), RETRY_INTERVAL_MS);
             return;
@@ -222,7 +229,7 @@ export const watchWallet = (chainStorageWatcher, address, rpc, onRpcError) => {
                 );
               } catch (e) {
                 console.error('Error getting boardAux for brands', brands, e);
-                onRpcError && onRpcError(e);
+                onError(new Error(`API error - ${e.toString?.()}`));
               }
             }
 
@@ -256,7 +263,7 @@ export const watchWallet = (chainStorageWatcher, address, rpc, onRpcError) => {
     try {
       await watch();
     } catch (e) {
-      onRpcError && onRpcError(e);
+      onError(new Error(`RPC error - ${e.toString?.()}`));
     }
   };
 

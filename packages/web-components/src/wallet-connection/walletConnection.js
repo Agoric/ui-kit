@@ -8,12 +8,12 @@ import { Errors } from '../errors.js';
 /**
  * @param {any} chainStorageWatcher
  * @param {string} rpc
- * @param {((error: unknown) => void)=} onRpcError
+ * @param {((error: unknown) => void)} [onError]
  */
 export const makeAgoricWalletConnection = async (
   chainStorageWatcher,
   rpc,
-  onRpcError = undefined,
+  onError = undefined,
 ) => {
   if (!('keplr' in window)) {
     throw Error(Errors.noKeplr);
@@ -34,7 +34,7 @@ export const makeAgoricWalletConnection = async (
     chainStorageWatcher,
     address,
     rpc,
-    onRpcError,
+    onError,
   );
 
   const makeOffer = async (
