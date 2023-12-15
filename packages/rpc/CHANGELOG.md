@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.8.0 (2023-12-15)
+
+### ⚠ BREAKING CHANGES
+
+- dont batch queries
+- use json api instead of batch rpc vstorage query
+
+### Features
+
+- dont batch queries ([ebfc261](https://github.com/Agoric/ui-kit/commit/ebfc261fb7e7595c29190f41b705708038a8a347))
+- use json api instead of batch rpc vstorage query ([95a6f75](https://github.com/Agoric/ui-kit/commit/95a6f75e0f53e6b0af93950d4592775430b7afb1))
+
 ## [0.7.2](https://github.com/Agoric/ui-kit/compare/@agoric/rpc@0.7.0...@agoric/rpc@0.7.2) (2023-11-16)
 
 ### Bug Fixes
