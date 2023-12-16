@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.14.0 (2023-12-15)
+
+### ⚠ BREAKING CHANGES
+
+- dont batch queries
+- make wallet work without rpc from watcher
+
+### Features
+
+- dont batch queries ([ebfc261](https://github.com/Agoric/ui-kit/commit/ebfc261fb7e7595c29190f41b705708038a8a347))
+- make wallet work without rpc from watcher ([96d00f0](https://github.com/Agoric/ui-kit/commit/96d00f0d84ae65f80d7d2d6b14f078dc86a33575))
+- surface wallet connection errors ([#66](https://github.com/Agoric/ui-kit/issues/66)) ([6a4c62e](https://github.com/Agoric/ui-kit/commit/6a4c62e2608e4b32fe9ced17745a7ce4e064d2d0))
+
+### Bug Fixes
+
+- handle failed offer status updates better ([#63](https://github.com/Agoric/ui-kit/issues/63)) ([42625b2](https://github.com/Agoric/ui-kit/commit/42625b2ec7336fbbb6340bc0d52e6ce150cc46c5))
+
 ## [0.13.2](https://github.com/Agoric/ui-kit/compare/@agoric/web-components@0.13.0...@agoric/web-components@0.13.2) (2023-11-16)
 
 ### Bug Fixes
