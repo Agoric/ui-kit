@@ -108,7 +108,8 @@ export const makeAgoricChainStorageWatcher = (
       (blockHeight === latestValueIdentifier ||
         // Blockheight is undefined so fallback to using the stringified value
         // as the identifier, as is the case for `children` queries.
-        (blockHeight === undefined && JSON.stringify(value) === latestValue))
+        (blockHeight === undefined &&
+          (value === latestValue || JSON.stringify(value) === latestValue)))
     ) {
       // The value isn't new, don't emit.
       queueNextRefresh();
