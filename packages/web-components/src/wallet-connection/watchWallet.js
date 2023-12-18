@@ -85,11 +85,13 @@ export const watchWallet = (
   chainStorageWatcher.watchLatest(
     ['data', `published.wallet.${address}.current`],
     value => {
-      if (!value && !isWalletMissing) {
-        smartWalletStatusNotifierKit.updater.updateState(
-          harden({ provisioned: false }),
-        );
-        isWalletMissing = true;
+      if (!value) {
+        if (!isWalletMissing) {
+          smartWalletStatusNotifierKit.updater.updateState(
+            harden({ provisioned: false }),
+          );
+          isWalletMissing = true;
+        }
         return;
       }
 
