@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.15.0 (2023-12-19)
+
+### Bug Fixes
+
+- fix erroneous provision status update ([faef9fa](https://github.com/Agoric/ui-kit/commit/faef9fa230d6a923a64b94d4a39d86b96941c5a7))
+- update casting ([b5b6367](https://github.com/Agoric/ui-kit/commit/b5b6367b7144547b9bb69fcaeb8512e612730dec))
+
 ## 0.14.0 (2023-12-15)
 
 ### ⚠ BREAKING CHANGES

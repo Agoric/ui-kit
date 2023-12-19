@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.9.0 (2023-12-19)
+
+### Bug Fixes
+
+- dont repeat updates for empty string values ([9cde92b](https://github.com/Agoric/ui-kit/commit/9cde92b9d82dc46cddd9ed7d2e8f9766759adc04))
+
 ## 0.8.0 (2023-12-15)
 
 ### ⚠ BREAKING CHANGES
