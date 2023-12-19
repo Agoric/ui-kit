@@ -3,7 +3,7 @@
   "description": "Webcomponents for Agoric dapps",
   "license": "Apache-2.0",
   "author": "Agoric",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "main": "dist/index.js",
   "scripts": {
     "prepack": "tsc --build tsconfig.build.json",
