@@ -71,14 +71,17 @@ export const makeAgoricChainStorageWatcher = (
   >();
 
   const watchedPathsToSubscribers = new Map<string, Set<Subscriber<unknown>>>();
-  const watchedPathsToRefreshTimeouts = new Map<string, number>();
+  const watchedPathsToRefreshTimeouts = new Map<
+    string,
+    ReturnType<typeof setTimeout>
+  >();
 
   const refreshDataForPath = async (
     path: [AgoricChainStoragePathKind, string],
   ) => {
     const queueNextRefresh = () => {
-      window.clearTimeout(watchedPathsToRefreshTimeouts.get(pathKey));
-      const timeout = window.setTimeout(
+      globalThis.clearTimeout(watchedPathsToRefreshTimeouts.get(pathKey));
+      const timeout = globalThis.setTimeout(
         () => refreshDataForPath(path),
         randomRefreshPeriod(refreshLowerBoundMs, refreshUpperBoundMs),
       );
@@ -141,7 +144,7 @@ export const makeAgoricChainStorageWatcher = (
     if (subscribersForPath.size === 1) {
       watchedPathsToSubscribers.delete(pathKey);
       latestValueCache.delete(pathKey);
-      window.clearTimeout(watchedPathsToRefreshTimeouts.get(pathKey));
+      globalThis.clearTimeout(watchedPathsToRefreshTimeouts.get(pathKey));
       watchedPathsToRefreshTimeouts.delete(pathKey);
     } else {
       subscribersForPath.delete(subscriber);
