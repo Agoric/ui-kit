@@ -1,9 +1,9 @@
 /* eslint-disable no-use-before-define */
 /* eslint-disable import/extensions */
-import { makeClientMarshaller } from './marshal';
-import { AgoricChainStoragePathKind } from './types';
-import { vstorageQuery, keyToPath, pathToKey } from './vstorageQuery';
-import type { UpdateHandler } from './types';
+import { makeClientMarshaller } from './marshal.js';
+import { AgoricChainStoragePathKind } from './types.js';
+import { vstorageQuery, pathToKey } from './vstorageQuery.js';
+import type { UpdateHandler } from './types.js';
 
 type Subscriber<T> = {
   onUpdate: UpdateHandler<T>;

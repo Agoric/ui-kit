@@ -3,7 +3,7 @@ import { html, LitElement } from 'lit';
 import { assert, details as X } from '@agoric/assert';
 
 // Ambient types. https://github.com/Agoric/agoric-sdk/issues/6512
-import '@agoric/zoe/src/zoeService/types';
+import '@agoric/zoe/src/zoeService/types.js';
 
 // This site tells the component the URL to load the wallet bridge from. For
 // development, the form on this site can be changed to point the dapp to a

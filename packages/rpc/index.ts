@@ -1,3 +1,3 @@
 /* eslint-disable import/extensions */
-export * from './src/chainStorageWatcher';
-export * from './src/types';
+export * from './src/chainStorageWatcher.js';
+export * from './src/types.js';
