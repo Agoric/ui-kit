@@ -3,7 +3,7 @@ import axios from 'axios';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import axiosRetry from 'axios-retry';
 import type { FromCapData } from '@endo/marshal';
-import { AgoricChainStoragePathKind } from './types';
+import { AgoricChainStoragePathKind } from './types.js';
 
 export const pathToKey = (path: [AgoricChainStoragePathKind, string]) =>
   path.join('.');

@@ -2,9 +2,9 @@
 /* eslint-disable import/extensions */
 import { expect, it, describe, beforeEach, vi, afterEach } from 'vitest';
 import MockAdapter from 'axios-mock-adapter';
-import { makeAgoricChainStorageWatcher } from '../src/chainStorageWatcher';
-import { axiosClient } from '../src/vstorageQuery';
-import { AgoricChainStoragePathKind } from '../src/types';
+import { makeAgoricChainStorageWatcher } from '../src/chainStorageWatcher.js';
+import { axiosClient } from '../src/vstorageQuery.js';
+import { AgoricChainStoragePathKind } from '../src/types.js';
 
 global.harden = val => val;
 
