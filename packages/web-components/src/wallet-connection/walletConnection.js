@@ -1,34 +1,32 @@
 // @ts-check
-import { SigningStargateClient } from '@cosmjs/stargate';
 import { subscribeLatest } from '@agoric/notifier';
-import { makeInteractiveSigner } from './makeInteractiveSigner.js';
+import { makeAgoricSigner } from './makeAgoricSigner.js';
 import { watchWallet } from './watchWallet.js';
-import { Errors } from '../errors.js';
+import { connectKeplr } from './connectKeplr.js';
+
+/** @typedef {import("@cosmjs/stargate").SigningStargateClient} SigningStargateClient */
+/** @typedef {{client: SigningStargateClient, address: string }} ClientConfig */
 
 /**
  * @param {any} chainStorageWatcher
  * @param {string} rpc
  * @param {((error: unknown) => void)} [onError]
+ * @param {ClientConfig} [clientConfig]
  */
 export const makeAgoricWalletConnection = async (
   chainStorageWatcher,
   rpc,
   onError = undefined,
+  clientConfig = undefined,
 ) => {
-  if (!('keplr' in window)) {
-    throw Error(Errors.noKeplr);
-  }
-  /** @type {import('@keplr-wallet/types').Keplr} */
-  // @ts-expect-error cast (checked above)
-  const keplr = window.keplr;
+  await null;
+  const { client, address } =
+    clientConfig || (await connectKeplr(chainStorageWatcher.chainId, rpc));
 
-  const { address, submitSpendAction, provisionSmartWallet } =
-    await makeInteractiveSigner(
-      chainStorageWatcher.chainId,
-      rpc,
-      keplr,
-      SigningStargateClient.connectWithSigner,
-    );
+  const { submitSpendAction, provisionSmartWallet } = await makeAgoricSigner(
+    client,
+    address,
+  );
 
   const walletNotifiers = watchWallet(
     chainStorageWatcher,
@@ -114,6 +112,7 @@ export const makeAgoricWalletConnection = async (
     makeOffer,
     address,
     provisionSmartWallet,
+    signingClient: client,
     ...walletNotifiers,
   };
 };
