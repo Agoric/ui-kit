@@ -1,3 +1,4 @@
+// @ts-check
 /** @typedef {import('@keplr-wallet/types').Bech32Config} Bech32Config */
 /** @typedef {import('@keplr-wallet/types').FeeCurrency} FeeCurrency */
 

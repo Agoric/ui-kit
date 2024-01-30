@@ -1,16 +1,17 @@
+// @ts-check
 import './installSesLockdown.js';
 import { describe, vi, expect, it } from 'vitest';
-import { SigningStargateClient } from '@cosmjs/stargate';
 import { makeAgoricWalletConnection } from '../src/wallet-connection/walletConnection.js';
 import {
-  makeInteractiveSigner,
+  makeAgoricSigner,
   // @ts-expect-error exported by mock below
   // eslint-disable-next-line import/named
   submitSpendAction as mockSubmitSpendAction,
   // @ts-expect-error exported by mock below
   // eslint-disable-next-line import/named
   provisionSmartWallet as mockProvisionSmartWallet,
-} from '../src/wallet-connection/makeInteractiveSigner.js';
+} from '../src/wallet-connection/makeAgoricSigner.js';
+import { Errors } from '../src/errors.js';
 
 const testAddress = 'agoric123test';
 const rpc = 'https://fake.rpc';
@@ -19,12 +20,12 @@ const rpc = 'https://fake.rpc';
 // eslint-disable-next-line no-undef
 global.window = { keplr: {} };
 
-vi.mock('../src/wallet-connection/makeInteractiveSigner.js', () => {
+vi.mock('../src/wallet-connection/makeAgoricSigner.js', () => {
   const submitSpendAction = vi.fn();
   const provisionSmartWallet = vi.fn();
 
   return {
-    makeInteractiveSigner: vi.fn(() => ({
+    makeAgoricSigner: vi.fn(() => ({
       address: testAddress,
       submitSpendAction,
       provisionSmartWallet,
@@ -41,7 +42,7 @@ vi.mock('../src/queryBankBalances.js', () => {
 });
 
 describe('makeAgoricWalletConnection', () => {
-  it('gets the address from keplr', async () => {
+  it('defaults to keplr connection if no client config', async () => {
     const watcher = {
       chainId: 'agoric-foo',
       watchLatest: (_path, onUpdate) => {
@@ -49,15 +50,29 @@ describe('makeAgoricWalletConnection', () => {
       },
     };
 
-    const connection = await makeAgoricWalletConnection(watcher, rpc);
+    // Don't bother faking keplr, just expect it to try to enable and fail.
+    await expect(() =>
+      makeAgoricWalletConnection(watcher, rpc),
+    ).rejects.toThrowError(Errors.enableKeplr);
+  });
 
-    expect(makeInteractiveSigner).toHaveBeenCalledWith(
-      watcher.chainId,
+  it('gets the address from the client config', async () => {
+    const watcher = {
+      chainId: 'agoric-foo',
+      watchLatest: (_path, onUpdate) => {
+        onUpdate({ offerToPublicSubscriberPaths: 'foo' });
+      },
+    };
+
+    const connection = await makeAgoricWalletConnection(
+      watcher,
       rpc,
-      // @ts-expect-error shim keplr
-      window.keplr,
-      SigningStargateClient.connectWithSigner,
+      undefined,
+      // @ts-expect-error fake SigningStargateClient
+      { address: testAddress, client: {} },
     );
+
+    expect(makeAgoricSigner).toHaveBeenCalledWith({}, testAddress);
     expect(connection.address).toEqual(testAddress);
   });
 
@@ -72,7 +87,13 @@ describe('makeAgoricWalletConnection', () => {
       },
     };
 
-    const connection = await makeAgoricWalletConnection(watcher, rpc);
+    const connection = await makeAgoricWalletConnection(
+      watcher,
+      rpc,
+      undefined,
+      // @ts-expect-error fake SigningStargateClient
+      { address: testAddress, client: {} },
+    );
 
     const onStatusChange = () => {
       expect(mockSubmitSpendAction).toHaveBeenCalledWith(
@@ -101,7 +122,13 @@ it('submits a spend action', async () => {
     },
   };
 
-  const connection = await makeAgoricWalletConnection(watcher, rpc);
+  const connection = await makeAgoricWalletConnection(
+    watcher,
+    rpc,
+    undefined,
+    // @ts-expect-error fake SigningStargateClient
+    { address: testAddress, client: {} },
+  );
 
   connection.provisionSmartWallet();
   expect(mockProvisionSmartWallet).toHaveBeenCalled();
