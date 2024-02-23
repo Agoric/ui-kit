@@ -34,6 +34,8 @@ export type AgoricState = {
   purses?: PursesJSONState<AssetKind>[];
   offerIdsToPublicSubscribers?: Record<string, Record<string, string>>;
   isSmartWalletProvisioned?: boolean;
+  provisionSmartWallet?: AgoricWalletConnection['provisionSmartWallet'];
+  makeOffer?: AgoricWalletConnection['makeOffer'];
 };
 
 export const AgoricContext = createContext<AgoricState>({});

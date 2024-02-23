@@ -211,6 +211,8 @@ export const AgoricProviderLite = ({
     purses,
     offerIdsToPublicSubscribers,
     isSmartWalletProvisioned,
+    makeOffer: walletConnection?.makeOffer ,
+    provisionSmartWallet: walletConnection?.provisionSmartWallet
   };
 
   return (
