@@ -25,7 +25,8 @@
     "test": "vitest run --passWithNoTests",
     "test:cov": "vitest run --coverage",
     "prettier": "prettier -c src/*",
-    "prettier:fix": "prettier -w src/*"
+    "prettier:fix": "prettier -w src/*",
+    "prepack": "yarn build"
   },
   "dependencies": {
     "@cosmos-kit/core": "2.8.9",
