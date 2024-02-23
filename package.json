@@ -3,7 +3,10 @@
   "private": true,
   "useWorkspaces": true,
   "workspaces": [
-    "packages/*"
+    "packages/ui-components",
+    "packages/rpc",
+    "packages/web-components",
+    "packages/react-components"
   ],
   "type": "module",
   "packageManager": "yarn@1.22.19",
