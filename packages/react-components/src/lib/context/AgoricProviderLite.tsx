@@ -45,7 +45,7 @@ type Props = {
  */
 export const AgoricProviderLite = ({
   children,
-  onConnectionError = () => { },
+  onConnectionError = () => {},
   chainName = 'agoric',
   useCustomEndpoints = true,
 }: PropsWithChildren<Props>) => {
@@ -131,12 +131,12 @@ export const AgoricProviderLite = ({
       const watcher = makeAgoricChainStorageWatcher(
         apiAddr,
         chainName,
-        onConnectionError
+        onConnectionError,
       );
       setChainStorageWatcher(watcher);
     };
 
-    getWatcher().catch((e) => {
+    getWatcher().catch(e => {
       console.error('error making agoric chain storage watcher', e);
       onConnectionError(e);
     });
@@ -153,7 +153,7 @@ export const AgoricProviderLite = ({
 
       assert(
         aminoSigner !== undefined,
-        'Cannot getOfflineSigner, is wallet connected?'
+        'Cannot getOfflineSigner, is wallet connected?',
       );
       const signingStargateClient =
         await SigningStargateClient.connectWithSigner(
@@ -170,7 +170,7 @@ export const AgoricProviderLite = ({
               ...defaultRegistryTypes,
               ...agoricRegistryTypes,
             ]),
-          }
+          },
         );
       assert(chain.address, 'Cannot get address, is wallet connected?');
       assert(chainStorageWatcher);
@@ -181,7 +181,7 @@ export const AgoricProviderLite = ({
           console.error('wallet connection error', e);
           onConnectionError(e);
         },
-        { address: chain.address, client: signingStargateClient }
+        { address: chain.address, client: signingStargateClient },
       );
       setWalletConnection(agoricWalletConnection);
     };
@@ -191,7 +191,7 @@ export const AgoricProviderLite = ({
       chain.address !== undefined &&
       chainStorageWatcher !== undefined
     ) {
-      getAgoricWalletConnection().catch((e) => {
+      getAgoricWalletConnection().catch(e => {
         onConnectionError(e);
         console.error('error making agoric wallet connection', e);
       });
@@ -211,8 +211,8 @@ export const AgoricProviderLite = ({
     purses,
     offerIdsToPublicSubscribers,
     isSmartWalletProvisioned,
-    makeOffer: walletConnection?.makeOffer ,
-    provisionSmartWallet: walletConnection?.provisionSmartWallet
+    makeOffer: walletConnection?.makeOffer,
+    provisionSmartWallet: walletConnection?.provisionSmartWallet,
   };
 
   return (

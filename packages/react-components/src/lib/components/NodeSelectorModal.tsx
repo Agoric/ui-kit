@@ -11,10 +11,7 @@ type Props = {
   onClose: () => void;
 };
 
-export const NodeSelectorModal = ({
-  onClose,
-  isOpen = false,
-}: Props) => {
+export const NodeSelectorModal = ({ onClose, isOpen = false }: Props) => {
   const { networkConfig, setNetworkConfig } = useContext(NetworkContext);
   const defaultRest = networkConfig?.apis?.rest?.at(0);
   const defaultRpc = networkConfig?.apis?.rpc?.at(0);
@@ -29,12 +26,7 @@ export const NodeSelectorModal = ({
   const [initialRpc] = useState(rpc);
 
   const isNetworkUnchanged =
-    (
-      initialRest === rest &&
-      initialRpc === rpc
-    ) ||
-    !rpc ||
-    !rest;
+    (initialRest === rest && initialRpc === rpc) || !rpc || !rest;
 
   const save = () => {
     setNetworkConfig({

@@ -22,8 +22,10 @@
     "build": "tsc && vite build",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint --ext .js,.jsx,.ts,.tsx --fix",
-    "test": "vitest",
-    "test:cov": "vitest run --coverage"
+    "test": "vitest run --passWithNoTests",
+    "test:cov": "vitest run --coverage",
+    "prettier": "prettier -c src/*",
+    "prettier:fix": "prettier -w src/*"
   },
   "dependencies": {
     "@cosmos-kit/core": "2.8.9",
@@ -70,10 +72,10 @@
   "peerDependencies": {
     "@cosmos-kit/core": "2.8.9",
     "@cosmos-kit/react": "2.10.10",
+    "@interchain-ui/react": "1.21.18",
     "chain-registry": "1.28.0",
     "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "@interchain-ui/react": "1.21.18"
+    "react-dom": "18.2.0"
   },
   "files": [
     "dist"
