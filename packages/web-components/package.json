@@ -30,10 +30,8 @@
     "@lit-labs/react": "^1.0.1",
     "lit": "2.0.2"
   },
-  "peerDependencies": {
-    "@agoric/rpc": "^0.9.0"
-  },
   "devDependencies": {
+    "@agoric/rpc": "^0.9.0",
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@custom-elements-manifest/analyzer": "^0.4.17",
     "@keplr-wallet/types": "^0.11.37",
@@ -41,7 +39,7 @@
     "@rollup/plugin-commonjs": "^25.0.1",
     "@web/dev-server": "^0.2.2",
     "@web/test-runner": "^0.16.1",
-    "eslint": "^8.36.0",
+    "eslint": "^8.57.0",
     "eslint-plugin-lit": "^1.8.2",
     "eslint-plugin-lit-a11y": "^2.4.0",
     "ses": "0.18.7",
@@ -52,7 +50,8 @@
     "extends": [
       "@open-wc",
       "@agoric",
-      "plugin:jsdoc/recommended-typescript-flavor-error"
+      "plugin:jsdoc/recommended-typescript-flavor-error",
+      "plugin:import/typescript"
     ],
     "rules": {
       "jsdoc/require-returns-description": "off",
