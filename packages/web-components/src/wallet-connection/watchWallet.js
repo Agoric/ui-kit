@@ -3,10 +3,12 @@ import { makeNotifierKit } from '@agoric/notifier';
 import { AmountMath } from '@agoric/ertp';
 import { iterateEach, makeFollower, makeLeader } from '@agoric/casting';
 import { Tendermint34Client } from '@cosmjs/tendermint-rpc';
+import { AgoricChainStoragePathKind } from '@agoric/rpc';
+import { Far } from '@endo/marshal';
 import { queryBankBalances } from './queryBankBalances.js';
 
+/** @typedef {import("@agoric/rpc").ChainStorageWatcher} ChainStorageWatcher */
 /** @typedef {import('@agoric/smart-wallet/src/types.js').Petname} Petname */
-
 /** @typedef {import('@keplr-wallet/types').Coin} Coin */
 
 /**
@@ -35,7 +37,7 @@ const RETRY_INTERVAL_MS = 200;
 const MAX_ATTEMPTS_TO_WATCH_BANK = 2;
 
 /**
- * @param {any} chainStorageWatcher
+ * @param {ChainStorageWatcher} chainStorageWatcher
  * @param {string} address
  * @param {string} rpc
  * @param {((error: unknown) => void)} [onError]
@@ -83,7 +85,7 @@ export const watchWallet = (
   let lastPaths;
   let isWalletMissing = false;
   chainStorageWatcher.watchLatest(
-    ['data', `published.wallet.${address}.current`],
+    [AgoricChainStoragePathKind.Data, `published.wallet.${address}.current`],
     value => {
       if (!value) {
         if (!isWalletMissing) {
@@ -161,7 +163,7 @@ export const watchWallet = (
 
       const watchVbankAssets = () => {
         chainStorageWatcher.watchLatest(
-          ['data', 'published.agoricNames.vbankAsset'],
+          [AgoricChainStoragePathKind.Data, 'published.agoricNames.vbankAsset'],
           value => {
             vbankAssets = value;
             possiblyUpdateBankPurses();
@@ -204,7 +206,7 @@ export const watchWallet = (
 
       const watchBrands = () => {
         chainStorageWatcher.watchLatest(
-          ['data', 'published.agoricNames.brand'],
+          [AgoricChainStoragePathKind.Data, 'published.agoricNames.brand'],
           value => {
             agoricBrands = value;
             possiblyUpdateNonBankPurses();
@@ -214,7 +216,10 @@ export const watchWallet = (
 
       const watchPurses = () =>
         chainStorageWatcher.watchLatest(
-          ['data', `published.wallet.${address}.current`],
+          [
+            AgoricChainStoragePathKind.Data,
+            `published.wallet.${address}.current`,
+          ],
           async value => {
             const { purses } = value;
             if (nonBankPurses === purses) return;
@@ -250,7 +255,7 @@ export const watchWallet = (
       const leader = makeLeader(rpc);
       const follower = makeFollower(`:published.wallet.${address}`, leader, {
         proof: 'none',
-        unserializer: chainStorageWatcher.marshaller,
+        unserializer: Far('marshaller', chainStorageWatcher.marshaller),
       });
 
       for await (const update of iterateEach(follower)) {

@@ -4,11 +4,12 @@ import { makeAgoricSigner } from './makeAgoricSigner.js';
 import { watchWallet } from './watchWallet.js';
 import { connectKeplr } from './connectKeplr.js';
 
+/** @typedef {import("@agoric/rpc").ChainStorageWatcher} ChainStorageWatcher */
 /** @typedef {import("@cosmjs/stargate").SigningStargateClient} SigningStargateClient */
 /** @typedef {{client: SigningStargateClient, address: string }} ClientConfig */
 
 /**
- * @param {any} chainStorageWatcher
+ * @param {ChainStorageWatcher} chainStorageWatcher
  * @param {string} rpc
  * @param {((error: unknown) => void)} [onError]
  * @param {ClientConfig} [clientConfig]
