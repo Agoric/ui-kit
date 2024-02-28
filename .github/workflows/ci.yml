@@ -15,6 +15,6 @@ jobs:
           cache: 'yarn'
           cache-dependency-path: yarn.lock
       - run: yarn install --frozen-lockfile
+      - run: yarn workspaces run prepack
       - run: yarn lint
       - run: yarn test
-      - run: yarn workspaces run prepack
