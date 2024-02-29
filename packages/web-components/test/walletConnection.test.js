@@ -52,6 +52,7 @@ describe('makeAgoricWalletConnection', () => {
 
     // Don't bother faking keplr, just expect it to try to enable and fail.
     await expect(() =>
+      // @ts-expect-error fake partial watcher implementation
       makeAgoricWalletConnection(watcher, rpc),
     ).rejects.toThrowError(Errors.enableKeplr);
   });
@@ -65,10 +66,10 @@ describe('makeAgoricWalletConnection', () => {
     };
 
     const connection = await makeAgoricWalletConnection(
+      // @ts-expect-error fake partial watcher implementation
       watcher,
       rpc,
       undefined,
-      // @ts-expect-error fake SigningStargateClient
       { address: testAddress, client: {} },
     );
 
@@ -88,10 +89,10 @@ describe('makeAgoricWalletConnection', () => {
     };
 
     const connection = await makeAgoricWalletConnection(
+      // @ts-expect-error fake partial watcher implementation
       watcher,
       rpc,
       undefined,
-      // @ts-expect-error fake SigningStargateClient
       { address: testAddress, client: {} },
     );
 
@@ -123,10 +124,10 @@ it('submits a spend action', async () => {
   };
 
   const connection = await makeAgoricWalletConnection(
+    // @ts-expect-error fake partial watcher implementation
     watcher,
     rpc,
     undefined,
-    // @ts-expect-error fake SigningStargateClient
     { address: testAddress, client: {} },
   );
 
