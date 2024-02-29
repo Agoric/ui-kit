@@ -87,5 +87,8 @@
     "*.{ts,tsx,js,jsx,json,css,md}": [
       "prettier -w"
     ]
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
