@@ -45,5 +45,5 @@ export const makeAssetList = (chain_name: string) => {
     'Agoric missing from chain registry, cannot initiliaze test chains',
   );
 
-  return { ...agoricAssetList, chain_name };
+  return { ...agoricAssetList, chain_name } as AssetList;
 };
