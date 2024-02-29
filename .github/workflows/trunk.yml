@@ -21,6 +21,7 @@ jobs:
           cache-dependency-path: yarn.lock
 
       - run: yarn install --frozen-lockfile
+
       # Adapted from https://johnny.sh/notes/publish-canary-lerna-cicd/
       - name: configure NPM token
         run: |
