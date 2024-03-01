@@ -131,3 +131,6 @@ dist
 
 # Other build output
 compiled
+
+# Vscode Settings
+.vscode/
