@@ -78,3 +78,7 @@ The modal will persist the user's chosen API endpoints in local storage, and ove
 All Agoric-related state is accessible through the `useAgoric` hook. See [`AgoricContext`](https://github.com/Agoric/ui-kit/blob/585b47d158a983643659a2cfccd76f772933db7e/packages/react-components/src/lib/context/AgoricContext.ts#L28-L39) for the full interface.
 
 For more details on making offers and reading chain data with `AgoricWalletConnection` and `ChainStorageWatcher`, see [Agoric/ui-kit](https://github.com/Agoric/ui-kit).
+
+## Using a Custom `ChainProvider`
+
+If you need to configure `ChainProvider` more, or have an existing `cosmos-kit` dapp that you want to add Agoric functionality to, the [`AgoricProviderLite`](https://github.com/Agoric/ui-kit/blob/585b47d158a983643659a2cfccd76f772933db7e/packages/react-components/src/lib/context/AgoricProviderLite.tsx) component can be used directly inside your own `ChainProvider`. [Under the hood](https://github.com/Agoric/ui-kit/blob/585b47d158a983643659a2cfccd76f772933db7e/packages/react-components/src/lib/context/AgoricProvider.tsx#L27-L61), `AgoricProvider` provides a default `ChainProvider` implementation and wraps `AgoricProviderLite`.
