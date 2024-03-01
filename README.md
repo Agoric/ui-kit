@@ -21,7 +21,7 @@ import {
   AgoricChainStoragePathKind as Kind,
 } from '@agoric/rpc';
 
-const watcher = makeAgoricChainStorageWatcher(rpc, chainName);
+const watcher = makeAgoricChainStorageWatcher(restApi, chainName);
 
 // Watch vstorage children at a given node.
 const stopWatching = watcher.watchLatest<string[]>(
@@ -50,8 +50,8 @@ import { subscribeLatest } from '@agoric/notifier';
 import { makeAgoricChainStorageWatcher } from '@agoric/rpc';
 import { makeAgoricWalletConnection } from '@agoric/web-components';
 
-const watcher = makeAgoricChainStorageWatcher(rpc, chainName);
-const connection = await makeAgoricWalletConnection(watcher);
+const watcher = makeAgoricChainStorageWatcher(apiAddr, chainName);
+const connection = await makeAgoricWalletConnection(watcher, rpcAddr);
 const { pursesNotifier, publicSubscribersNotifier } = chainConnection;
 
 for await (const purses of subscribeLatest(pursesNotifier)) {
@@ -108,8 +108,8 @@ const agoricWalletConnection = await makeAgoricWalletConnection(
 import { makeAgoricChainStorageWatcher } from '@agoric/rpc';
 import { makeAgoricWalletConnection } from '@agoric/web-components';
 
-const watcher = makeAgoricChainStorageWatcher(rpc, chainName);
-const connection = await makeAgoricWalletConnection(watcher);
+const watcher = makeAgoricChainStorageWatcher(apiAddr, chainName);
+const connection = await makeAgoricWalletConnection(watcher, rpcAddr);
 
 const amountToGive = { brand: someBrand, value: 123n };
 const amountToWant = { brand: someOtherBrand, value: 456n };
