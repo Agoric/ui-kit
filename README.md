@@ -1,4 +1,5 @@
 # UI Kit
+
 Components and tools for building graphical UIs for Agoric dapps
 
 ## Setup
@@ -17,7 +18,7 @@ See https://github.com/p2p-org/p2p-agoric-vstorage-viewer to explore vstorage mo
 ```ts
 import {
   makeAgoricChainStorageWatcher,
-  AgoricChainStoragePathKind as Kind
+  AgoricChainStoragePathKind as Kind,
 } from '@agoric/rpc';
 
 const watcher = makeAgoricChainStorageWatcher(rpc, chainName);
@@ -27,8 +28,8 @@ const stopWatching = watcher.watchLatest<string[]>(
   [Kind.Children, 'published.vaultFactory.managers'],
   managerIds => {
     console.log('Got vault manager IDs:', managerIds);
-  }
-)
+  },
+);
 
 // Stop watching.
 stopWatching();
@@ -38,8 +39,8 @@ watcher.watchLatest<Brands>(
   [Kind.Data, 'published.agoricNames.brand'],
   brands => {
     console.log('Do something with the brands');
-  }
-)
+  },
+);
 ```
 
 ## Connecting to User's Account (Keplr)
@@ -51,11 +52,54 @@ import { makeAgoricWalletConnection } from '@agoric/web-components';
 
 const watcher = makeAgoricChainStorageWatcher(rpc, chainName);
 const connection = await makeAgoricWalletConnection(watcher);
-const {pursesNotifier, publicSubscribersNotifier} = chainConnection;
+const { pursesNotifier, publicSubscribersNotifier } = chainConnection;
 
 for await (const purses of subscribeLatest(pursesNotifier)) {
   console.log('Got purses:', purses);
 }
+```
+
+## Using a Custom Signer
+
+While `makeAgoricChainStorageWatcher` connects to Keplr by default, clients
+that use a custom signer can provide their own:
+
+```ts
+import {
+  agoricRegistryTypes,
+  agoricConverters,
+  makeAgoricWalletConnection,
+} from '@agoric/web-components';
+import { Registry } from '@cosmjs/proto-signing';
+import {
+  AminoTypes,
+  defaultRegistryTypes,
+  createBankAminoConverters,
+  createAuthzAminoConverters,
+} from '@cosmjs/stargate';
+
+...
+
+const signingStargateClient = await SigningStargateClient.connectWithSigner(
+  rpcEndpoint, // RPC endpoint to use
+  customAminoSigner, // E.g. window.getOfflineSignerOnlyAmino(chainId)
+  {
+    aminoTypes: new AminoTypes({
+      ...agoricConverters,
+      ...createBankAminoConverters(),
+      ...createAuthzAminoConverters(),
+    }),
+    registry: new Registry([...defaultRegistryTypes, ...agoricRegistryTypes]),
+  },
+);
+const agoricWalletConnection = await makeAgoricWalletConnection(
+  chainStorageWatcher,
+  rpcEndpoint,
+  (e: unknown) => {
+    console.error('wallet connection error', e);
+  },
+  { address: myAddress, client: signingStargateClient },
+);
 ```
 
 ## Executing Offers
@@ -67,8 +111,8 @@ import { makeAgoricWalletConnection } from '@agoric/web-components';
 const watcher = makeAgoricChainStorageWatcher(rpc, chainName);
 const connection = await makeAgoricWalletConnection(watcher);
 
-const amountToGive = {brand: someBrand, value: 123n};
-const amountToWant = {brand: someOtherBrand, value: 456n};
+const amountToGive = { brand: someBrand, value: 123n };
+const amountToWant = { brand: someOtherBrand, value: 456n };
 
 connection.makeOffer(
   {
@@ -76,8 +120,8 @@ connection.makeOffer(
     instancePath: ['SimpleSwapExampleInstance'],
     callPipe: [
       ['getSwapManagerForBrand', [amountToGive.brand]],
-      ['makeSwapOffer']
-    ]
+      ['makeSwapOffer'],
+    ],
   },
   {
     give: { In: amountToGive },
@@ -101,6 +145,3 @@ connection.makeOffer(
   },
 );
 ```
-
-
-
