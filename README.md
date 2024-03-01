@@ -8,6 +8,11 @@ These packages require SES ([learn more](https://github.com/endojs/endo/tree/mas
 See this [example](https://github.com/Agoric/dapp-inter/blob/main/src/main.tsx#L1) for enabling SES in your application.
 Setup may vary by environment.
 
+## React Apps
+
+See [packages/react-components](https://github.com/Agoric/ui-kit) for convenient hooks and utilities that make setting up
+a React app as quick and painless as possible.
+
 ## Reading Contract Data (vstorage)
 
 `makeAgoricChainStorageWatcher` can be used to subscribe to updates to vstorage.
