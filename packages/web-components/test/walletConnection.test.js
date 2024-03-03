@@ -11,7 +11,7 @@ import {
   // eslint-disable-next-line import/named
   provisionSmartWallet as mockProvisionSmartWallet,
 } from '../src/wallet-connection/makeAgoricSigner.js';
-import { Errors } from '../src/errors.js';
+import { Errors } from '../src/wallet-connection/errors.js';
 
 const testAddress = 'agoric123test';
 const rpc = 'https://fake.rpc';
