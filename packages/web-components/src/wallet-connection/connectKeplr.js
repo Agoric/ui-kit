@@ -7,7 +7,7 @@ import {
   createBankAminoConverters,
   createAuthzAminoConverters,
 } from '@cosmjs/stargate';
-import { Errors } from '../errors.js';
+import { Errors } from './errors.js';
 import { agoricConverters, agoricRegistryTypes } from './signerOptions.js';
 
 /** @typedef {import('@keplr-wallet/types').Keplr} Keplr */

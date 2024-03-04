@@ -10,7 +10,6 @@
     "lint": "run-s --continue-on-error lint:*",
     "lint:types": "tsc -p tsconfig.json",
     "lint:eslint": "eslint .",
-    "analyze": "cem analyze --litelement",
     "test": "vitest",
     "coverage": "vitest run --coverage"
   },
@@ -21,33 +20,22 @@
     "@agoric/ertp": "^0.16.2",
     "@agoric/notifier": "^0.6.3-dev-8c14632.0",
     "@agoric/smart-wallet": "^0.5.3",
-    "@agoric/wallet": "^0.18.3",
     "@endo/captp": "^3.1.1",
     "@endo/eventual-send": "^0.17.5",
-    "@endo/marshal": "^0.8.5",
-    "@endo/promise-kit": "^0.2.56",
-    "@lit-labs/react": "^1.0.1",
-    "lit": "2.0.2"
+    "@endo/marshal": "^0.8.5"
   },
   "devDependencies": {
+    "eslint-config-airbnb-base": "15.0.0",
+    "@agoric/eslint-config": "0.4.1-u12.0",
     "@agoric/rpc": "^0.9.0",
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "@custom-elements-manifest/analyzer": "^0.4.17",
     "@keplr-wallet/types": "^0.11.37",
-    "@open-wc/eslint-config": "^10.0.0",
-    "@rollup/plugin-commonjs": "^25.0.1",
-    "@web/dev-server": "^0.2.2",
-    "@web/test-runner": "^0.16.1",
+    "@typescript-eslint/eslint-plugin": "^7.1.0",
     "eslint": "^8.57.0",
-    "eslint-plugin-lit": "^1.8.2",
-    "eslint-plugin-lit-a11y": "^2.4.0",
     "ses": "0.18.7",
     "vitest": "^0.34.1"
   },
-  "customElements": "custom-elements.json",
   "eslintConfig": {
     "extends": [
-      "@open-wc",
       "@agoric",
       "plugin:jsdoc/recommended-typescript-flavor-error",
       "plugin:import/typescript"
@@ -64,6 +52,9 @@
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
       "project": "./tsconfig.json"
+    },
+    "env": { 
+      "browser": true
     }
   },
   "publishConfig": {
