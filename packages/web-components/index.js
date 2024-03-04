@@ -7,3 +7,4 @@ export {
 } from './src/wallet-connection/signerOptions.js';
 export { suggestChain } from './src/wallet-connection/suggestChain.js';
 export { Errors } from './src/wallet-connection/errors.js';
+export * from './src/display/index.js';
