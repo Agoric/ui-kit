@@ -3,7 +3,7 @@ import { fromBech32, toBech32, fromBase64, toBase64 } from '@cosmjs/encoding';
 import {
   MsgWalletSpendAction,
   MsgProvision,
-} from '@agoric/cosmic-proto/swingset/msgs.js';
+} from '@agoric/cosmic-proto/dist/codegen/agoric/swingset/msgs.js';
 import { bech32Config } from './chainInfo.js';
 
 /** @typedef {import("@cosmjs/stargate").AminoConverters} AminoConverters */

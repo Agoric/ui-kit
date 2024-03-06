@@ -1,15 +1,7 @@
 // @ts-check
-import { Registry } from '@cosmjs/proto-signing';
-import {
-  SigningStargateClient,
-  AminoTypes,
-  defaultRegistryTypes,
-  createBankAminoConverters,
-  createAuthzAminoConverters,
-} from '@cosmjs/stargate';
+import { getSigningAgoricClientOptions } from '@agoric/cosmic-proto';
+import { SigningStargateClient } from '@cosmjs/stargate';
 import { Errors } from './errors.js';
-import { agoricConverters, agoricRegistryTypes } from './signerOptions.js';
-
 /** @typedef {import('@keplr-wallet/types').Keplr} Keplr */
 
 /**
@@ -44,14 +36,8 @@ export const connectKeplr = async (chainId, rpc) => {
   const signingClient = await SigningStargateClient.connectWithSigner(
     rpc,
     offlineSigner,
-    {
-      aminoTypes: new AminoTypes({
-        ...agoricConverters,
-        ...createBankAminoConverters(),
-        ...createAuthzAminoConverters(),
-      }),
-      registry: new Registry([...defaultRegistryTypes, ...agoricRegistryTypes]),
-    },
+    // @ts-expect-error version mismatch of private 'types' field
+    getSigningAgoricClientOptions(),
   );
 
   return {
