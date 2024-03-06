@@ -255,7 +255,7 @@ export const watchWallet = (
       const leader = makeLeader(rpc);
       const follower = makeFollower(`:published.wallet.${address}`, leader, {
         proof: 'none',
-        unserializer: Far('marshaller', chainStorageWatcher.marshaller),
+        unserializer: Far('marshaller', { ...chainStorageWatcher.marshaller }),
       });
 
       for await (const update of iterateEach(follower)) {
