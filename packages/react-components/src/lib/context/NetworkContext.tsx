@@ -6,6 +6,7 @@ export type NetworkConfig = {
   testChain?: {
     chainId: string;
     chainName: string;
+    iconUrl?: string;
   };
 };
 

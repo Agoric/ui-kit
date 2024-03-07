@@ -1,18 +1,17 @@
 import { Dialog, Transition } from '@headlessui/react';
-import { Fragment, useContext, useState } from 'react';
+import { Fragment, useState } from 'react';
 import clsx from 'clsx';
-import { NetworkContext } from '../context';
+import { useAgoricNetwork } from '../hooks';
 import BldIcon from '../icons/Bld';
 import type { ChangeEvent } from 'react';
 
 type Props = {
-  isChainIdEditable?: boolean;
   isOpen?: boolean;
   onClose: () => void;
 };
 
 export const NodeSelectorModal = ({ onClose, isOpen = false }: Props) => {
-  const { networkConfig, setNetworkConfig } = useContext(NetworkContext);
+  const { networkConfig, setNetworkConfig } = useAgoricNetwork();
   const defaultRest = networkConfig?.apis?.rest?.at(0);
   const defaultRpc = networkConfig?.apis?.rpc?.at(0);
   assert(
@@ -103,7 +102,7 @@ export const NodeSelectorModal = ({ onClose, isOpen = false }: Props) => {
                 <div className="pt-10 pb-6 px-8">
                   <div className="flex justify-end gap-6">
                     <button
-                      className="text-gray-500 bg-gray-100 hover:bg-gray-200 transition-colors"
+                      className="cursor-pointer transition text-btn-xs text-gray-500 rounded-md border-transparent py-3 px-7 font-bold bg-gray-500 bg-opacity-10 hover:bg-opacity-20 active:bg-opacity-30"
                       onClick={cancel}
                     >
                       Cancel
@@ -114,7 +113,7 @@ export const NodeSelectorModal = ({ onClose, isOpen = false }: Props) => {
                         'transition text-btn-xs flex justify-center rounded border border-transparent text-white px-16 py-3',
                         isNetworkUnchanged
                           ? 'bg-gray-300 cursor-not-allowed'
-                          : 'bg-[#BB2D40] hover:opacity-80 active:opacity-60',
+                          : 'bg-[#BB2D40] hover:opacity-80 active:opacity-60 cursor-pointer',
                       )}
                       onClick={save}
                     >

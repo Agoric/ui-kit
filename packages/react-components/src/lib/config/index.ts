@@ -4,15 +4,15 @@ import type { Endpoints } from '@cosmos-kit/core';
 
 export type ChainConfig = { chains: Chain[]; assetLists: AssetList[] };
 
-const prettyTestChainName = (name: string) =>
+export const prettyTestChainName = (name: string) =>
   name
     .split('-')
     .map(s => s[0].toUpperCase() + s.slice(1))
     .join(' ');
 
-const agoricChain = chains.find((chain: Chain) => {
+export const agoricChain = chains.find((chain: Chain) => {
   return chain.chain_name === 'agoric';
-});
+}) as Chain | undefined;
 
 export const makeChainInfo = (
   chainName: string,
