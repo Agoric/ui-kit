@@ -1,7 +1,7 @@
 import { PropsWithChildren, useState } from 'react';
 import {
   AgoricContext,
-  type PursesJSONState,
+  type PurseJSONState,
   type AgoricWalletConnection,
 } from './AgoricContext';
 import { SigningStargateClient } from '@cosmjs/stargate';
@@ -55,9 +55,9 @@ export const AgoricProviderLite = ({
   const [chainStorageWatcher, setChainStorageWatcher] = useState<
     ChainStorageWatcher | undefined
   >(undefined);
-  const [purses, setPurses] = useState<
-    PursesJSONState<AssetKind>[] | undefined
-  >(undefined);
+  const [purses, setPurses] = useState<PurseJSONState<AssetKind>[] | undefined>(
+    undefined,
+  );
   const [offerIdsToPublicSubscribers, setOfferIdsToPublicSubscribers] =
     useState<Record<string, Record<string, string>> | undefined>(undefined);
   const [isSmartWalletProvisioned, setIsSmartWalletProvisioned] = useState<
