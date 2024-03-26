@@ -17,6 +17,7 @@
     "@agoric/assert": "^0.6.0",
     "@agoric/cache": "^0.3.2",
     "@agoric/casting": "^0.4.3-u13.0",
+    "@agoric/cosmic-proto": "0.3.0",
     "@agoric/ertp": "^0.16.2",
     "@agoric/notifier": "^0.6.3-dev-8c14632.0",
     "@agoric/smart-wallet": "^0.5.3",
@@ -53,7 +54,7 @@
     "parserOptions": {
       "project": "./tsconfig.json"
     },
-    "env": { 
+    "env": {
       "browser": true
     }
   },

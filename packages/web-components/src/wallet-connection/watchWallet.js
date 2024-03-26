@@ -6,6 +6,7 @@ import { Tendermint34Client } from '@cosmjs/tendermint-rpc';
 import { AgoricChainStoragePathKind } from '@agoric/rpc';
 import { Far } from '@endo/marshal';
 import { queryBankBalances } from './queryBankBalances.js';
+import { querySwingsetParams } from './querySwingsetParams.js';
 
 /** @typedef {import("@agoric/rpc").ChainStorageWatcher} ChainStorageWatcher */
 /** @typedef {import('@agoric/smart-wallet/src/types.js').Petname} Petname */
@@ -31,6 +32,8 @@ import { queryBankBalances } from './queryBankBalances.js';
  *  }
  * ][]} VBankAssets
  */
+
+/** @typedef {import('@agoric/ertp/src/types.js').Amount<'nat'>['value']} NatValue */
 
 const POLL_INTERVAL_MS = 6000;
 const RETRY_INTERVAL_MS = 200;
@@ -79,24 +82,86 @@ export const watchWallet = (
   );
 
   const smartWalletStatusNotifierKit = makeNotifierKit(
-    /** @type { {provisioned: boolean} | null } */ (null),
+    /** @type { {provisioned: boolean, provisionFee?: NatValue} | null } */ (
+      null
+    ),
   );
 
   let lastPaths;
   let isWalletMissing = false;
+  /** @type {Promise<Tendermint34Client> | undefined} */
+  let tendermintClientP;
+
+  /** @returns {Promise<NatValue>} */
+  const fetchProvisionFee = async () => {
+    await null;
+    return new Promise((res, rej) => {
+      const query = async (attempts = 0) => {
+        await null;
+
+        try {
+          tendermintClientP ||= Tendermint34Client.connect(rpc);
+          const swingset = await querySwingsetParams(await tendermintClientP);
+          console.debug('got swingset params:', swingset);
+          const beansPerSmartWallet = swingset.params?.beansPerUnit.find(
+            ({ key }) => key === 'smartWalletProvision',
+          )?.beans;
+          const feeUnit = swingset.params?.beansPerUnit.find(
+            ({ key }) => key === 'feeUnit',
+          )?.beans;
+          const feeUnitPrice = swingset.params?.feeUnitPrice[0]?.amount;
+
+          if (!(feeUnitPrice && beansPerSmartWallet && feeUnit)) {
+            console.error('Provisioning fee missing from swingset params');
+            res(0n);
+            return;
+          }
+
+          const fee =
+            (BigInt(beansPerSmartWallet) / BigInt(feeUnit)) *
+            BigInt(feeUnitPrice);
+
+          res(fee);
+        } catch (e) {
+          console.error('Error querying smart wallet provision fee', address);
+          if (attempts >= MAX_ATTEMPTS_TO_WATCH_BANK) {
+            rej(e);
+          } else {
+            setTimeout(() => query(attempts + 1), RETRY_INTERVAL_MS);
+          }
+        }
+      };
+      query();
+    });
+  };
+
   chainStorageWatcher.watchLatest(
     [AgoricChainStoragePathKind.Data, `published.wallet.${address}.current`],
     value => {
       if (!value) {
         if (!isWalletMissing) {
-          smartWalletStatusNotifierKit.updater.updateState(
-            harden({ provisioned: false }),
-          );
           isWalletMissing = true;
+          fetchProvisionFee()
+            .then(provisionFee => {
+              if (isWalletMissing) {
+                smartWalletStatusNotifierKit.updater.updateState(
+                  harden({ provisioned: false, provisionFee }),
+                );
+              }
+            })
+            .catch(e => {
+              onError(new Error(`RPC error - ${e.toString?.()}`));
+              if (isWalletMissing) {
+                smartWalletStatusNotifierKit.updater.updateState(
+                  harden({ provisioned: false }),
+                );
+              }
+            });
         }
         return;
       }
 
+      isWalletMissing = false;
       smartWalletStatusNotifierKit.updater.updateState(
         harden({ provisioned: true }),
       );
@@ -120,16 +185,22 @@ export const watchWallet = (
 
       const possiblyUpdateBankPurses = () => {
         if (!vbankAssets || !bank) return;
+        let shouldUpdatePurses = false;
 
         const bankMap = new Map(
           bank.map(({ denom, amount }) => [denom, amount]),
         );
 
         vbankAssets.forEach(([denom, info]) => {
-          const amount = bankMap.get(denom) ?? 0n;
+          const existingPurse = brandToPurse.get(info.brand);
+          const value = BigInt(bankMap.get(denom) ?? 0n);
+          if (!existingPurse || existingPurse.currentAmount.value !== value) {
+            shouldUpdatePurses = true;
+          }
+
           const purseInfo = {
             brand: info.brand,
-            currentAmount: AmountMath.make(info.brand, BigInt(amount)),
+            currentAmount: AmountMath.make(info.brand, value),
             brandPetname: info.issuerName,
             pursePetname: info.issuerName,
             displayInfo: info.displayInfo,
@@ -137,17 +208,17 @@ export const watchWallet = (
           brandToPurse.set(info.brand, purseInfo);
         });
 
-        updatePurses(brandToPurse);
+        if (shouldUpdatePurses) {
+          updatePurses(brandToPurse);
+        }
       };
 
-      /** @type {Tendermint34Client} */
-      let tendermintClient;
       const watchBank = async (attempts = 0) => {
         await null;
 
         try {
-          tendermintClient ||= await Tendermint34Client.connect(rpc);
-          bank = await queryBankBalances(address, tendermintClient);
+          tendermintClientP ||= Tendermint34Client.connect(rpc);
+          bank = await queryBankBalances(address, await tendermintClientP);
         } catch (e) {
           console.error('Error querying bank balances for address', address);
           if (attempts >= MAX_ATTEMPTS_TO_WATCH_BANK) {

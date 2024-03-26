@@ -92,7 +92,7 @@
     "@endo/promise-kit" "0.2.56"
     node-fetch "^2.6.0"
 
-"@agoric/cosmic-proto@^0.3.0":
+"@agoric/cosmic-proto@0.3.0", "@agoric/cosmic-proto@^0.3.0":
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/@agoric/cosmic-proto/-/cosmic-proto-0.3.0.tgz#c9d31d3946c91fbb1630f89d8ba63a662bcdacc5"
   integrity sha512-cIunby6gs53sGkHx3ALraREbfVQXvsIcObMjQQ0/tZt5HVqwoS7Y1Qj1Xl0ZZvqE8B1Zyk7QMDj829mbTII+9g==
