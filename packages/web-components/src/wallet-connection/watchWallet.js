@@ -185,16 +185,22 @@ export const watchWallet = (
 
       const possiblyUpdateBankPurses = () => {
         if (!vbankAssets || !bank) return;
+        let shouldUpdatePurses = false;
 
         const bankMap = new Map(
           bank.map(({ denom, amount }) => [denom, amount]),
         );
 
         vbankAssets.forEach(([denom, info]) => {
-          const amount = bankMap.get(denom) ?? 0n;
+          const existingPurse = brandToPurse.get(info.brand);
+          const value = BigInt(bankMap.get(denom) ?? 0n);
+          if (!existingPurse || existingPurse.currentAmount.value !== value) {
+            shouldUpdatePurses = true;
+          }
+
           const purseInfo = {
             brand: info.brand,
-            currentAmount: AmountMath.make(info.brand, BigInt(amount)),
+            currentAmount: AmountMath.make(info.brand, value),
             brandPetname: info.issuerName,
             pursePetname: info.issuerName,
             displayInfo: info.displayInfo,
@@ -202,7 +208,9 @@ export const watchWallet = (
           brandToPurse.set(info.brand, purseInfo);
         });
 
-        updatePurses(brandToPurse);
+        if (shouldUpdatePurses) {
+          updatePurses(brandToPurse);
+        }
       };
 
       const watchBank = async (attempts = 0) => {
@@ -236,7 +244,6 @@ export const watchWallet = (
 
       void watchVbankAssets();
       void watchBank();
-      void fetchProvisionFee();
     }
 
     {

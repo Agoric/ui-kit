@@ -90,7 +90,6 @@ export const AgoricProviderLite = ({
       for await (const status of subscribeLatest(n)) {
         if (isCancelled) return;
         if (!status) continue;
-        console.log('wallet status', status);
         setIsSmartWalletProvisioned(status.provisioned);
         setSmartWalletProvisionFee(status.provisionFee);
       }
