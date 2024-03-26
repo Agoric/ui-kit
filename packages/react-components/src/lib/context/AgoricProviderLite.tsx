@@ -63,6 +63,9 @@ export const AgoricProviderLite = ({
   const [isSmartWalletProvisioned, setIsSmartWalletProvisioned] = useState<
     boolean | undefined
   >(undefined);
+  const [smartWalletProvisionFee, setSmartWalletProvisionFee] = useState<
+    bigint | undefined
+  >(undefined);
 
   const { status, client } = useWalletClient();
   const chain = useChain(chainName);
@@ -87,7 +90,9 @@ export const AgoricProviderLite = ({
       for await (const status of subscribeLatest(n)) {
         if (isCancelled) return;
         if (!status) continue;
+        console.log('wallet status', status);
         setIsSmartWalletProvisioned(status.provisioned);
+        setSmartWalletProvisionFee(status.provisionFee);
       }
     };
 
@@ -213,6 +218,7 @@ export const AgoricProviderLite = ({
     isSmartWalletProvisioned,
     makeOffer: walletConnection?.makeOffer,
     provisionSmartWallet: walletConnection?.provisionSmartWallet,
+    smartWalletProvisionFee,
   };
 
   return (

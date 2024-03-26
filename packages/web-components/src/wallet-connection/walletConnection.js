@@ -24,7 +24,7 @@ export const makeAgoricWalletConnection = async (
   const { client, address } =
     clientConfig || (await connectKeplr(chainStorageWatcher.chainId, rpc));
 
-  const { submitSpendAction, provisionSmartWallet } = await makeAgoricSigner(
+  const { submitSpendAction, provisionSmartWallet } = makeAgoricSigner(
     client,
     address,
   );
