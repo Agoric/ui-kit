@@ -6,6 +6,7 @@ import { PropsWithChildren, useContext } from 'react';
 import { NetworkConfig, NetworkContext } from './NetworkContext';
 import { NetworkProvider } from './NetworkProvider';
 import type { MainWalletBase, WalletConnectOptions } from '@cosmos-kit/core';
+import type { Props as ProvisionNoticeProps } from '../components/ProvisionNoticeModal';
 
 import '@interchain-ui/react/styles';
 
@@ -14,6 +15,7 @@ type Props = {
   defaultNetworkConfig: NetworkConfig;
   walletConnectOptions?: WalletConnectOptions;
   onConnectionError?: (e: unknown) => void;
+  provisionNoticeContent?: ProvisionNoticeProps['mainContent'];
 };
 
 export const AgoricProvider = (props: PropsWithChildren<Props>) => {
@@ -29,6 +31,7 @@ const AgoricProviderInner = ({
   walletConnectOptions,
   children,
   onConnectionError,
+  provisionNoticeContent,
 }: PropsWithChildren<Props>) => {
   const { networkConfig } = useContext(NetworkContext);
   assert(networkConfig, 'Network config missing from context');
@@ -53,6 +56,7 @@ const AgoricProviderInner = ({
       <AgoricProviderLite
         chainName={chainName}
         onConnectionError={onConnectionError}
+        provisionNoticeContent={provisionNoticeContent}
       >
         {children}
       </AgoricProviderLite>
