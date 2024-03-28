@@ -26,11 +26,16 @@ import {
 import { subscribeLatest } from '@agoric/notifier';
 import type { ChainName } from 'cosmos-kit';
 import type { AssetKind } from '@agoric/ertp/src/types';
+import {
+  ProvisionNoticeModal,
+  type Props as ProvisionNoticeProps,
+} from '../components/ProvisionNoticeModal';
 
 type Props = {
   chainName?: ChainName;
   useCustomEndpoints?: boolean;
   onConnectionError?: (e: unknown) => void;
+  provisionNoticeContent?: ProvisionNoticeProps['mainContent'];
 };
 
 /**
@@ -48,6 +53,7 @@ export const AgoricProviderLite = ({
   onConnectionError = () => {},
   chainName = 'agoric',
   useCustomEndpoints = true,
+  provisionNoticeContent,
 }: PropsWithChildren<Props>) => {
   const [walletConnection, setWalletConnection] = useState<
     AgoricWalletConnection | undefined
@@ -65,6 +71,9 @@ export const AgoricProviderLite = ({
   >(undefined);
   const [smartWalletProvisionFee, setSmartWalletProvisionFee] = useState<
     bigint | undefined
+  >(undefined);
+  const [postProvisionOffer, setPostProvisionOffer] = useState<
+    (() => void) | undefined
   >(undefined);
 
   const { status, client } = useWalletClient();
@@ -206,6 +215,15 @@ export const AgoricProviderLite = ({
     };
   }, [status, chain.address, chainStorageWatcher]);
 
+  const checkSmartWalletProvisionAndMakeOffer = walletConnection
+    ? (...offerArgs: Parameters<AgoricWalletConnection['makeOffer']>) => {
+        setPostProvisionOffer(() => () => {
+          walletConnection?.makeOffer(...offerArgs);
+          setPostProvisionOffer(undefined);
+        });
+      }
+    : undefined;
+
   const state = {
     address: chain.address,
     chainName,
@@ -217,10 +235,18 @@ export const AgoricProviderLite = ({
     isSmartWalletProvisioned,
     makeOffer: walletConnection?.makeOffer,
     provisionSmartWallet: walletConnection?.provisionSmartWallet,
+    checkSmartWalletProvisionAndMakeOffer,
     smartWalletProvisionFee,
   };
 
   return (
-    <AgoricContext.Provider value={state}>{children}</AgoricContext.Provider>
+    <AgoricContext.Provider value={state}>
+      {children}
+      <ProvisionNoticeModal
+        mainContent={provisionNoticeContent}
+        onClose={() => setPostProvisionOffer(undefined)}
+        proceed={postProvisionOffer}
+      />
+    </AgoricContext.Provider>
   );
 };
