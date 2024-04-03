@@ -131,6 +131,7 @@ dist
 
 # Other build output
 compiled
+api-docs
 
 # Vscode Settings
 .vscode/
