@@ -15,9 +15,6 @@
     },
     "./dist/style.css": "./dist/style.css"
   },
-  "engines": {
-    "node": "18"
-  },
   "scripts": {
     "build": "tsc && vite build",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx",

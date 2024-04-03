@@ -45,9 +45,6 @@
   "resolutions": {
     "**/@agoric/swingset-liveslots": "0.10.3-dev-8c14632.0"
   },
-  "engines": {
-    "node": "^16.13 || ^18.12"
-  },
   "ava": {
     "files": [
       "packages/*/test/**/test-*.js"
