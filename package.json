@@ -10,6 +10,7 @@
   "type": "module",
   "packageManager": "yarn@1.22.19",
   "scripts": {
+    "docs": "typedoc --excludeInternal",
     "format": "yarn prettier --write packages",
     "lint": "yarn workspaces run lint",
     "test": "yarn workspaces run test"

@@ -1,0 +1,10 @@
+{
+  "entryPoints": [
+    "packages/*",
+  ],
+  "name": "API documentation of Agoric ui-kit",
+  "entryPointStrategy": "packages",
+  "out": "api-docs",
+  "includeVersion": true,
+  "logLevel": "Verbose"
+}
