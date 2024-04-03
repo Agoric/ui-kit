@@ -1,0 +1,10 @@
+{
+  "extends": "./typedoc.base.json",
+  "entryPoints": [
+    "packages/*",
+  ],
+  "name": "API documentation of Agoric ui-kit",
+  "entryPointStrategy": "packages",
+  "out": "api-docs",
+  "logLevel": "Verbose"
+}
