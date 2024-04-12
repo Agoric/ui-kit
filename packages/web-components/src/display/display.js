@@ -7,14 +7,12 @@ import { stringifyNat } from './natValue/stringifyNat.js';
 import { stringifySet } from './setValue/stringifySet.js';
 import { stringifyCopyBag } from './copyBagValue/stringifyCopyBag.js';
 
-/** @typedef {import('@agoric/ertp').AssetKind} AssetKind */
-/** @typedef {import('@agoric/ertp/src/types.js').AmountValue} AmountValue */
-/** @typedef {import('@agoric/ertp/src/types.js').Brand} Brand */
-/** @typedef {import('@agoric/ertp/src/types.js').Amount} Amount */
+/** @import { Amount, AmountValue, Brand } from '@agoric/ertp/src/types.js'; */
+/** @import { AssetKind as AssetKindT } from '@agoric/ertp/src/types.js'; */
 
 /**
  * @param {string} str - string to parse as a value
- * @param {AssetKind} [assetKind] - assetKind of the value
+ * @param {AssetKindT} [assetKind] - assetKind of the value
  * @param {number} [decimalPlaces] - places to move the decimal to the left
  * @returns {AmountValue}
  */
@@ -33,7 +31,7 @@ export const parseAsValue = (
 /**
  * @param {string} str - string to parse as a value
  * @param {Brand} brand - brand to use in the amount
- * @param {AssetKind} [assetKind] - assetKind of the value
+ * @param {AssetKindT} [assetKind] - assetKind of the value
  * @param {number} [decimalPlaces] - places to move the decimal to the left
  * @returns {Amount}
  */
@@ -48,7 +46,7 @@ export const parseAsAmount = (
 
 /**
  * @param {AmountValue} value - value to stringify
- * @param {AssetKind} [assetKind] - assetKind of the value
+ * @param {AssetKindT} [assetKind] - assetKind of the value
  * @param {number} [decimalPlaces] - places to move the decimal to the
  * right in the string
  * @param {number} [placesToShow] - places after the decimal to show
@@ -93,7 +91,7 @@ export const stringifyPurseValue = purse => {
 /**
  * Stringify the value in an amount
  * @param {Amount} amount
- * @param {AssetKind} [assetKind] - assetKind of the value
+ * @param {AssetKindT} [assetKind] - assetKind of the value
  * @param {number} [decimalPlaces] - places to move the decimal to the
  * right in the string
  * @param {number} [placesToShow] - places after the decimal to show
