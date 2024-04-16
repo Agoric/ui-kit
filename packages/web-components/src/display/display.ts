@@ -1,27 +1,28 @@
 import { assert, details } from '@agoric/assert';
 import { AssetKind } from '@agoric/ertp';
-import '@agoric/ertp/exported.js';
+import { stringifyCopyBag } from './copyBagValue/stringifyCopyBag.js';
 import { parseAsNat } from './natValue/parseAsNat.js';
 import { stringifyNat } from './natValue/stringifyNat.js';
 import { stringifySet } from './setValue/stringifySet.js';
-import { stringifyCopyBag } from './copyBagValue/stringifyCopyBag.js';
 
-/** @typedef {import('@agoric/ertp').AssetKind} AssetKind */
-/** @typedef {import('@agoric/ertp/src/types.js').AmountValue} AmountValue */
-/** @typedef {import('@agoric/ertp/src/types.js').Brand} Brand */
-/** @typedef {import('@agoric/ertp/src/types.js').Amount} Amount */
+import type {
+  Amount,
+  AmountValue,
+  AssetKind as AssetKindUnion, // not a proper enum so can't reuse name for value and type
+  Brand,
+  NatValue,
+} from '@agoric/ertp/src/types.js';
 
 /**
- * @param {string} str - string to parse as a value
- * @param {AssetKind} [assetKind] - assetKind of the value
- * @param {number} [decimalPlaces] - places to move the decimal to the left
- * @returns {AmountValue}
+ * @param str - string to parse as a value
+ * @param [assetKind] - assetKind of the value
+ * @param [decimalPlaces] - places to move the decimal to the left
  */
 export const parseAsValue = (
-  str,
-  assetKind = AssetKind.NAT,
+  str: string,
+  assetKind: AssetKindUnion = AssetKind.NAT,
   decimalPlaces = 0,
-) => {
+): AmountValue => {
   if (assetKind === AssetKind.NAT) {
     return parseAsNat(str, decimalPlaces);
   }
@@ -30,37 +31,35 @@ export const parseAsValue = (
 };
 
 /**
- * @param {string} str - string to parse as a value
- * @param {Brand} brand - brand to use in the amount
- * @param {AssetKind} [assetKind] - assetKind of the value
- * @param {number} [decimalPlaces] - places to move the decimal to the left
- * @returns {Amount}
+ * @param str - string to parse as a value
+ * @param brand - brand to use in the amount
+ * @param [assetKind] - assetKind of the value
+ * @param [decimalPlaces] - places to move the decimal to the left
  */
 export const parseAsAmount = (
-  str,
-  brand,
+  str: string,
+  brand: Brand,
   assetKind = AssetKind.NAT,
   decimalPlaces = 0,
-) => {
+): Amount => {
   return { brand, value: parseAsValue(str, assetKind, decimalPlaces) };
 };
 
 /**
- * @param {AmountValue} value - value to stringify
- * @param {AssetKind} [assetKind] - assetKind of the value
- * @param {number} [decimalPlaces] - places to move the decimal to the
+ * @param value - value to stringify
+ * @param [assetKind] - assetKind of the value
+ * @param [decimalPlaces] - places to move the decimal to the
  * right in the string
- * @param {number} [placesToShow] - places after the decimal to show
- * @returns {string}
+ * @param [placesToShow] - places after the decimal to show
  */
 export const stringifyValue = (
-  value,
-  assetKind = AssetKind.NAT,
+  value: AmountValue,
+  assetKind: AssetKindUnion = AssetKind.NAT,
   decimalPlaces = 0,
-  placesToShow,
-) => {
+  placesToShow?: number,
+): string => {
   if (assetKind === AssetKind.NAT) {
-    return stringifyNat(value, decimalPlaces, placesToShow);
+    return stringifyNat(value as NatValue, decimalPlaces, placesToShow);
   }
   if (assetKind === AssetKind.SET) {
     return stringifySet(value);
@@ -75,10 +74,9 @@ export const stringifyValue = (
 
 /**
  * Stringify the value of a purse
- * @param {any} purse
- * @returns {string}
+ * @param purse
  */
-export const stringifyPurseValue = purse => {
+export const stringifyPurseValue = (purse): string => {
   if (!purse) {
     return '0';
   }
@@ -91,18 +89,17 @@ export const stringifyPurseValue = purse => {
 
 /**
  * Stringify the value in an amount
- * @param {Amount} amount
- * @param {AssetKind} [assetKind] - assetKind of the value
- * @param {number} [decimalPlaces] - places to move the decimal to the
+ * @param amount
+ * @param [assetKind] - assetKind of the value
+ * @param [decimalPlaces] - places to move the decimal to the
  * right in the string
- * @param {number} [placesToShow] - places after the decimal to show
- * @returns {string}
+ * @param [placesToShow] - places after the decimal to show
  */
 export function stringifyAmountValue(
-  amount,
-  assetKind,
-  decimalPlaces,
-  placesToShow,
+  amount: Amount,
+  assetKind: AssetKindUnion,
+  decimalPlaces?: number,
+  placesToShow?: number,
 ) {
   if (!amount) {
     return '0';

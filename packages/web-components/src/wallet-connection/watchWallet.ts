@@ -8,30 +8,28 @@ import { Far } from '@endo/marshal';
 import { queryBankBalances } from './queryBankBalances.js';
 import { querySwingsetParams } from './querySwingsetParams.js';
 
-/** @typedef {import("@agoric/rpc").ChainStorageWatcher} ChainStorageWatcher */
-/** @typedef {import('@agoric/smart-wallet/src/types.js').Petname} Petname */
-/** @typedef {import('@keplr-wallet/types').Coin} Coin */
+import type { ChainStorageWatcher } from '@agoric/rpc';
+import type { Petname } from '@agoric/smart-wallet/src/types.js';
+import type { Coin } from '@keplr-wallet/types';
+import type { Brand } from '@agoric/ertp/exported.js';
+import type {
+  CurrentWalletRecord,
+  UpdateRecord,
+} from '@agoric/smart-wallet/src/smartWallet.js';
+import type { NatValue } from '@agoric/ertp/src/types.js';
 
-/**
- * @typedef {{
- *  brand?: unknown,
- *  brandPetname?: Petname,
- *  currentAmount: unknown,
- *  pursePetname?: Petname,
- *  displayInfo?: unknown,
- * }} PurseInfo
- */
+interface PurseInfo {
+  brand?: Brand;
+  brandPetname?: Petname;
+  currentAmount: unknown;
+  pursePetname?: Petname;
+  displayInfo?: unknown;
+}
 
-/**
- * @typedef {[
- *  string,
- *  {
- *    brand: unknown,
- *    issuerName: string,
- *    displayInfo: unknown
- *  }
- * ][]} VBankAssets
- */
+type VBankAssets = [
+  string,
+  { brand: Brand; issuerName: string; displayInfo: unknown },
+][];
 
 /** @typedef {import('@agoric/ertp/src/types.js').Amount<'nat'>['value']} NatValue */
 
@@ -39,27 +37,18 @@ const POLL_INTERVAL_MS = 6000;
 const RETRY_INTERVAL_MS = 200;
 const MAX_ATTEMPTS_TO_WATCH_BANK = 2;
 
-/**
- * @param {ChainStorageWatcher} chainStorageWatcher
- * @param {string} address
- * @param {string} rpc
- * @param {((error: unknown) => void)} [onError]
- */
 export const watchWallet = (
-  chainStorageWatcher,
-  address,
-  rpc,
-  onError = () => {
+  chainStorageWatcher: ChainStorageWatcher,
+  address: string,
+  rpc: string,
+  onError = (_err: unknown) => {
     /* noop */
   },
 ) => {
-  const pursesNotifierKit = makeNotifierKit(
-    /** @type {PurseInfo[] | null} */ (null),
-  );
+  const pursesNotifierKit = makeNotifierKit<PurseInfo[] | null>(null);
 
   const updatePurses = brandToPurse => {
-    /** @type {PurseInfo[]} */
-    const purses = [];
+    const purses = [] as PurseInfo[];
     for (const [_brand, purse] of brandToPurse.entries()) {
       if (purse.currentAmount && purse.brandPetname) {
         assert(purse.pursePetname, 'missing purse.pursePetname');
@@ -69,23 +58,16 @@ export const watchWallet = (
     pursesNotifierKit.updater.updateState(harden(purses));
   };
 
-  const publicSubscriberPathsNotifierKit = makeNotifierKit(
-    /** @type {  import('@agoric/smart-wallet/src/smartWallet.js').CurrentWalletRecord['offerToPublicSubscriberPaths'] | null } */ (
-      null
-    ),
-  );
+  const publicSubscriberPathsNotifierKit = makeNotifierKit<
+    CurrentWalletRecord['offerToPublicSubscriberPaths'] | null
+  >(null);
 
-  const walletUpdatesNotifierKit = makeNotifierKit(
-    /** @type {  import('@agoric/smart-wallet/src/smartWallet.js').UpdateRecord | null } */ (
-      null
-    ),
-  );
+  const walletUpdatesNotifierKit = makeNotifierKit<UpdateRecord | null>(null);
 
-  const smartWalletStatusNotifierKit = makeNotifierKit(
-    /** @type { {provisioned: boolean, provisionFee?: NatValue} | null } */ (
-      null
-    ),
-  );
+  const smartWalletStatusNotifierKit = makeNotifierKit<{
+    provisioned: boolean;
+    provisionFee?: NatValue;
+  } | null>();
 
   let lastPaths;
   let isWalletMissing = false;
@@ -137,7 +119,7 @@ export const watchWallet = (
 
   chainStorageWatcher.watchLatest(
     [AgoricChainStoragePathKind.Data, `published.wallet.${address}.current`],
-    value => {
+    (value?: { offerToPublicSubscriberPaths: Record<string, string> }) => {
       if (!value) {
         if (!isWalletMissing) {
           isWalletMissing = true;
@@ -178,10 +160,8 @@ export const watchWallet = (
     const brandToPurse = new Map();
 
     {
-      /** @type {VBankAssets} */
-      let vbankAssets;
-      /** @type {Coin[]} */
-      let bank;
+      let vbankAssets: VBankAssets;
+      let bank: Coin[];
 
       const possiblyUpdateBankPurses = () => {
         if (!vbankAssets || !bank) return;
@@ -235,7 +215,7 @@ export const watchWallet = (
       const watchVbankAssets = () => {
         chainStorageWatcher.watchLatest(
           [AgoricChainStoragePathKind.Data, 'published.agoricNames.vbankAsset'],
-          value => {
+          (value: VBankAssets) => {
             vbankAssets = value;
             possiblyUpdateBankPurses();
           },
@@ -247,12 +227,9 @@ export const watchWallet = (
     }
 
     {
-      /** @type { [string, unknown][] } */
-      let agoricBrands;
-      /** @type { {balance: unknown, brand: unknown}[] } */
-      let nonBankPurses;
-      /** @type { Map<unknown, { displayInfo: unknown }> } */
-      let brandToBoardAux;
+      let agoricBrands: [string, unknown][];
+      let nonBankPurses: { balance: unknown; brand: unknown }[];
+      let brandToBoardAux: Map<unknown, { displayInfo: unknown }>;
 
       const possiblyUpdateNonBankPurses = () => {
         if (!agoricBrands || !nonBankPurses || !brandToBoardAux) return;
@@ -278,7 +255,7 @@ export const watchWallet = (
       const watchBrands = () => {
         chainStorageWatcher.watchLatest(
           [AgoricChainStoragePathKind.Data, 'published.agoricNames.brand'],
-          value => {
+          (value: [string, unknown][]) => {
             agoricBrands = value;
             possiblyUpdateNonBankPurses();
           },
@@ -292,6 +269,7 @@ export const watchWallet = (
             `published.wallet.${address}.current`,
           ],
           async value => {
+            // @ts-expect-error cast
             const { purses } = value;
             if (nonBankPurses === purses) return;
 
@@ -324,15 +302,23 @@ export const watchWallet = (
   const watchWalletUpdates = async () => {
     const watch = async () => {
       const leader = makeLeader(rpc);
-      const follower = makeFollower(`:published.wallet.${address}`, leader, {
-        proof: 'none',
-        unserializer: Far('marshaller', { ...chainStorageWatcher.marshaller }),
-      });
+      const follower = makeFollower<{ error?: unknown; value: unknown }>(
+        `:published.wallet.${address}`,
+        leader,
+        {
+          proof: 'none',
+          unserializer: Far('marshaller', {
+            ...chainStorageWatcher.marshaller,
+          }),
+        },
+      );
 
       for await (const update of iterateEach(follower)) {
         console.debug('wallet update', update);
+        // @ts-expect-error update unknown bc iterateEach() losing the type
         if ('error' in update) continue;
 
+        // @ts-expect-error xxx
         walletUpdatesNotifierKit.updater.updateState(harden(update.value));
       }
     };
