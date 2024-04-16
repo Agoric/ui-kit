@@ -2,19 +2,10 @@ import { fromBech32, toBase64 } from '@cosmjs/encoding';
 import { assertIsDeliverTxSuccess } from '@cosmjs/stargate';
 import { stableCurrency } from './chainInfo.js';
 import { AgoricMsgs } from './signerOptions.js';
+import type { StdFee } from '@keplr-wallet/types';
+import type { SigningStargateClient } from '@cosmjs/stargate';
 
-/** @typedef {import("@cosmjs/proto-signing").EncodeObject} EncodeObject */
-/** @typedef {import("@cosmjs/stargate").AminoConverters} AminoConverters */
-/** @typedef {import("@cosmjs/stargate").StdFee} StdFee */
-/** @typedef {import('@keplr-wallet/types').ChainInfo} ChainInfo */
-/** @typedef {import('@keplr-wallet/types').Keplr} Keplr */
-/** @typedef {import('@cosmjs/stargate').SigningStargateClient} SigningStargateClient */
-
-/**
- * @param {string} address
- * @returns {Uint8Array}
- */
-const toAccAddress = address => {
+const toAccAddress = (address: string): Uint8Array => {
   return fromBech32(address).data;
 };
 
@@ -28,12 +19,7 @@ const PowerFlags = {
   SMART_WALLET: 'SMART_WALLET',
 };
 
-/** @typedef {{owner: string, spendAction: string}} WalletSpendAction */
-
-/**
- * @returns {StdFee}
- */
-const zeroFee = () => {
+const zeroFee = (): StdFee => {
   const { coinMinimalDenom: denom } = stableCurrency;
   const fee = {
     amount: [{ amount: '0', denom }],
@@ -43,12 +29,15 @@ const zeroFee = () => {
 };
 
 /**
- * Use a signing client to
- * @param {SigningStargateClient} signingClient
- * @param {string} address
+ * Use a signing client to create a signer for Agoric-specific transactions
+ * @param signingClient
+ * @param address
  * Ref: https://docs.keplr.app/api/
  */
-export const makeAgoricSigner = (signingClient, address) => {
+export const makeAgoricSigner = (
+  signingClient: SigningStargateClient,
+  address: string,
+) => {
   const fee = zeroFee();
 
   return harden({
@@ -90,12 +79,12 @@ export const makeAgoricSigner = (signingClient, address) => {
     /**
      * Sign and broadcast WalletSpendAction
      *
-     * @param {string} spendAction marshaled offer
+     * @param spendAction marshaled offer
      * @throws if account does not exist on chain, user cancels,
      *         RPC connection fails, RPC service fails to broadcast (
      *         for example, if signature verification fails)
      */
-    submitSpendAction: async spendAction => {
+    submitSpendAction: async (spendAction: string) => {
       const { accountNumber, sequence } = await signingClient.getSequence(
         address,
       );

@@ -1,23 +1,19 @@
-import { fromBech32, toBech32, fromBase64, toBase64 } from '@cosmjs/encoding';
 import {
-  MsgWalletSpendAction,
   MsgProvision,
+  MsgWalletSpendAction,
 } from '@agoric/cosmic-proto/swingset/msgs.js';
+import { fromBase64, fromBech32, toBase64, toBech32 } from '@cosmjs/encoding';
 import { bech32Config } from './chainInfo.js';
 
-/** @typedef {import("@cosmjs/stargate").AminoConverters} AminoConverters */
-/** @typedef {import("@cosmjs/proto-signing").GeneratedType} GeneratedType } */
+import type { AminoConverters } from '@cosmjs/stargate';
+import type { GeneratedType } from '@cosmjs/proto-signing';
 
 const dbg = label => x => {
   console.debug(label, x);
   return x;
 };
 
-/**
- * @param {string} address
- * @returns {Uint8Array}
- */
-const toAccAddress = address => {
+const toAccAddress = (address: string): Uint8Array => {
   return fromBech32(address).data;
 };
 
@@ -36,16 +32,12 @@ export const AgoricMsgs = {
   },
 };
 
-/** @type {[string, GeneratedType][]} */
-export const agoricRegistryTypes = [
+export const agoricRegistryTypes: [string, GeneratedType][] = [
   [AgoricMsgs.MsgWalletSpendAction.typeUrl, MsgWalletSpendAction],
   [AgoricMsgs.MsgProvision.typeUrl, MsgProvision],
 ];
 
-/**
- * @type {AminoConverters}
- */
-export const agoricConverters = {
+export const agoricConverters: AminoConverters = {
   [AgoricMsgs.MsgWalletSpendAction.typeUrl]: {
     aminoType: AgoricMsgs.MsgWalletSpendAction.aminoType,
     toAmino: ({ spendAction, owner }) => ({

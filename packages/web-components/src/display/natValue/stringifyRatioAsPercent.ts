@@ -2,23 +2,17 @@ import { assert, details } from '@agoric/assert';
 
 import { captureNum } from './helpers/captureNum.js';
 import { roundToDecimalPlaces } from './helpers/roundToDecimalPlaces.js';
+import type { Ratio } from './ratio.js';
+import type { Brand } from '@agoric/ertp/exported.js';
 
 const PERCENT_BASE = 100n;
 const PLACES_TO_SHOW = 0;
 
-/** @typedef {import('@agoric/ertp/src/types.js').Brand} Brand */
-
-/**
- * @param {import('./ratio.js').Ratio} ratio
- * @param {(brand: Brand) => number | undefined } getDecimalPlaces
- * @param {number} [placesToShow]
- * @returns {string}
- */
 export const stringifyRatioAsPercent = (
-  ratio,
-  getDecimalPlaces,
+  ratio: Ratio,
+  getDecimalPlaces: (brand: Brand) => number | undefined,
   placesToShow = PLACES_TO_SHOW,
-) => {
+): string => {
   if (ratio === null || ratio === undefined) {
     return '0';
   }
