@@ -7,56 +7,42 @@ import { AgoricChainStoragePathKind } from '@agoric/rpc';
 import { Far } from '@endo/marshal';
 import { queryBankBalances } from './queryBankBalances.js';
 
-/** @typedef {import("@agoric/rpc").ChainStorageWatcher} ChainStorageWatcher */
-/** @typedef {import('@agoric/smart-wallet/src/types.js').Petname} Petname */
-/** @typedef {import('@keplr-wallet/types').Coin} Coin */
+import type { ChainStorageWatcher } from '@agoric/rpc';
+import type { Petname } from '@agoric/smart-wallet/src/types.js';
+import type { Coin } from '@keplr-wallet/types';
+import type { Brand } from '@agoric/ertp/exported.js';
 
-/**
- * @typedef {{
- *  brand?: unknown,
- *  brandPetname?: Petname,
- *  currentAmount: unknown,
- *  pursePetname?: Petname,
- *  displayInfo?: unknown,
- * }} PurseInfo
- */
+interface PurseInfo {
+  brand?: Brand;
+  brandPetname?: Petname;
+  currentAmount: unknown;
+  pursePetname?: Petname;
+  displayInfo?: unknown;
+}
 
-/**
- * @typedef {[
- *  string,
- *  {
- *    brand: unknown,
- *    issuerName: string,
- *    displayInfo: unknown
- *  }
- * ][]} VBankAssets
- */
+type VBankAssets = [
+  string,
+  { brand: Brand; issuerName: string; displayInfo: unknown },
+][];
 
 const POLL_INTERVAL_MS = 6000;
 const RETRY_INTERVAL_MS = 200;
 const MAX_ATTEMPTS_TO_WATCH_BANK = 2;
 
-/**
- * @param {ChainStorageWatcher} chainStorageWatcher
- * @param {string} address
- * @param {string} rpc
- * @param {((error: unknown) => void)} [onError]
- */
 export const watchWallet = (
-  chainStorageWatcher,
-  address,
-  rpc,
-  onError = () => {
+  chainStorageWatcher: ChainStorageWatcher,
+  address: string,
+  rpc: string,
+  onError = (_err: unknown) => {
     /* noop */
   },
 ) => {
   const pursesNotifierKit = makeNotifierKit(
-    /** @type {PurseInfo[] | null} */ (null),
+    /** @type {PurseInfo[] | null} */ null,
   );
 
   const updatePurses = brandToPurse => {
-    /** @type {PurseInfo[]} */
-    const purses = [];
+    const purses = [] as PurseInfo[];
     for (const [_brand, purse] of brandToPurse.entries()) {
       if (purse.currentAmount && purse.brandPetname) {
         assert(purse.pursePetname, 'missing purse.pursePetname');
@@ -67,19 +53,15 @@ export const watchWallet = (
   };
 
   const publicSubscriberPathsNotifierKit = makeNotifierKit(
-    /** @type {  import('@agoric/smart-wallet/src/smartWallet.js').CurrentWalletRecord['offerToPublicSubscriberPaths'] | null } */ (
-      null
-    ),
+    /** @type {  import('@agoric/smart-wallet/src/smartWallet.js').CurrentWalletRecord['offerToPublicSubscriberPaths'] | null } */ null,
   );
 
   const walletUpdatesNotifierKit = makeNotifierKit(
-    /** @type {  import('@agoric/smart-wallet/src/smartWallet.js').UpdateRecord | null } */ (
-      null
-    ),
+    /** @type {  import('@agoric/smart-wallet/src/smartWallet.js').UpdateRecord | null } */ null,
   );
 
   const smartWalletStatusNotifierKit = makeNotifierKit(
-    /** @type { {provisioned: boolean} | null } */ (null),
+    /** @type { {provisioned: boolean} | null } */ null,
   );
 
   let lastPaths;
@@ -100,6 +82,7 @@ export const watchWallet = (
       smartWalletStatusNotifierKit.updater.updateState(
         harden({ provisioned: true }),
       );
+      // @ts-expect-error xxx
       const { offerToPublicSubscriberPaths: currentPaths } = value;
       if (currentPaths === lastPaths) return;
 
@@ -113,10 +96,8 @@ export const watchWallet = (
     const brandToPurse = new Map();
 
     {
-      /** @type {VBankAssets} */
-      let vbankAssets;
-      /** @type {Coin[]} */
-      let bank;
+      let vbankAssets: VBankAssets;
+      let bank: Coin[];
 
       const possiblyUpdateBankPurses = () => {
         if (!vbankAssets || !bank) return;
@@ -165,6 +146,7 @@ export const watchWallet = (
         chainStorageWatcher.watchLatest(
           [AgoricChainStoragePathKind.Data, 'published.agoricNames.vbankAsset'],
           value => {
+            // @ts-expect-error cast
             vbankAssets = value;
             possiblyUpdateBankPurses();
           },
@@ -221,6 +203,7 @@ export const watchWallet = (
             `published.wallet.${address}.current`,
           ],
           async value => {
+            // @ts-expect-error cast
             const { purses } = value;
             if (nonBankPurses === purses) return;
 
@@ -260,8 +243,10 @@ export const watchWallet = (
 
       for await (const update of iterateEach(follower)) {
         console.debug('wallet update', update);
+        // @ts-expect-error xxx
         if ('error' in update) continue;
 
+        // @ts-expect-error xxx
         walletUpdatesNotifierKit.updater.updateState(harden(update.value));
       }
     };

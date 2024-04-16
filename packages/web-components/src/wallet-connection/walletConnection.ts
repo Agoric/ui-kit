@@ -2,22 +2,19 @@ import { subscribeLatest } from '@agoric/notifier';
 import { makeAgoricSigner } from './makeAgoricSigner.js';
 import { watchWallet } from './watchWallet.js';
 import { connectKeplr } from './connectKeplr.js';
+import type { ChainStorageWatcher } from '@agoric/rpc';
+import type { SigningStargateClient } from '@cosmjs/stargate';
 
-/** @typedef {import("@agoric/rpc").ChainStorageWatcher} ChainStorageWatcher */
-/** @typedef {import("@cosmjs/stargate").SigningStargateClient} SigningStargateClient */
-/** @typedef {{client: SigningStargateClient, address: string }} ClientConfig */
+interface ClientConfig {
+  client: SigningStargateClient;
+  address: string;
+}
 
-/**
- * @param {ChainStorageWatcher} chainStorageWatcher
- * @param {string} rpc
- * @param {((error: unknown) => void)} [onError]
- * @param {ClientConfig} [clientConfig]
- */
 export const makeAgoricWalletConnection = async (
-  chainStorageWatcher,
-  rpc,
-  onError = undefined,
-  clientConfig = undefined,
+  chainStorageWatcher: ChainStorageWatcher,
+  rpc: string,
+  onError?: (error: unknown) => void,
+  clientConfig?: ClientConfig,
 ) => {
   await null;
   const { client, address } =

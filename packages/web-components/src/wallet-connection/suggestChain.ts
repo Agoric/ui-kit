@@ -1,26 +1,17 @@
 import { bech32Config, stableCurrency, stakeCurrency } from './chainInfo.js';
 
-/**  @typedef {import('@agoric/casting/src/netconfig').NetworkConfig} NetworkConfig */
-/**  @typedef {import('@keplr-wallet/types').ChainInfo} ChainInfo */
-/**  @typedef {import('@keplr-wallet/types').Keplr} Keplr */
+import { NetworkConfig } from '@agoric/casting/src/netconfig';
+import { ChainInfo } from '@keplr-wallet/types';
 
 export const AGORIC_COIN_TYPE = 564;
 export const COSMOS_COIN_TYPE = 118;
 
-/**
- *
- * @param {NetworkConfig} networkConfig
- * @param {string} caption
- * @param {number} randomFloat
- * @param {string | undefined} walletUrlForStaking
- * @returns {ChainInfo}
- */
 const makeChainInfo = (
-  networkConfig,
-  caption,
-  randomFloat,
-  walletUrlForStaking,
-) => {
+  networkConfig: NetworkConfig,
+  caption: string,
+  randomFloat: number,
+  walletUrlForStaking?: string,
+): ChainInfo => {
   const { chainName, rpcAddrs, apiAddrs } = networkConfig;
   const index = Math.floor(randomFloat * rpcAddrs.length);
 
@@ -52,10 +43,13 @@ const makeChainInfo = (
 
 /**
  *
- * @param {string} networkConfigHref
- * @param {string=} caption
+ * @param networkConfigHref
+ * @param [caption]
  */
-export async function suggestChain(networkConfigHref, caption) {
+export async function suggestChain(
+  networkConfigHref: string,
+  caption?: string,
+) {
   // @ts-expect-error Check for Keplr
   const { keplr } = window;
 
