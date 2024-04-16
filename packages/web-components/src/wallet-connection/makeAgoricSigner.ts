@@ -1,4 +1,3 @@
-// @ts-check
 import { fromBech32, toBase64 } from '@cosmjs/encoding';
 import { assertIsDeliverTxSuccess } from '@cosmjs/stargate';
 import { stableCurrency } from './chainInfo.js';

@@ -1,4 +1,3 @@
-// @ts-check
 import { assert, details } from '@agoric/assert';
 import { Nat } from '@endo/nat';
 import '@agoric/ertp/exported.js';
