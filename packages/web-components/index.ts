@@ -1,5 +1,3 @@
-// @ts-check
-
 export { makeAgoricWalletConnection } from './src/wallet-connection/walletConnection.js';
 export {
   agoricRegistryTypes,
