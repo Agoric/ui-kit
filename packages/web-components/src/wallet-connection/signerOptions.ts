@@ -1,4 +1,3 @@
-// @ts-check
 import { fromBech32, toBech32, fromBase64, toBase64 } from '@cosmjs/encoding';
 import {
   MsgWalletSpendAction,

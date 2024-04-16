@@ -1,5 +1,3 @@
-// @ts-check
-
 import { assert, details } from '@agoric/assert';
 
 import { captureNum } from './helpers/captureNum.js';
