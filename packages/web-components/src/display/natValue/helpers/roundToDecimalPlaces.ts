@@ -1,4 +1,3 @@
-// @ts-check
 import { assert, details } from '@agoric/assert';
 
 export const roundToDecimalPlaces = (

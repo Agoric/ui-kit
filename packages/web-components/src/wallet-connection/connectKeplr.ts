@@ -1,4 +1,3 @@
-// @ts-check
 import { Registry } from '@cosmjs/proto-signing';
 import {
   SigningStargateClient,

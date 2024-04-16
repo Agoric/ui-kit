@@ -1,4 +1,3 @@
-// @ts-check
 import { subscribeLatest } from '@agoric/notifier';
 import { makeAgoricSigner } from './makeAgoricSigner.js';
 import { watchWallet } from './watchWallet.js';
