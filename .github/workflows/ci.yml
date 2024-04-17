@@ -21,3 +21,4 @@ jobs:
       - run: yarn lint
       - run: yarn test
       - run: yarn docs
+      - run: yarn format --check
