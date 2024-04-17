@@ -6,8 +6,8 @@ import {
   stringifyRatio,
   stringifyRatioAsFraction,
   stringifyRatioAsPercent,
-} from '../../../src/display/index.js';
-import { makeRatio } from '../../../src/display/natValue/ratio.js';
+} from '../../../src/display/index.ts';
+import { makeRatio } from '../../../src/display/natValue/ratio.ts';
 
 describe('stringifyRatio', () => {
   const ethBrand = Far('eth brand', {});

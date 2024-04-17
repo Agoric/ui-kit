@@ -2,6 +2,7 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
+    "allowImportingTsExtensions": true, // for tests
     "outDir": "./dist",
     "checkJs": true
   },
