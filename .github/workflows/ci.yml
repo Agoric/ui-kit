@@ -9,15 +9,18 @@ jobs:
   main:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      # without this setup-node errors on mismatched yarn versions
+      - run: corepack enable
+      - uses: actions/setup-node@v4
         with:
           cache: 'yarn'
           cache-dependency-path: yarn.lock
-      - run: yarn install --frozen-lockfile
+
+      - run: yarn install --immutable
       # Prepack so the linter and tests have access to the build exports of
       # other packages' prepack.
-      - run: yarn workspaces run prepack
+      - run: yarn workspaces foreach --all --topological run prepack
       - run: yarn lint
       - run: yarn test
       - run: yarn docs
