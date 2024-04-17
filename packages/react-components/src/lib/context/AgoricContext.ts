@@ -1,10 +1,12 @@
 import { createContext } from 'react';
-import {
-  type AmountValue,
-  makeAgoricWalletConnection,
-} from '@agoric/web-components';
+import { makeAgoricWalletConnection } from '@agoric/web-components';
 import type { ChainStorageWatcher } from '@agoric/rpc';
-import type { Brand, Amount, AssetKind } from '@agoric/ertp/src/types';
+import type {
+  Brand,
+  Amount,
+  AssetKind,
+  AmountValue,
+} from '@agoric/ertp/src/types';
 
 export type PurseJSONState<T extends AssetKind> = {
   brand: Brand;

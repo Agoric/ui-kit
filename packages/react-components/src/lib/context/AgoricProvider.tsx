@@ -9,14 +9,14 @@ import type { MainWalletBase, WalletConnectOptions } from '@cosmos-kit/core';
 
 import '@interchain-ui/react/styles';
 
-type Props = {
+export type AgoricProviderProps = PropsWithChildren<{
   wallets: MainWalletBase[];
   defaultNetworkConfig: NetworkConfig;
   walletConnectOptions?: WalletConnectOptions;
   onConnectionError?: (e: unknown) => void;
-};
+}>;
 
-export const AgoricProvider = (props: PropsWithChildren<Props>) => {
+export const AgoricProvider = (props: AgoricProviderProps) => {
   return (
     <NetworkProvider defaultNetworkConfig={props.defaultNetworkConfig}>
       <AgoricProviderInner {...props} />
@@ -29,7 +29,7 @@ const AgoricProviderInner = ({
   walletConnectOptions,
   children,
   onConnectionError,
-}: PropsWithChildren<Props>) => {
+}: AgoricProviderProps) => {
   const { networkConfig } = useContext(NetworkContext);
   assert(networkConfig, 'Network config missing from context');
 
