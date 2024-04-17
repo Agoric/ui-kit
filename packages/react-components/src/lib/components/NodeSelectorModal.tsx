@@ -5,12 +5,15 @@ import { useAgoricNetwork } from '../hooks';
 import BldIcon from '../icons/Bld';
 import type { ChangeEvent } from 'react';
 
-type Props = {
+export type NodeSelectorModalProps = {
   isOpen?: boolean;
   onClose: () => void;
 };
 
-export const NodeSelectorModal = ({ onClose, isOpen = false }: Props) => {
+export const NodeSelectorModal = ({
+  onClose,
+  isOpen = false,
+}: NodeSelectorModalProps) => {
   const { networkConfig, setNetworkConfig } = useAgoricNetwork();
   const defaultRest = networkConfig?.apis?.rest?.at(0);
   const defaultRpc = networkConfig?.apis?.rpc?.at(0);
