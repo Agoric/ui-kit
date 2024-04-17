@@ -10,9 +10,9 @@ import {
 import { makeRatio } from '../../../src/display/natValue/ratio.ts';
 
 describe('stringifyRatio', () => {
-  const ethBrand = Far('eth brand', {});
-  const dollarBrand = Far('dollar brand', {});
-  const istBrand = Far('ist brand', {});
+  const ethBrand = /** @type {any} */ (Far('eth brand', {}));
+  const dollarBrand = /** @type {any} */ (Far('dollar brand', {}));
+  const istBrand = /** @type {any} */ (Far('ist brand', {}));
 
   const getDecimalPlaces = brand => {
     if (ethBrand === brand) {
@@ -31,7 +31,6 @@ describe('stringifyRatio', () => {
     const ethPrice = harden(
       makeRatio(
         158724n, // value of 1 eth in cents
-        // @ts-expect-error fake brand
         dollarBrand,
         10n ** 18n,
         ethBrand,
@@ -59,7 +58,6 @@ describe('stringifyRatio', () => {
     const ethPrice = harden(
       makeRatio(
         1909113516n, // value of 1 eth in smallest IST denomination
-        // @ts-expect-error fake brand
         istBrand,
         10n ** 18n,
         ethBrand,

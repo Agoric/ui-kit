@@ -12,8 +12,8 @@
   "scripts": {
     "docs": "typedoc --excludeInternal",
     "format": "yarn prettier --write packages",
-    "lint": "yarn workspaces run lint",
-    "test": "yarn workspaces run test"
+    "lint": "yarn workspaces foreach --all run lint",
+    "test": "yarn workspaces foreach --all run test"
   },
   "devDependencies": {
     "@agoric/eslint-config": "^0.4.1-dev-4b79eb6.0",
