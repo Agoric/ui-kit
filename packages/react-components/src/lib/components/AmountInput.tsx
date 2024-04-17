@@ -6,7 +6,7 @@ const noop = () => {
   /* no-op */
 };
 
-type Props = {
+export type AmountInputProps = {
   value: NatValue | null;
   decimalPlaces: number;
   className?: React.HtmlHTMLAttributes<HTMLInputElement>['className'];
@@ -15,7 +15,13 @@ type Props = {
 };
 
 const RenderAmountInput = (
-  { value, decimalPlaces, className, onChange = noop, disabled = false }: Props,
+  {
+    value,
+    decimalPlaces,
+    className,
+    onChange = noop,
+    disabled = false,
+  }: AmountInputProps,
   ref?: Ref<HTMLInputElement>,
 ) => {
   const { displayString, handleInputChange } = useAmountInput({

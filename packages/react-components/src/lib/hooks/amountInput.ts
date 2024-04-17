@@ -10,7 +10,8 @@ type Args = {
 };
 
 export const useAmountInput = ({ value, decimalPlaces, onChange }: Args) => {
-  const amountString = stringifyValue(value, AssetKind.NAT, decimalPlaces);
+  const amountString =
+    value === null ? '' : stringifyValue(value, AssetKind.NAT, decimalPlaces);
 
   const [fieldString, setFieldString] = useState(
     value === null ? '' : amountString,
@@ -26,7 +27,11 @@ export const useAmountInput = ({ value, decimalPlaces, onChange }: Args) => {
     setFieldString(str);
 
     try {
-      const parsed = parseAsValue(str, AssetKind.NAT, decimalPlaces);
+      const parsed = parseAsValue(
+        str,
+        AssetKind.NAT,
+        decimalPlaces,
+      ) as NatValue;
       onChange(parsed);
     } catch {
       console.debug('Invalid input', str);

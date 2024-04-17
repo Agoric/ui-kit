@@ -27,11 +27,11 @@ import { subscribeLatest } from '@agoric/notifier';
 import type { ChainName } from 'cosmos-kit';
 import type { AssetKind } from '@agoric/ertp/src/types';
 
-type Props = {
+export type AgoricProviderLiteProps = PropsWithChildren<{
   chainName?: ChainName;
   useCustomEndpoints?: boolean;
   onConnectionError?: (e: unknown) => void;
-};
+}>;
 
 /**
  * Provides access to Agoric-specific account features such as smart wallet
@@ -48,7 +48,7 @@ export const AgoricProviderLite = ({
   onConnectionError = () => {},
   chainName = 'agoric',
   useCustomEndpoints = true,
-}: PropsWithChildren<Props>) => {
+}: AgoricProviderLiteProps) => {
   const [walletConnection, setWalletConnection] = useState<
     AgoricWalletConnection | undefined
   >(undefined);
