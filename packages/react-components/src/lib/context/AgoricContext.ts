@@ -43,6 +43,7 @@ export type AgoricState = {
   isSmartWalletProvisioned?: boolean;
   provisionSmartWallet?: AgoricWalletConnection['provisionSmartWallet'];
   makeOffer?: AgoricWalletConnection['makeOffer'];
+  smartWalletProvisionFee?: bigint;
 };
 
 export const AgoricContext = createContext<AgoricState>({});
