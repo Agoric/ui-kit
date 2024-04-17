@@ -8,7 +8,7 @@
     "packages/react-components"
   ],
   "type": "module",
-  "packageManager": "yarn@1.22.19",
+  "packageManager": "yarn@4.1.1",
   "scripts": {
     "docs": "typedoc --excludeInternal",
     "format": "yarn prettier --write packages",
@@ -46,7 +46,7 @@
     "typescript": "~5.3.3"
   },
   "resolutions": {
-    "**/@agoric/swingset-liveslots": "0.10.3-dev-8c14632.0"
+    "@agoric/swingset-liveslots": "0.10.3-dev-8c14632.0"
   },
   "ava": {
     "files": [
