@@ -1,7 +1,7 @@
 // @ts-check
 import '../../installSesLockdown.js';
 import { describe, expect, it } from 'vitest';
-import { roundToDecimalPlaces as round } from '../../../src/display/natValue/helpers/roundToDecimalPlaces.js';
+import { roundToDecimalPlaces as round } from '../../../src/display/natValue/helpers/roundToDecimalPlaces.ts';
 
 describe(round, () => {
   it('can round', () => {
