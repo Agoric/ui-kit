@@ -10,7 +10,7 @@ Setup may vary by environment.
 
 ## React Apps
 
-See [packages/react-components](https://github.com/Agoric/ui-kit](https://github.com/Agoric/ui-kit/tree/main/packages/react-components) for convenient hooks and utilities that make setting up
+See [packages/react-components](https://github.com/Agoric/ui-kit/tree/main/packages/react-components) for convenient hooks and utilities that make setting up
 a React app as quick and painless as possible.
 
 ## Reading Contract Data (vstorage)
