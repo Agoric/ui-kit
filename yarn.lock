@@ -815,30 +815,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@agoric/xsnap@npm:^0.14.2":
-  version: 0.14.2
-  resolution: "@agoric/xsnap@npm:0.14.2"
-  dependencies:
-    "@agoric/assert": "npm:^0.6.0"
-    "@agoric/internal": "npm:^0.3.2"
-    "@agoric/xsnap-lockdown": "npm:^0.14.0"
-    "@endo/bundle-source": "npm:^2.5.1"
-    "@endo/eventual-send": "npm:^0.17.2"
-    "@endo/init": "npm:^0.5.56"
-    "@endo/netstring": "npm:^0.3.26"
-    "@endo/promise-kit": "npm:^0.2.56"
-    "@endo/stream": "npm:^0.3.25"
-    "@endo/stream-node": "npm:^0.2.26"
-    glob: "npm:^7.1.6"
-    tmp: "npm:^0.2.1"
-  bin:
-    ava-xs: src/ava-xs.js
-    xsrepl: src/xsrepl
-  checksum: 10c0/432bf7ed200f56156db84aad8031932cb1ed229280a35ee374bd339a1a1ee9bf3201b871b81b13407768aad3ab6c2ea784d521757f3d565ccb604eaa898aa879
-  languageName: node
-  linkType: hard
-
-"@agoric/xsnap@npm:^0.14.3-u14.0":
+"@agoric/xsnap@npm:0.14.3-u14.0":
   version: 0.14.3-u14.0
   resolution: "@agoric/xsnap@npm:0.14.3-u14.0"
   dependencies:
@@ -858,6 +835,29 @@ __metadata:
     ava-xs: src/ava-xs.js
     xsrepl: src/xsrepl
   checksum: 10c0/32cca9a8981621ba265fcf3f13479526ddc946969d86bf0397efb35e7c6de67ce1afe4dea58b521519f679af2f6a07d427baf5939f465b70efc012bc6b46b3e6
+  languageName: node
+  linkType: hard
+
+"@agoric/xsnap@patch:@agoric/xsnap@npm%3A0.14.3-u14.0#~/.yarn/patches/@agoric-xsnap-npm-0.14.3-u14.0-768ce73dba.patch":
+  version: 0.14.3-u14.0
+  resolution: "@agoric/xsnap@patch:@agoric/xsnap@npm%3A0.14.3-u14.0#~/.yarn/patches/@agoric-xsnap-npm-0.14.3-u14.0-768ce73dba.patch::version=0.14.3-u14.0&hash=06713d"
+  dependencies:
+    "@agoric/assert": "npm:^0.6.1-u11wf.0"
+    "@agoric/internal": "npm:^0.4.0-u14.0"
+    "@agoric/xsnap-lockdown": "npm:^0.14.1-u13.0"
+    "@endo/bundle-source": "npm:2.5.2-upstream-rollup"
+    "@endo/eventual-send": "npm:0.17.2"
+    "@endo/init": "npm:0.5.56"
+    "@endo/netstring": "npm:0.3.26"
+    "@endo/promise-kit": "npm:0.2.56"
+    "@endo/stream": "npm:0.3.25"
+    "@endo/stream-node": "npm:0.2.26"
+    glob: "npm:^7.1.6"
+    tmp: "npm:^0.2.1"
+  bin:
+    ava-xs: src/ava-xs.js
+    xsrepl: src/xsrepl
+  checksum: 10c0/eb9ec216518c42aa7103484798bb11776b60e24c4eef9b8669aab56b4bc7b67cffb67c3f0e5adc9cb260168a974e327de26bd03f6a6663dd2892db11804c577e
   languageName: node
   linkType: hard
 
@@ -4171,17 +4171,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@endo/netstring@npm:^0.3.26":
-  version: 0.3.30
-  resolution: "@endo/netstring@npm:0.3.30"
-  dependencies:
-    "@endo/init": "npm:^0.5.60"
-    "@endo/stream": "npm:^0.3.29"
-    ses: "npm:^0.18.8"
-  checksum: 10c0/9a5910962884f4e5d7cba57cd0e5625241e89af3505d8698b5066c396f2fe16083a4cfc1ac99c950148db36d56a73dac62a086c25538e6ea44288ffc25e4ccff
-  languageName: node
-  linkType: hard
-
 "@endo/pass-style@npm:0.1.3":
   version: 0.1.3
   resolution: "@endo/pass-style@npm:0.1.3"
@@ -4319,17 +4308,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@endo/stream-node@npm:^0.2.26":
-  version: 0.2.30
-  resolution: "@endo/stream-node@npm:0.2.30"
-  dependencies:
-    "@endo/init": "npm:^0.5.60"
-    "@endo/stream": "npm:^0.3.29"
-    ses: "npm:^0.18.8"
-  checksum: 10c0/e64838d4552715b72f01635e8ff70552eb66c078382a48b3e3ce70af78d0eb5333c39d691a6bc43e5b61a3b535dcde2ac10b6b51886b5f88715a03ffbe783565
-  languageName: node
-  linkType: hard
-
 "@endo/stream@npm:0.3.25":
   version: 0.3.25
   resolution: "@endo/stream@npm:0.3.25"
@@ -4341,7 +4319,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@endo/stream@npm:^0.3.25, @endo/stream@npm:^0.3.29":
+"@endo/stream@npm:^0.3.25":
   version: 0.3.29
   resolution: "@endo/stream@npm:0.3.29"
   dependencies:

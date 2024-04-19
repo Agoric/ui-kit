@@ -1,0 +1,19 @@
+diff --git a/package.json b/package.json
+index 25ddb12bf728223569f4e53ed8cca20e51813725..876d249fa2584d748f6da234d5104c42090b5f34 100644
+--- a/package.json
++++ b/package.json
+@@ -12,11 +12,11 @@
+   },
+   "scripts": {
+     "repl": "node src/xsrepl.js",
+-    "build:bin": "if test -d ./test; then node src/build.js; else yarn build:from-env; fi",
++    "build:bin": "if test -d ./test; then node src/build.js; else npm run build:from-env; fi",
+     "build:env": "test -d ./test && node src/build.js --show-env > build.env",
+     "build:from-env": "{ cat build.env; echo node src/build.js; } | xargs env",
+-    "build": "yarn build:bin && yarn build:env",
+-    "postinstall": "yarn build:from-env",
++    "build": "npm run build:bin && npm run build:env",
++    "postinstall": "npm run build:from-env",
+     "clean": "rm -rf xsnap-native/xsnap/build",
+     "lint": "run-s --continue-on-error lint:*",
+     "lint:js": "eslint 'src/**/*.js' 'test/**/*.js' api.js",
