@@ -1,4 +1,3 @@
-// @ts-check
 import { Registry } from '@cosmjs/proto-signing';
 import {
   SigningStargateClient,
@@ -10,20 +9,13 @@ import {
 import { Errors } from './errors.js';
 import { agoricConverters, agoricRegistryTypes } from './signerOptions.js';
 
-/** @typedef {import('@keplr-wallet/types').Keplr} Keplr */
+import type { Keplr } from '@keplr-wallet/types';
 
-/**
- *
- * @param {string} chainId
- * @param {string} rpc
- */
-export const connectKeplr = async (chainId, rpc) => {
+export const connectKeplr = async (chainId: string, rpc: string) => {
   if (!('keplr' in window)) {
     throw Error(Errors.noKeplr);
   }
-  /** @type {import('@keplr-wallet/types').Keplr} */
-  // @ts-expect-error cast (checked above)
-  const keplr = window.keplr;
+  const keplr = window.keplr as Keplr;
 
   await null;
   try {

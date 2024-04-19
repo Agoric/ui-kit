@@ -7,7 +7,7 @@ import { makeAgoricWalletConnection } from '@agoric/web-components';
 
 const watcher = makeAgoricChainStorageWatcher(rpc, chainName);
 const connection = await makeAgoricWalletConnection(watcher);
-const {pursesNotifier, publicSubscribersNotifier} = chainConnection;
+const { pursesNotifier, publicSubscribersNotifier } = chainConnection;
 
 // Sign an on-chain offer transaction.
 connection.makeOffer(...offer);

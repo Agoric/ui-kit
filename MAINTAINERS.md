@@ -43,7 +43,7 @@ While the above CI tests run, verify that packaging will work:
 ```sh
 # Build all package generated files.
 yarn install --force
-yarn workspaces run prepack
+yarn workspaces foreach --all --topological run prepack
 ```
 
 - [ ] Wait for the release PR's CI tests to pass.

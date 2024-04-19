@@ -1,4 +1,3 @@
-// @ts-check
 import { assert, details } from '@agoric/assert';
 import { Nat } from '@endo/nat';
 import '@agoric/ertp/exported.js';
@@ -17,11 +16,10 @@ import { roundToDecimalPlaces } from './helpers/roundToDecimalPlaces.js';
  * still 300n cents with decimalPlaces =2 because the thousandths place is dropped.
  *
  * In the future, we may add a parameter to change the rounding rules.
- * @param {string} str
- * @param {number} decimalPlaces
- * @returns {bigint}
+ * @param str
+ * @param decimalPlaces
  */
-export function parseAsNat(str, decimalPlaces = 0) {
+export function parseAsNat(str: string, decimalPlaces = 0): bigint {
   assert.typeof(str, 'string', details`value to parse ${str} must be a string`);
   const capturedNum = captureNum(str);
   const roundedRight = roundToDecimalPlaces(capturedNum.right, decimalPlaces);

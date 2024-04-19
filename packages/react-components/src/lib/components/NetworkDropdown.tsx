@@ -4,7 +4,7 @@ import { agoricChain, prettyTestChainName } from '../config/index.js';
 import { ChangeChainCombobox } from '@interchain-ui/react';
 import { useState } from 'react';
 
-type Props = {
+export type NetworkDropdownProps = {
   networkConfigs: NetworkConfig[];
   label?: ChangeChainCombobox['label'];
   size?: ChangeChainCombobox['size'];
@@ -33,7 +33,7 @@ export const NetworkDropdown = ({
   maxHeight,
   size = 'md',
   appearance = 'bold',
-}: Props) => {
+}: NetworkDropdownProps) => {
   const { networkConfig, setNetworkConfig } = useAgoricNetwork();
   assert(
     networkConfig && setNetworkConfig,

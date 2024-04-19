@@ -1,7 +1,7 @@
 // @ts-check
 import '../../installSesLockdown.js';
 import { describe, expect, it } from 'vitest';
-import { stringifyNat } from '../../../src/display/natValue/stringifyNat.js';
+import { stringifyNat } from '../../../src/display/natValue/stringifyNat.ts';
 
 describe(stringifyNat, () => {
   it('can stringify cents to dollars', () => {

@@ -1,7 +1,7 @@
 // @ts-check
 import '../installSesLockdown.js';
 import { describe, vi, expect, it } from 'vitest';
-import { makeAgoricWalletConnection } from '../../src/wallet-connection/walletConnection.js';
+import { makeAgoricWalletConnection } from '../../src/wallet-connection/walletConnection.ts';
 import {
   makeAgoricSigner,
   // @ts-expect-error exported by mock below
@@ -10,8 +10,8 @@ import {
   // @ts-expect-error exported by mock below
   // eslint-disable-next-line import/named
   provisionSmartWallet as mockProvisionSmartWallet,
-} from '../../src/wallet-connection/makeAgoricSigner.js';
-import { Errors } from '../../src/wallet-connection/errors.js';
+} from '../../src/wallet-connection/makeAgoricSigner.ts';
+import { Errors } from '../../src/wallet-connection/errors.ts';
 
 const testAddress = 'agoric123test';
 const rpc = 'https://fake.rpc';
@@ -20,7 +20,7 @@ const rpc = 'https://fake.rpc';
 // eslint-disable-next-line no-undef
 global.window = { keplr: {} };
 
-vi.mock('../../src/wallet-connection/makeAgoricSigner.js', () => {
+vi.mock('../../src/wallet-connection/makeAgoricSigner.ts', () => {
   const submitSpendAction = vi.fn();
   const provisionSmartWallet = vi.fn();
 
@@ -35,7 +35,7 @@ vi.mock('../../src/wallet-connection/makeAgoricSigner.js', () => {
   };
 });
 
-vi.mock('../../src/queryBankBalances.js', () => {
+vi.mock('../../src/queryBankBalances.ts', () => {
   return {
     queryBankBalances: vi.fn(),
   };

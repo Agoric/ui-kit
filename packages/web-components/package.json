@@ -7,9 +7,7 @@
   "main": "dist/index.js",
   "scripts": {
     "prepack": "tsc --build tsconfig.build.json",
-    "lint": "run-s --continue-on-error lint:*",
-    "lint:types": "tsc -p tsconfig.json",
-    "lint:eslint": "eslint .",
+    "lint": "eslint . && tsc",
     "test": "vitest",
     "coverage": "vitest run --coverage"
   },
@@ -18,7 +16,7 @@
     "@agoric/cache": "^0.3.2",
     "@agoric/casting": "^0.4.3-u13.0",
     "@agoric/cosmic-proto": "0.3.0",
-    "@agoric/ertp": "^0.16.2",
+    "@agoric/ertp": "^0.16.3-dev-e2e36cc.0",
     "@agoric/notifier": "^0.6.3-dev-8c14632.0",
     "@agoric/smart-wallet": "^0.5.3",
     "@endo/captp": "^3.1.1",
@@ -26,13 +24,14 @@
     "@endo/marshal": "^0.8.5"
   },
   "devDependencies": {
-    "eslint-config-airbnb-base": "15.0.0",
     "@agoric/eslint-config": "0.4.1-u12.0",
     "@agoric/rpc": "^0.9.0",
     "@keplr-wallet/types": "^0.11.37",
     "@typescript-eslint/eslint-plugin": "^7.1.0",
     "eslint": "^8.57.0",
+    "eslint-config-airbnb-base": "15.0.0",
     "ses": "0.18.7",
+    "typescript": "~5.3.3",
     "vitest": "^0.34.1"
   },
   "eslintConfig": {
@@ -47,8 +46,11 @@
       "jsdoc/require-property-description": "off",
       "jsdoc/require-returns": "off",
       "jsdoc/check-tag-names": "off",
+      "jsdoc/require-param-type": "off",
       "jsdoc/tag-lines": "off",
-      "import/no-extraneous-dependencies": "off"
+      "import/no-unresolved": "off",
+      "import/no-extraneous-dependencies": "off",
+      "import/order": "off"
     },
     "parser": "@typescript-eslint/parser",
     "parserOptions": {

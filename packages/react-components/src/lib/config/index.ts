@@ -1,6 +1,8 @@
 import { assets, chains } from 'chain-registry';
-import type { Chain, AssetList } from '@chain-registry/types';
 import type { Endpoints } from '@cosmos-kit/core';
+
+type Chain = (typeof chains)[number];
+type AssetList = (typeof assets)[number];
 
 export type ChainConfig = { chains: Chain[]; assetLists: AssetList[] };
 
