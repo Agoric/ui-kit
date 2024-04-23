@@ -335,6 +335,7 @@ __metadata:
     "@agoric/rpc": "npm:^0.9.0"
     "@agoric/web-components": "npm:^0.15.0"
     "@babel/core": "npm:7.22.10"
+    "@chain-registry/types": "npm:^0.25.7"
     "@cosmos-kit/core": "npm:2.8.9"
     "@cosmos-kit/react": "npm:2.10.10"
     "@headlessui/react": "npm:^1.7.18"
@@ -2549,6 +2550,13 @@ __metadata:
   version: 0.25.3
   resolution: "@chain-registry/types@npm:0.25.3"
   checksum: 10c0/bd621b771bf06f698cc570f244b6f49c8f8bcaa4b4818013e62bbad448c30142ee7af70e7e1d6878a89e84d513eb23f048a9edb21fb671ef9657345ff10b558e
+  languageName: node
+  linkType: hard
+
+"@chain-registry/types@npm:^0.25.7":
+  version: 0.25.7
+  resolution: "@chain-registry/types@npm:0.25.7"
+  checksum: 10c0/2ac06a7d4308cd6b63280fbb3efda8c33e58b1bfc1cd4261b14c73b54c3bb365705e21957c339f1e7c679dcd389aee195cc53c2a77eb380391f7754b139b1819
   languageName: node
   linkType: hard
 

@@ -37,6 +37,7 @@
   },
   "devDependencies": {
     "@babel/core": "7.22.10",
+    "@chain-registry/types": "^0.25.7",
     "@headlessui/react": "^1.7.18",
     "@testing-library/react": "14.0.0",
     "@types/node": "20.4.9",
