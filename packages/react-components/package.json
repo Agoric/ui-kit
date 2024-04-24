@@ -1,6 +1,5 @@
 {
   "name": "@agoric/react-components",
-  "private": false,
   "version": "0.1.0",
   "repository": {
     "type": "git",
@@ -14,9 +13,6 @@
       "require": "./dist/react-components.umd.js"
     },
     "./dist/style.css": "./dist/style.css"
-  },
-  "engines": {
-    "node": "18"
   },
   "scripts": {
     "build": "tsc && NODE_OPTIONS=--max-old-space-size=4096 vite build",
@@ -41,6 +37,7 @@
   },
   "devDependencies": {
     "@babel/core": "7.22.10",
+    "@chain-registry/types": "^0.25.7",
     "@headlessui/react": "^1.7.18",
     "@testing-library/react": "14.0.0",
     "@types/node": "20.4.9",
@@ -55,7 +52,7 @@
     "eslint": "8.46.0",
     "eslint-config-prettier": "9.0.0",
     "eslint-config-standard-with-typescript": "37.0.0",
-    "eslint-plugin-import": "2.28.0",
+    "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-n": "16.0.1",
     "eslint-plugin-promise": "6.1.1",
     "eslint-plugin-react": "7.33.1",
@@ -68,7 +65,7 @@
     "prop-types": "15.8.1",
     "storybook": "7.2.2",
     "tailwindcss": "3.3.3",
-    "typescript": "5.1.6",
+    "typescript": "~5.3.3",
     "vite": "4.4.9",
     "vite-plugin-dts": "3.5.1",
     "vitest": "0.34.1"

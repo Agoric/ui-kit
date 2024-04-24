@@ -1,17 +1,11 @@
-// @ts-check
 import { assert } from '@agoric/assert';
 import { roundToDecimalPlaces } from './helpers/roundToDecimalPlaces.js';
-
-/** @typedef {import('@agoric/ertp/src/types.js').NatValue} NatValue */
+import type { NatValue } from '@agoric/ertp/exported.js';
 
 const CONVENTIONAL_DECIMAL_PLACES = 2;
 const MAX_DECIMAL_PLACES = 100;
 
-/**
- * @param {NatValue} value
- * @returns {number}
- */
-const calcTrailingZeros = value => {
+const calcTrailingZeros = (value: NatValue): number => {
   let zeroes = 0;
   while (value > 0n && value % 10n === 0n) {
     zeroes += 1;
@@ -20,17 +14,11 @@ const calcTrailingZeros = value => {
   return zeroes;
 };
 
-/**
- * @param {NatValue?} [natValue]
- * @param {number} [decimalPlaces]
- * @param {number} [placesToShow]
- * @returns {string}
- */
 export const stringifyNat = (
-  natValue = null,
+  natValue: NatValue | null = null,
   decimalPlaces = 0,
-  placesToShow,
-) => {
+  placesToShow?: number,
+): string => {
   if (natValue === null) {
     return '';
   }

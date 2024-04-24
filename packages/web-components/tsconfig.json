@@ -2,8 +2,9 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
+    "allowImportingTsExtensions": true, // for tests
     "outDir": "./dist",
-    "checkJs": true,
+    "checkJs": true
   },
   "include": [
     "*.js",
@@ -11,6 +12,6 @@
     "test/**/*.js",
     "*.ts",
     "src/**/*.ts",
-    "test/**/*.ts",
-  ],
+    "test/**/*.ts"
+  ]
 }

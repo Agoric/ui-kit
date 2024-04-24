@@ -31,12 +31,12 @@ import {
   type Props as ProvisionNoticeProps,
 } from '../components/ProvisionNoticeModal';
 
-type Props = {
+export type AgoricProviderLiteProps = PropsWithChildren<{
   chainName?: ChainName;
   useCustomEndpoints?: boolean;
   onConnectionError?: (e: unknown) => void;
   provisionNoticeContent?: ProvisionNoticeProps['mainContent'];
-};
+}>;
 
 /**
  * Provides access to Agoric-specific account features such as smart wallet
@@ -54,7 +54,7 @@ export const AgoricProviderLite = ({
   chainName = 'agoric',
   useCustomEndpoints = true,
   provisionNoticeContent,
-}: PropsWithChildren<Props>) => {
+}: AgoricProviderLiteProps) => {
   const [walletConnection, setWalletConnection] = useState<
     AgoricWalletConnection | undefined
   >(undefined);

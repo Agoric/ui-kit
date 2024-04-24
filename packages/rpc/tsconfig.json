@@ -2,11 +2,7 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "useDefineForClassFields": true,
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ESNext"
-    ],
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
     "allowJs": false,
@@ -16,10 +12,7 @@
     "isolatedModules": true,
     "baseUrl": "src"
   },
-  "include": [
-    "src",
-    "index.ts"
-  ],
+  "include": ["src", "index.ts"],
   "references": [
     {
       "path": "./tsconfig.node.json"

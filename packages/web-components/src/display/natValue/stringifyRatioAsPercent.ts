@@ -1,23 +1,18 @@
 import { assert, details } from '@agoric/assert';
+
 import { captureNum } from './helpers/captureNum.js';
 import { roundToDecimalPlaces } from './helpers/roundToDecimalPlaces.js';
+import type { Ratio } from './ratio.js';
+import type { Brand } from '@agoric/ertp/exported.js';
 
-/** @typedef {import('@agoric/ertp/src/types.js').Brand} Brand */
-/** @typedef {import('./ratio.js').Ratio} Ratio */
+const PERCENT_BASE = 100n;
+const PLACES_TO_SHOW = 0;
 
-const PLACES_TO_SHOW = 2;
-
-/**
- * @param {Ratio} ratio
- * @param {(brand: Brand) => number | undefined} getDecimalPlaces
- * @param {number} [placesToShow]
- * @returns {string}
- */
-export const stringifyRatio = (
-  ratio,
-  getDecimalPlaces,
+export const stringifyRatioAsPercent = (
+  ratio: Ratio,
+  getDecimalPlaces: (brand: Brand) => number | undefined,
   placesToShow = PLACES_TO_SHOW,
-) => {
+): string => {
   if (ratio === null || ratio === undefined) {
     return '0';
   }
@@ -41,12 +36,13 @@ export const stringifyRatio = (
   const denomPower = 10n ** BigInt(denomDecimalPlaces);
   // @ts-expect-error assert removes undefined from type
   const numPower = 10n ** BigInt(numDecimalPlaces);
-  const numerator = ratio.numerator.value * denomPower;
+  const numerator = ratio.numerator.value * denomPower * PERCENT_BASE;
   const denominator = ratio.denominator.value * numPower;
   const str = `${Number(numerator) / Number(denominator)}`;
   const capturedNum = captureNum(str);
-  return `${capturedNum.left}.${roundToDecimalPlaces(
-    capturedNum.right,
-    placesToShow,
-  )}`;
+  const right = roundToDecimalPlaces(capturedNum.right, placesToShow);
+  if (right === '') {
+    return `${capturedNum.left}`;
+  }
+  return `${capturedNum.left}.${right}`;
 };

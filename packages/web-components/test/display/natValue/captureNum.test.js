@@ -1,7 +1,7 @@
 // @ts-check
 import '../../installSesLockdown.js';
 import { describe, expect, it } from 'vitest';
-import { captureNum } from '../../../src/display/natValue/helpers/captureNum.js';
+import { captureNum } from '../../../src/display/natValue/helpers/captureNum.ts';
 
 describe(captureNum, () => {
   it('can capture positive numbers', () => {

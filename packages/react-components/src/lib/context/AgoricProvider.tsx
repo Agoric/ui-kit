@@ -10,15 +10,15 @@ import type { Props as ProvisionNoticeProps } from '../components/ProvisionNotic
 
 import '@interchain-ui/react/styles';
 
-type Props = {
+export type AgoricProviderProps = PropsWithChildren<{
   wallets: MainWalletBase[];
   defaultNetworkConfig: NetworkConfig;
   walletConnectOptions?: WalletConnectOptions;
   onConnectionError?: (e: unknown) => void;
   provisionNoticeContent?: ProvisionNoticeProps['mainContent'];
-};
+}>;
 
-export const AgoricProvider = (props: PropsWithChildren<Props>) => {
+export const AgoricProvider = (props: AgoricProviderProps) => {
   return (
     <NetworkProvider defaultNetworkConfig={props.defaultNetworkConfig}>
       <AgoricProviderInner {...props} />
@@ -32,7 +32,7 @@ const AgoricProviderInner = ({
   children,
   onConnectionError,
   provisionNoticeContent,
-}: PropsWithChildren<Props>) => {
+}: AgoricProviderProps) => {
   const { networkConfig } = useContext(NetworkContext);
   assert(networkConfig, 'Network config missing from context');
 

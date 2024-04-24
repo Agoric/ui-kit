@@ -1,7 +1,7 @@
 // @ts-check
 import '../../installSesLockdown.js';
 import { describe, expect, it } from 'vitest';
-import { parseAsNat } from '../../../src/display/natValue/parseAsNat.js';
+import { parseAsNat } from '../../../src/display/natValue/parseAsNat.ts';
 
 describe(parseAsNat, () => {
   it('can parse cents to dollars', () => {

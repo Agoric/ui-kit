@@ -1,4 +1,4 @@
-import '@endo/init'; // UNTIL https://github.com/endojs/endo/issues/1686
+import '@endo/init/legacy.js'; // UNTIL https://github.com/endojs/endo/issues/1686
 import { expect, test } from 'vitest';
 import { makeClientMarshaller } from '../src/marshal.js';
 
