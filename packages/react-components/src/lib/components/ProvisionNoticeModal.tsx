@@ -68,7 +68,7 @@ export const ProvisionNoticeModal = ({
           <OnboardIstModal />
         </div>
       </div>
-      <div className="flex justify-end gap-2">
+      <div className="flex justify-end gap-2 mt-6">
         <Button intent="secondary" onClick={onClose}>
           Go Back
         </Button>

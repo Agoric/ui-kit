@@ -215,14 +215,19 @@ export const AgoricProviderLite = ({
     };
   }, [status, chain.address, chainStorageWatcher]);
 
-  const checkSmartWalletProvisionAndMakeOffer = walletConnection
-    ? (...offerArgs: Parameters<AgoricWalletConnection['makeOffer']>) => {
-        setPostProvisionOffer(() => () => {
-          walletConnection?.makeOffer(...offerArgs);
-          setPostProvisionOffer(undefined);
-        });
-      }
-    : undefined;
+  const checkSmartWalletProvisionAndMakeOffer =
+    isSmartWalletProvisioned !== undefined
+      ? (...offerArgs: Parameters<AgoricWalletConnection['makeOffer']>) => {
+          if (isSmartWalletProvisioned) {
+            walletConnection?.makeOffer(...offerArgs);
+            return;
+          }
+          setPostProvisionOffer(() => () => {
+            walletConnection?.makeOffer(...offerArgs);
+            setPostProvisionOffer(undefined);
+          });
+        }
+      : undefined;
 
   const state = {
     address: chain.address,
