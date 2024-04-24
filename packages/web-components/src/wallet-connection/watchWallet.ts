@@ -31,8 +31,6 @@ type VBankAssets = [
   { brand: Brand; issuerName: string; displayInfo: unknown },
 ][];
 
-/** @typedef {import('@agoric/ertp/src/types.js').Amount<'nat'>['value']} NatValue */
-
 const POLL_INTERVAL_MS = 6000;
 const RETRY_INTERVAL_MS = 200;
 const MAX_ATTEMPTS_TO_WATCH_BANK = 2;
