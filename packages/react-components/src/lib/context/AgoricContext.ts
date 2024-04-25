@@ -10,10 +10,6 @@ import type {
 
 export type PurseJSONState<T extends AssetKind> = {
   brand: Brand;
-  /** The board ID for this purse's brand */
-  brandBoardId: string;
-  /** The board ID for the deposit-only facet of this purse */
-  depositBoardId?: string;
   /** The petname for this purse's brand */
   brandPetname: string;
   /** The petname for this purse */
@@ -24,9 +20,6 @@ export type PurseJSONState<T extends AssetKind> = {
     assetKind: AssetKind;
     decimalPlaces?: number;
   };
-  /** The purse's current balance */
-  value: AmountValue;
-  currentAmountSlots: unknown;
   currentAmount: Amount<T>;
 };
 
@@ -44,8 +37,11 @@ export type AgoricState = {
   offerIdsToPublicSubscribers?: Record<string, Record<string, string>>;
   isSmartWalletProvisioned?: boolean;
   provisionSmartWallet?: AgoricWalletConnection['provisionSmartWallet'];
-  makeOffer?: AgoricWalletConnection['makeOffer'];
+  makeOfferWithoutModal?: AgoricWalletConnection['makeOffer'];
   smartWalletProvisionFee?: bigint;
+  makeOffer?: (
+    ...params: Parameters<AgoricWalletConnection['makeOffer']>
+  ) => void;
 };
 
 export const AgoricContext = createContext<AgoricState>({});

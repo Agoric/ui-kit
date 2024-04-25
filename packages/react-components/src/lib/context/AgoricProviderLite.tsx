@@ -26,11 +26,16 @@ import {
 import { subscribeLatest } from '@agoric/notifier';
 import type { ChainName } from 'cosmos-kit';
 import type { AssetKind } from '@agoric/ertp/src/types';
+import {
+  ProvisionNoticeModal,
+  type Props as ProvisionNoticeProps,
+} from '../components/ProvisionNoticeModal';
 
 export type AgoricProviderLiteProps = PropsWithChildren<{
   chainName?: ChainName;
   useCustomEndpoints?: boolean;
   onConnectionError?: (e: unknown) => void;
+  provisionNoticeContent?: ProvisionNoticeProps['mainContent'];
 }>;
 
 /**
@@ -48,6 +53,7 @@ export const AgoricProviderLite = ({
   onConnectionError = () => {},
   chainName = 'agoric',
   useCustomEndpoints = true,
+  provisionNoticeContent,
 }: AgoricProviderLiteProps) => {
   const [walletConnection, setWalletConnection] = useState<
     AgoricWalletConnection | undefined
@@ -65,6 +71,9 @@ export const AgoricProviderLite = ({
   >(undefined);
   const [smartWalletProvisionFee, setSmartWalletProvisionFee] = useState<
     bigint | undefined
+  >(undefined);
+  const [postProvisionOffer, setPostProvisionOffer] = useState<
+    (() => void) | undefined
   >(undefined);
 
   const { status, client } = useWalletClient();
@@ -206,6 +215,20 @@ export const AgoricProviderLite = ({
     };
   }, [status, chain.address, chainStorageWatcher]);
 
+  const checkSmartWalletProvisionAndMakeOffer =
+    isSmartWalletProvisioned !== undefined
+      ? (...offerArgs: Parameters<AgoricWalletConnection['makeOffer']>) => {
+          if (isSmartWalletProvisioned) {
+            walletConnection?.makeOffer(...offerArgs);
+            return;
+          }
+          setPostProvisionOffer(() => () => {
+            walletConnection?.makeOffer(...offerArgs);
+            setPostProvisionOffer(undefined);
+          });
+        }
+      : undefined;
+
   const state = {
     address: chain.address,
     chainName,
@@ -215,12 +238,20 @@ export const AgoricProviderLite = ({
     purses,
     offerIdsToPublicSubscribers,
     isSmartWalletProvisioned,
-    makeOffer: walletConnection?.makeOffer,
+    makeOfferWithoutModal: walletConnection?.makeOffer,
     provisionSmartWallet: walletConnection?.provisionSmartWallet,
+    makeOffer: checkSmartWalletProvisionAndMakeOffer,
     smartWalletProvisionFee,
   };
 
   return (
-    <AgoricContext.Provider value={state}>{children}</AgoricContext.Provider>
+    <AgoricContext.Provider value={state}>
+      {children}
+      <ProvisionNoticeModal
+        mainContent={provisionNoticeContent}
+        onClose={() => setPostProvisionOffer(undefined)}
+        proceed={postProvisionOffer}
+      />
+    </AgoricContext.Provider>
   );
 };
