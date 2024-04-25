@@ -37,9 +37,9 @@ export type AgoricState = {
   offerIdsToPublicSubscribers?: Record<string, Record<string, string>>;
   isSmartWalletProvisioned?: boolean;
   provisionSmartWallet?: AgoricWalletConnection['provisionSmartWallet'];
-  makeOffer?: AgoricWalletConnection['makeOffer'];
+  makeOfferWithoutModal?: AgoricWalletConnection['makeOffer'];
   smartWalletProvisionFee?: bigint;
-  checkSmartWalletProvisionAndMakeOffer?: (
+  makeOffer?: (
     ...params: Parameters<AgoricWalletConnection['makeOffer']>
   ) => void;
 };
