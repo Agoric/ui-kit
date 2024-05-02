@@ -59,6 +59,35 @@ const MyCustomConnectButton = () => {
 };
 ```
 
+## Amount Inputs
+
+The `AmountInput` provides a configurable component for handling different assets and denoms.
+
+```tsx
+import { useState } from 'React';
+import { AmountInput, useAgoric } from '@agoric/react-components';
+
+const MyIstInput = () => {
+  const [value, setValue] = useState(0n);
+  const { purses } = useAgoric();
+
+  const istPurse = purses?.find(p => p.brandPetname === 'IST');
+
+  return (
+    <AmountInput
+      className="my-input-class"
+      value={value}
+      onChange={setValue}
+      decimalPlaces={istPurse?.displayInfo.decimalPlaces ?? 0}
+      disabled={!istPurse}
+    />
+  );
+};
+```
+
+If you wish to use your own custom component, the `useAmountInput` hook can be utilized
+which helps convert between input strings and denominated `BigInt` values.
+
 ## Node Selector
 
 To let a user choose their own API endpoints, separate from those provided in `defaultNetworkConfig`, the `NodeSelectorModal` can be provided:
@@ -116,11 +145,49 @@ const NetworkSelect = () => {
 };
 ```
 
+## Leap Elements
+
+The `OnboardIstModal` component provides an easy way for users to acquire IST through interchain swaps, bridging, IBC, and more with [Leap Elements](https://docs.leapwallet.io/cosmos/elements/introduction).
+
+If you wish to use Leap Elements in another context, the `useElementsWalletClient` hook provides a wallet client to plug into your own instance of Elements.
+
+```tsx
+import { useElementsWalletClient, useAgoric } from '@agoric/react-components';
+import { LiquidityModal } from '@leapwallet/elements';
+import '@leapwallet/elements/styles.css';
+
+const MyElementModal = () => {
+  const { address } = useAgoric();
+  const elementsWalletClient = useElementsWalletClient();
+
+  return (
+    <LiquidityModal
+      walletClientConfig={{
+        userAddress: address,
+        walletClient: elementsWalletClient,
+        connectWallet: (chainId?: string) => {
+          return elementsWalletClient.enable(chainId ?? []);
+        }
+      }}
+      ...
+    >
+    ...
+  )
+}
+```
+
 ## Agoric Context
 
 All Agoric-related state is accessible through the `useAgoric` hook. See [`AgoricContext`](https://github.com/Agoric/ui-kit/blob/585b47d158a983643659a2cfccd76f772933db7e/packages/react-components/src/lib/context/AgoricContext.ts#L28-L39) for the full interface.
 
 For more details on making offers and reading chain data with `AgoricWalletConnection` and `ChainStorageWatcher`, see [Agoric/ui-kit](https://github.com/Agoric/ui-kit).
+
+## Smart Wallet Provisioning
+
+For users that don't have a smart wallet provisioned, the `makeOffer` function from the
+`useAgoric` hook will automatically show a modal informing them of the provisioning fee, showing their IST balance, and providing
+a [Leap Elements](#leap-elements) button to acquire IST if necessary before signing the transaction. The text content of this modal is configurable through the `provisionNoticeContent` prop in `AgoricProvider`. If this modal
+is not desired, the `makeOfferWithoutModal` function can be used instead, and the provision status and fee can be accessed with `isSmartWalletProvisioned` and `smartWalletProvisionFee` from the `useAgoric` hook.
 
 ## Using a Custom `ChainProvider`
 
