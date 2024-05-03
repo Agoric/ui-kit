@@ -5,7 +5,6 @@ import { ChangeChainCombobox } from '@interchain-ui/react';
 import { useState } from 'react';
 
 export type NetworkDropdownProps = {
-  networkConfigs: NetworkConfig[];
   label?: ChangeChainCombobox['label'];
   size?: ChangeChainCombobox['size'];
   appearance?: ChangeChainCombobox['appearance'];
@@ -28,13 +27,13 @@ const iconForNetwork = (network: NetworkConfig) => {
 };
 
 export const NetworkDropdown = ({
-  networkConfigs,
   label,
   maxHeight,
   size = 'md',
   appearance = 'bold',
 }: NetworkDropdownProps) => {
-  const { networkConfig, setNetworkConfig } = useAgoricNetwork();
+  const { networkConfig, setNetworkConfig, agoricNetworkConfigs } =
+    useAgoricNetwork();
   assert(
     networkConfig && setNetworkConfig,
     'NetworkDropdown error, NetworkContext missing',
@@ -50,13 +49,14 @@ export const NetworkDropdown = ({
     iconUrl: iconForNetwork(networkConfig),
   });
 
-  const dropdownList = networkConfigs.map(config => {
-    return {
-      value: nameForNetwork(config),
-      label: prettyTestChainName(nameForNetwork(config)),
-      iconUrl: iconForNetwork(config),
-    };
-  });
+  const dropdownList =
+    agoricNetworkConfigs?.map(config => {
+      return {
+        value: nameForNetwork(config),
+        label: prettyTestChainName(nameForNetwork(config)),
+        iconUrl: iconForNetwork(config),
+      };
+    }) ?? [];
 
   return (
     <ChangeChainCombobox
@@ -69,7 +69,7 @@ export const NetworkDropdown = ({
       appearance={appearance}
       onItemSelected={item => {
         if (!item) return;
-        const selectedNetworkConfig = networkConfigs.find(network => {
+        const selectedNetworkConfig = agoricNetworkConfigs?.find(network => {
           return nameForNetwork(network) === item?.value;
         });
         assert(

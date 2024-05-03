@@ -2,7 +2,10 @@ import { NetworkContext } from './NetworkContext';
 import { PropsWithChildren, useState } from 'react';
 import type { NetworkConfig } from './NetworkContext';
 
-type Props = { defaultNetworkConfig: NetworkConfig };
+type Props = {
+  agoricNetworkConfigs: NetworkConfig[];
+  defaultChainName?: string;
+};
 
 const storageKey = 'agoric-saved-network-config';
 
@@ -17,9 +20,17 @@ const writeToStorage = (networkConfig: NetworkConfig) => {
 };
 
 export const NetworkProvider = ({
-  defaultNetworkConfig,
+  agoricNetworkConfigs,
+  defaultChainName,
   children,
 }: PropsWithChildren<Props>) => {
+  const defaultNetworkConfig =
+    defaultChainName !== 'agoric'
+      ? agoricNetworkConfigs.find(
+          config => config.testChain?.chainName === defaultChainName,
+        )
+      : agoricNetworkConfigs.find(config => config.testChain === undefined);
+
   const [networkConfig] = useState(readFromStorage() ?? defaultNetworkConfig);
 
   const setNetworkConfig = (newConfig: NetworkConfig) => {
@@ -28,7 +39,9 @@ export const NetworkProvider = ({
   };
 
   return (
-    <NetworkContext.Provider value={{ networkConfig, setNetworkConfig }}>
+    <NetworkContext.Provider
+      value={{ networkConfig, setNetworkConfig, agoricNetworkConfigs }}
+    >
       {children}
     </NetworkContext.Provider>
   );
