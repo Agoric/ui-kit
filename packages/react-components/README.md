@@ -107,8 +107,14 @@ and requires the `ThemeProvider` (see [Integrating](#integrating) above):
 ```tsx
 import { NetworkDropdown } from '@agoric/react-components';
 
-const NetworkSelect = () => {
-  return <NetworkDropdown />;
+const MyNetworkSelect = () => {
+  return (
+    <NetworkDropdown
+      appearance="minimal"
+      size="sm"
+      label="Switch Agoric Networks"
+    />
+  );
 };
 ```
 
