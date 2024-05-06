@@ -13,9 +13,28 @@ Getting set up is as easy as using the `AgoricProvider`. Under the hood, it uses
 ```tsx
 import { AgoricProvider, ConnectWalletButton } from '@agoric/react-components';
 import { wallets } from 'cosmos-kit';
-// Only needed if customizing the wallet connection modal, or if using `NetworkDropdown`.
 import { ThemeProvider, useTheme } from '@interchain-ui/react';
 import '@agoric/react-components/dist/style.css';
+
+const localnet = {
+  testChain: {
+    chainId: 'agoriclocal',
+    chainName: 'agoric-local',
+  },
+  apis: {
+    rest: ['http://localhost:1317'],
+    rpc: ['http://localhost:26657'],
+    iconUrl: '/agoriclocal.svg', // Optional icon for Network Dropdown component
+  },
+};
+
+// Omit "testChain" to specify the apis for Agoric Mainnet.
+const mainnet = {
+  apis: {
+    rest: ['https://main.api.agoric.net'],
+    rpc: ['https://main.rpc.agoric.net'],
+  },
+};
 
 const App = () => {
   const { themeClass } = useTheme();
@@ -24,17 +43,12 @@ const App = () => {
       <div className={themeClass}>
         <AgoricProvider
           wallets={wallets.extension}
-          defaultNetworkConfig={{
-            // testChain is optional, defaulting to Agoric mainnet otherwise.
-            testChain: {
-              chainId: 'agoriclocal',
-              chainName: 'agoric-local',
-            },
-            apis: {
-              rest: ['http://localhost:1317'],
-              rpc: ['http://localhost:26657'],
-            },
-          }}
+          agoricNetworkConfigs={[localnet, mainnet]}
+          /**
+           * If unspecified, connects to Agoric Mainnet by default.
+           * See "Network Dropdown" below to see how to switch between Agoric testnets.
+           */
+          defaultChainName="agoric-local"
         >
           <ConnectWalletButton />
         </AgoricProvider>
@@ -61,7 +75,7 @@ const MyCustomConnectButton = () => {
 
 ## Node Selector
 
-To let a user choose their own API endpoints, separate from those provided in `defaultNetworkConfig`, the `NodeSelectorModal` can be provided:
+To let a user choose their own API endpoints, separate from those provided in `agoricNetworkConfigs`, the `NodeSelectorModal` can be provided:
 
 ```tsx
 import { useState } from 'react';
@@ -81,38 +95,26 @@ const NodeSelector = () => {
 };
 ```
 
-The modal will persist the user's chosen API endpoints in local storage, and override whichever endpoints are in `defaultNetworkConfig`.
+The modal will persist the user's chosen API endpoints in local storage, and override whichever endpoints are specified for the current network in `agoricNetworkConfigs`.
 
 ## Network Dropdown
 
 To support multiple Agoric test networks, the `NetworkDropdown` component can
-be used. Under the hood, it uses the `interchain-ui`
+be used. It will let the user choose between the networks provided in `agoricNetworkConfigs`, save their choice to local storage, and override `defaultChainName` when choosing the network to connect to. It uses the `interchain-ui`
 [`ChangeChainCombobox`](https://cosmology.zone/components?id=change-chain-combobox)
 and requires the `ThemeProvider` (see [Integrating](#integrating) above):
 
 ```tsx
 import { NetworkDropdown } from '@agoric/react-components';
 
-const localnet = {
-  testChain: {
-    chainId: 'agoriclocal',
-    chainName: 'agoric-local',
-  },
-  apis: {
-    rest: ['http://localhost:1317'],
-    rpc: ['http://localhost:26657'],
-    iconUrl: '/agoriclocal.svg', // Optional icon for dropdown display
-  },
-};
-const mainnet = {
-  apis: {
-    rest: ['https://main.api.agoric.net'],
-    rpc: ['https://main.rpc.agoric.net'],
-  },
-};
-
-const NetworkSelect = () => {
-  return <NetworkDropdown networkConfigs={[mainnet, localnet]} />;
+const MyNetworkSelect = () => {
+  return (
+    <NetworkDropdown
+      appearance="minimal"
+      size="sm"
+      label="Switch Agoric Networks"
+    />
+  );
 };
 ```
 

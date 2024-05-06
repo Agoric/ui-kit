@@ -12,15 +12,20 @@ import '@interchain-ui/react/styles';
 
 export type AgoricProviderProps = PropsWithChildren<{
   wallets: MainWalletBase[];
-  defaultNetworkConfig: NetworkConfig;
+  agoricNetworkConfigs: NetworkConfig[];
+  defaultChainName?: string;
   walletConnectOptions?: WalletConnectOptions;
   onConnectionError?: (e: unknown) => void;
   provisionNoticeContent?: ProvisionNoticeProps['mainContent'];
 }>;
 
 export const AgoricProvider = (props: AgoricProviderProps) => {
+  const { defaultChainName, agoricNetworkConfigs } = props;
   return (
-    <NetworkProvider defaultNetworkConfig={props.defaultNetworkConfig}>
+    <NetworkProvider
+      defaultChainName={defaultChainName}
+      agoricNetworkConfigs={agoricNetworkConfigs}
+    >
       <AgoricProviderInner {...props} />
     </NetworkProvider>
   );
