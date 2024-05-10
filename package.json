@@ -8,7 +8,7 @@
     "packages/react-components"
   ],
   "type": "module",
-  "packageManager": "yarn@4.1.1",
+  "packageManager": "yarn@4.2.2",
   "scripts": {
     "prepack": "yarn workspaces foreach --all --topological run prepack",
     "docs": "typedoc --excludeInternal",
