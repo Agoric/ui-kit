@@ -13,4 +13,5 @@ export type NetworkConfig = {
 export const NetworkContext = createContext<{
   networkConfig?: NetworkConfig;
   setNetworkConfig?: (config: NetworkConfig) => void;
+  agoricNetworkConfigs?: NetworkConfig[];
 }>({});
