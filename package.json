@@ -22,11 +22,9 @@
     "@babel/plugin-syntax-flow": "^7.14.5",
     "@babel/plugin-transform-react-jsx": "^7.14.9",
     "@endo/eslint-plugin": "^0.4.4",
-    "@endo/ses-ava": "^0.2.40",
     "@jessie.js/eslint-plugin": "^0.4.0",
     "@typescript-eslint/eslint-plugin": "^7.1.0",
     "@typescript-eslint/parser": "^7.1.0",
-    "ava": "^5.3.0",
     "conventional-changelog-conventionalcommits": "^6.0.0",
     "eslint": "^8.57.0",
     "eslint-config-jessie": "^0.0.6",
@@ -49,8 +47,5 @@
     "@agoric/swingset-liveslots": "0.10.3-dev-8c14632.0",
     "@agoric/xsnap@npm:^0.14.3-u14.0": "patch:@agoric/xsnap@npm%3A0.14.3-u14.0#~/.yarn/patches/@agoric-xsnap-npm-0.14.3-u14.0-768ce73dba.patch",
     "@agoric/xsnap@npm:^0.14.2": "patch:@agoric/xsnap@npm%3A0.14.3-u14.0#~/.yarn/patches/@agoric-xsnap-npm-0.14.3-u14.0-768ce73dba.patch"
-  },
-  "ava": {
-    "timeout": "30m"
   }
 }
