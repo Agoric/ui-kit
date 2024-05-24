@@ -370,7 +370,7 @@ __metadata:
     react-dom: "npm:18.2.0"
     storybook: "npm:7.2.2"
     tailwindcss: "npm:3.3.3"
-    typescript: "npm:~5.4.5"
+    typescript: "npm:5.5.0-beta"
     vite: "npm:4.4.9"
     vite-plugin-dts: "npm:3.5.1"
     vitest: "npm:1.6.0"
@@ -402,7 +402,7 @@ __metadata:
     happy-dom: "npm:^9.20.3"
     postinstall-postinstall: "npm:^2.1.0"
     prettier: "npm:^3.2.5"
-    typescript: "npm:~5.4.5"
+    typescript: "npm:5.5.0-beta"
     vite: "npm:^4.3.2"
     vite-tsconfig-paths: "npm:^4.2.0"
     vitest: "npm:^1.6.0"
@@ -709,7 +709,7 @@ __metadata:
     prettier: "npm:^3.2.5"
     rollup: "npm:^2.0.0"
     typedoc: "npm:^0.25.13"
-    typescript: "npm:~5.4.5"
+    typescript: "npm:5.5.0-beta"
   languageName: unknown
   linkType: soft
 
@@ -795,7 +795,7 @@ __metadata:
     eslint: "npm:^8.57.0"
     eslint-config-airbnb-base: "npm:15.0.0"
     ses: "npm:^1.5.0"
-    typescript: "npm:~5.4.5"
+    typescript: "npm:5.5.0-beta"
     vitest: "npm:^1.6.0"
   languageName: unknown
   linkType: soft
@@ -24588,7 +24588,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:>=3 < 6, typescript@npm:~5.4.5":
+"typescript@npm:5.5.0-beta":
+  version: 5.5.0-beta
+  resolution: "typescript@npm:5.5.0-beta"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10c0/e4b029678d6e77514355a79bb2b30e80784712b58cdb1391e07d2282aefceaff7850edf16814f6b4b9d4f23c84372afdfc6165cb628adc5303274fff8a795ce5
+  languageName: node
+  linkType: hard
+
+"typescript@npm:>=3 < 6":
   version: 5.4.5
   resolution: "typescript@npm:5.4.5"
   bin:
@@ -24618,7 +24628,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A>=3 < 6#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A~5.4.5#optional!builtin<compat/typescript>":
+"typescript@patch:typescript@npm%3A5.5.0-beta#optional!builtin<compat/typescript>":
+  version: 5.5.0-beta
+  resolution: "typescript@patch:typescript@npm%3A5.5.0-beta#optional!builtin<compat/typescript>::version=5.5.0-beta&hash=b45daf"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10c0/665f9f8140409b79ee61a695627842d49430ce944571b44c3fe81c05a0359041f2aa267e5e5639dfdb844da47c7a542f7a534fe301533c846a20c63cd9ff1d53
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@npm%3A>=3 < 6#optional!builtin<compat/typescript>":
   version: 5.4.5
   resolution: "typescript@patch:typescript@npm%3A5.4.5#optional!builtin<compat/typescript>::version=5.4.5&hash=5adc0c"
   bin:

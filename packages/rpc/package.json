@@ -34,7 +34,7 @@
     "happy-dom": "^9.20.3",
     "postinstall-postinstall": "^2.1.0",
     "prettier": "^3.2.5",
-    "typescript": "~5.4.5",
+    "typescript": "5.5.0-beta",
     "vitest": "^1.6.0"
   },
   "eslintConfig": {
