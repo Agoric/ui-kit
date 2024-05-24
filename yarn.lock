@@ -794,7 +794,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": "npm:^7.8.0"
     eslint: "npm:^8.57.0"
     eslint-config-airbnb-base: "npm:15.0.0"
-    ses: "npm:0.18.7"
+    ses: "npm:^1.5.0"
     typescript: "npm:~5.4.5"
     vitest: "npm:^1.6.0"
   languageName: unknown
@@ -3953,7 +3953,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@endo/env-options@npm:^0.1.3, @endo/env-options@npm:^0.1.4":
+"@endo/env-options@npm:^0.1.4":
   version: 0.1.4
   resolution: "@endo/env-options@npm:0.1.4"
   checksum: 10c0/5bf49d362849090bff328b15f906adb5b8b6220815e8955e45f81e7ff9a8ab17e509fff8bf30f4c619772f4f1a8cba8f1ca90faec724b53b5b3f1c89050c6b44
@@ -3964,6 +3964,13 @@ __metadata:
   version: 1.1.3
   resolution: "@endo/env-options@npm:1.1.3"
   checksum: 10c0/ed589c489a3969d8792c31dc11bd019503ae80d0fb42c66184f4c45b34003a64f860ae74f0c8d984ca64ca386720f6559525ca13075ba0107b9cc8d9995394ad
+  languageName: node
+  linkType: hard
+
+"@endo/env-options@npm:^1.1.4":
+  version: 1.1.4
+  resolution: "@endo/env-options@npm:1.1.4"
+  checksum: 10c0/8816c8fe1332a6f3366e7e4849b000d757fcd181eac011ed8363ccc4e66dfa2f2d975f8d5cbfb3844f3e327c5391e77ee7e234a59a21744c74c945f683b56df1
   languageName: node
   linkType: hard
 
@@ -22990,15 +22997,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ses@npm:0.18.7":
-  version: 0.18.7
-  resolution: "ses@npm:0.18.7"
-  dependencies:
-    "@endo/env-options": "npm:^0.1.3"
-  checksum: 10c0/74e830d90d87599d6c2dc503ca7abef57ac669f1376860d57db814192d4751f46397f5c0b74b188563c376a593ca0b3a65023814bfab4c67d1bea013fb2f9920
-  languageName: node
-  linkType: hard
-
 "ses@npm:^0.18.4, ses@npm:^0.18.5, ses@npm:^0.18.8":
   version: 0.18.8
   resolution: "ses@npm:0.18.8"
@@ -23014,6 +23012,15 @@ __metadata:
   dependencies:
     "@endo/env-options": "npm:^1.1.3"
   checksum: 10c0/81508b983d9bbf4f78216cf38b0c84e5926fcbfba70bf0c9d7f50d4fad54d9347be49e7ac1ff7600353806119bdeec2bcfdd0d7beed509e2e49c8fd9f4d092d0
+  languageName: node
+  linkType: hard
+
+"ses@npm:^1.5.0":
+  version: 1.5.0
+  resolution: "ses@npm:1.5.0"
+  dependencies:
+    "@endo/env-options": "npm:^1.1.4"
+  checksum: 10c0/bd5e230ff07abe84632ff212a5dce5163d979ab0ae657c4ac0ee2748aea9f587d83c75639d0058def62eae6dde55c0ae9652f33aecc5e0fe538c89ce54bffcdc
   languageName: node
   linkType: hard
 
