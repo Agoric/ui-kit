@@ -25,8 +25,8 @@
     "prepack": "yarn build"
   },
   "dependencies": {
-    "@agoric/rpc": "^0.9.0",
-    "@agoric/web-components": "^0.15.0",
+    "@agoric/rpc": "^0.10.0",
+    "@agoric/web-components": "^0.16.0",
     "@cosmos-kit/core": "2.8.9",
     "@cosmos-kit/react": "2.10.10",
     "@interchain-ui/react": "1.21.18",

@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.16.0 (2024-05-29)
+
+### Features
+
+- Move @agoric/ui-components components into @agoric/web-components
+- Allow custom signer instead of Keplr in wallet connection
+- Query smart wallet provisioning fee in wallet connection
+
 ## 0.15.0 (2023-12-19)
 
 ### Bug Fixes
