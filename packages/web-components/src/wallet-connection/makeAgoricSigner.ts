@@ -49,9 +49,8 @@ export const makeAgoricSigner = (
      *         for example, if signature verification fails)
      */
     provisionSmartWallet: async () => {
-      const { accountNumber, sequence } = await signingClient.getSequence(
-        address,
-      );
+      const { accountNumber, sequence } =
+        await signingClient.getSequence(address);
       console.log({ accountNumber, sequence });
 
       const b64address = toBase64(toAccAddress(address));
@@ -85,9 +84,8 @@ export const makeAgoricSigner = (
      *         for example, if signature verification fails)
      */
     submitSpendAction: async (spendAction: string) => {
-      const { accountNumber, sequence } = await signingClient.getSequence(
-        address,
-      );
+      const { accountNumber, sequence } =
+        await signingClient.getSequence(address);
       console.debug({ accountNumber, sequence });
 
       const act1 = {
