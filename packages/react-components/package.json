@@ -33,7 +33,8 @@
     "@leapwallet/elements": "0.12.1",
     "chain-registry": "1.28.0",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-icons": "^5.2.1"
   },
   "devDependencies": {
     "@babel/core": "7.22.10",
