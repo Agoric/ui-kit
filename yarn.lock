@@ -368,7 +368,6 @@ __metadata:
     prop-types: "npm:15.8.1"
     react: "npm:18.2.0"
     react-dom: "npm:18.2.0"
-    react-icons: "npm:^5.2.1"
     storybook: "npm:7.2.2"
     tailwindcss: "npm:3.3.3"
     typescript: "npm:5.5.0-beta"
@@ -21992,15 +21991,6 @@ __metadata:
   peerDependencies:
     react: "*"
   checksum: 10c0/8daeae11e4b989eebcb97b9fdf3a743607b76b637d2eece309f6274f3a85b9c720313956cfabe220628324abf50b9b01823f65ac9cf71b8a816e440d2fca5293
-  languageName: node
-  linkType: hard
-
-"react-icons@npm:^5.2.1":
-  version: 5.2.1
-  resolution: "react-icons@npm:5.2.1"
-  peerDependencies:
-    react: "*"
-  checksum: 10c0/9d52b975afaf27dab07dcaefd50497ba43cc57076fc26ccac5142965e01c7fd0c503a62ea31c3bb710e0b2959a4620c2fed12c3c86960ad8ceb63de7f0085f3a
   languageName: node
   linkType: hard
 

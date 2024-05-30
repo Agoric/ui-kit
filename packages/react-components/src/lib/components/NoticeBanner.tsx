@@ -1,5 +1,5 @@
-import { FiX } from 'react-icons/fi';
-import { GrAnnounce } from 'react-icons/gr';
+import X from '../icons/X';
+import Megaphone from '../icons/Megaphone';
 import { useState } from 'react';
 import { NetworkNotice, activeNotices } from '../utils/networkConfig';
 
@@ -20,7 +20,7 @@ export const NoticeBanner = ({
           <div className="flex flex-wrap items-center justify-between">
             <div className="flex w-0 flex-1 items-center">
               <span className="flex rounded-lgp-2">
-                <GrAnnounce className="h-6 w-6" aria-hidden="true" />
+                <Megaphone className="h-6 w-6" aria-hidden="true" />
               </span>
               <p className="ml-3 font-medium text-black">{bannerContent}</p>
             </div>
@@ -30,7 +30,7 @@ export const NoticeBanner = ({
                 type="button"
                 className="-mr-1 flex rounded-md p-2 hover:bg-black hover:bg-opacity-10 focus:outline-none focus:ring-2 focus:ring-white sm:-mr-2"
               >
-                <FiX className="h-6 w-6" />
+                <X className="h-6 w-6" />
               </button>
             </div>
           </div>
