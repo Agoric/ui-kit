@@ -3,11 +3,11 @@ import Megaphone from '../icons/Megaphone';
 import { useState } from 'react';
 import { NetworkNotice, activeNotices } from '../utils/networkConfig';
 
-export const NoticeBanner = ({
-  notices,
-}: {
+export type NoticeBannerProps = {
   notices: Array<NetworkNotice>;
-}) => {
+};
+
+export const NoticeBanner = ({ notices }: NoticeBannerProps) => {
   const [isDismissed, setIsDismissed] = useState(false);
   const bannerContent = activeNotices(notices).join(' • ');
   const isVisible =
