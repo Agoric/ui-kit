@@ -328,31 +328,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@agoric/react-components@npm:0.2.0":
-  version: 0.2.0
-  resolution: "@agoric/react-components@npm:0.2.0"
-  dependencies:
-    "@agoric/rpc": "npm:^0.10.0"
-    "@agoric/web-components": "npm:^0.16.0"
-    "@cosmos-kit/core": "npm:2.8.9"
-    "@cosmos-kit/react": "npm:2.10.10"
-    "@interchain-ui/react": "npm:1.21.18"
-    "@leapwallet/elements": "npm:0.12.1"
-    chain-registry: "npm:1.28.0"
-    react: "npm:18.2.0"
-    react-dom: "npm:18.2.0"
-  peerDependencies:
-    "@cosmos-kit/core": 2.8.9
-    "@cosmos-kit/react": 2.10.10
-    "@interchain-ui/react": 1.21.18
-    chain-registry: 1.28.0
-    react: 18.2.0
-    react-dom: 18.2.0
-  checksum: 10c0/bece264a0cefba9e3f4de0f6fd734b5199fa87345dc6d005792bcd9e9a1ef8febe2b455e1c0fba9cc88b3c8eda7002926e033dfc13f7ed51b8e64ab5dfbefc8c
-  languageName: node
-  linkType: hard
-
-"@agoric/react-components@workspace:packages/react-components":
+"@agoric/react-components@npm:0.2.0, @agoric/react-components@workspace:packages/react-components":
   version: 0.0.0-use.local
   resolution: "@agoric/react-components@workspace:packages/react-components"
   dependencies:
@@ -25953,8 +25929,8 @@ __metadata:
   linkType: hard
 
 "vite@npm:^5.2.0":
-  version: 5.2.12
-  resolution: "vite@npm:5.2.12"
+  version: 5.2.13
+  resolution: "vite@npm:5.2.13"
   dependencies:
     esbuild: "npm:^0.20.1"
     fsevents: "npm:~2.3.3"
@@ -25988,7 +25964,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 10c0/f03fdfc320adea3397df3e327029fd875f8220779f679ab183a3a994e8788b4ce531fee28f830361fb274f3cf08ed9adb9429496ecefdc3faf535b38da7ea8b1
+  checksum: 10c0/f7a99da71884e69cc581dcfb43d73c8d56d73b9668d6980131603c544d6323c6003a20f376531dc0cfcf36bf5009bc465f89e6c5f8bd9d22868987aba4e4af1b
   languageName: node
   linkType: hard
 
