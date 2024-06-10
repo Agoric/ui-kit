@@ -5,7 +5,8 @@
   "workspaces": [
     "packages/rpc",
     "packages/web-components",
-    "packages/react-components"
+    "packages/react-components",
+    "packages/example"
   ],
   "type": "module",
   "packageManager": "yarn@4.2.2",
