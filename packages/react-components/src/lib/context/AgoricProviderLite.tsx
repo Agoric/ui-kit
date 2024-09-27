@@ -22,6 +22,7 @@ import {
   defaultRegistryTypes,
   createBankAminoConverters,
   createAuthzAminoConverters,
+  createIbcAminoConverters,
 } from '@cosmjs/stargate';
 import { subscribeLatest } from '@agoric/notifier';
 import type { ChainName } from 'cosmos-kit';
@@ -178,6 +179,7 @@ export const AgoricProviderLite = ({
               ...agoricConverters,
               ...createBankAminoConverters(),
               ...createAuthzAminoConverters(),
+              ...createIbcAminoConverters(),
             }),
             registry: new Registry([
               ...defaultRegistryTypes,
