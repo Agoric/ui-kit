@@ -1,4 +1,4 @@
-import { ChainProvider } from '@cosmos-kit/react';
+import { ChainProvider, type ThemeCustomizationProps } from '@cosmos-kit/react';
 import { AgoricProviderLite } from './AgoricProviderLite';
 import { chains, assets } from 'chain-registry';
 import { makeAssetList, makeChainInfo } from '../config';
@@ -17,6 +17,7 @@ export type AgoricProviderProps = PropsWithChildren<{
   walletConnectOptions?: WalletConnectOptions;
   onConnectionError?: (e: unknown) => void;
   provisionNoticeContent?: ProvisionNoticeProps['mainContent'];
+  modalTheme?: ThemeCustomizationProps;
 }>;
 
 export const AgoricProvider = (props: AgoricProviderProps) => {
@@ -37,6 +38,7 @@ const AgoricProviderInner = ({
   children,
   onConnectionError,
   provisionNoticeContent,
+  modalTheme,
 }: AgoricProviderProps) => {
   const { networkConfig } = useContext(NetworkContext);
   assert(networkConfig, 'Network config missing from context');
@@ -57,6 +59,7 @@ const AgoricProviderInner = ({
         endpoints: { [chainName]: apis },
         isLazy: true,
       }}
+      modalTheme={modalTheme}
     >
       <AgoricProviderLite
         chainName={chainName}

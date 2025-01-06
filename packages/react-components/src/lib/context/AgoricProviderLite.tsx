@@ -39,6 +39,11 @@ export type AgoricProviderLiteProps = PropsWithChildren<{
   provisionNoticeContent?: ProvisionNoticeProps['mainContent'];
 }>;
 
+interface PostProvisionOffer {
+  makeOffer: () => void;
+  onStatusChange: (change: { status: string; data: any }) => void;
+}
+
 /**
  * Provides access to Agoric-specific account features such as smart wallet
  * provisioning, purses, offer signing, and more.
@@ -74,7 +79,7 @@ export const AgoricProviderLite = ({
     bigint | undefined
   >(undefined);
   const [postProvisionOffer, setPostProvisionOffer] = useState<
-    (() => void) | undefined
+    PostProvisionOffer | undefined
   >(undefined);
 
   const { status, client } = useWalletClient();
@@ -224,9 +229,12 @@ export const AgoricProviderLite = ({
             walletConnection?.makeOffer(...offerArgs);
             return;
           }
-          setPostProvisionOffer(() => () => {
-            walletConnection?.makeOffer(...offerArgs);
-            setPostProvisionOffer(undefined);
+          setPostProvisionOffer({
+            makeOffer: () => {
+              walletConnection?.makeOffer(...offerArgs);
+              setPostProvisionOffer(undefined);
+            },
+            onStatusChange: offerArgs[3],
           });
         }
       : undefined;
@@ -251,8 +259,14 @@ export const AgoricProviderLite = ({
       {children}
       <ProvisionNoticeModal
         mainContent={provisionNoticeContent}
-        onClose={() => setPostProvisionOffer(undefined)}
-        proceed={postProvisionOffer}
+        onClose={() => {
+          postProvisionOffer?.onStatusChange({
+            status: 'error',
+            data: new Error('User cancelled'),
+          });
+          setPostProvisionOffer(undefined);
+        }}
+        proceed={postProvisionOffer?.makeOffer}
       />
     </AgoricContext.Provider>
   );
