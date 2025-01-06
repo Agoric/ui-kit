@@ -39,6 +39,11 @@ export type AgoricProviderLiteProps = PropsWithChildren<{
   provisionNoticeContent?: ProvisionNoticeProps['mainContent'];
 }>;
 
+interface PostProvisionOffer {
+  makeOffer: () => void;
+  onStatusChange: (change: { status: string; data: any }) => void;
+}
+
 /**
  * Provides access to Agoric-specific account features such as smart wallet
  * provisioning, purses, offer signing, and more.
@@ -74,11 +79,7 @@ export const AgoricProviderLite = ({
     bigint | undefined
   >(undefined);
   const [postProvisionOffer, setPostProvisionOffer] = useState<
-    | {
-        makeOffer: () => void;
-        onStatusChange: (change: { status: string; data: any }) => void;
-      }
-    | undefined
+    PostProvisionOffer | undefined
   >(undefined);
 
   const { status, client } = useWalletClient();
