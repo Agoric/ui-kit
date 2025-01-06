@@ -74,7 +74,11 @@ export const AgoricProviderLite = ({
     bigint | undefined
   >(undefined);
   const [postProvisionOffer, setPostProvisionOffer] = useState<
-    (() => void) | undefined
+    | {
+        makeOffer: () => void;
+        onStatusChange: (change: { status: string; data: any }) => void;
+      }
+    | undefined
   >(undefined);
 
   const { status, client } = useWalletClient();
@@ -224,9 +228,12 @@ export const AgoricProviderLite = ({
             walletConnection?.makeOffer(...offerArgs);
             return;
           }
-          setPostProvisionOffer(() => () => {
-            walletConnection?.makeOffer(...offerArgs);
-            setPostProvisionOffer(undefined);
+          setPostProvisionOffer({
+            makeOffer: () => {
+              walletConnection?.makeOffer(...offerArgs);
+              setPostProvisionOffer(undefined);
+            },
+            onStatusChange: offerArgs[3],
           });
         }
       : undefined;
@@ -251,8 +258,14 @@ export const AgoricProviderLite = ({
       {children}
       <ProvisionNoticeModal
         mainContent={provisionNoticeContent}
-        onClose={() => setPostProvisionOffer(undefined)}
-        proceed={postProvisionOffer}
+        onClose={() => {
+          postProvisionOffer?.onStatusChange({
+            status: 'error',
+            data: new Error('User cancelled'),
+          });
+          setPostProvisionOffer(undefined);
+        }}
+        proceed={postProvisionOffer?.makeOffer}
       />
     </AgoricContext.Provider>
   );
