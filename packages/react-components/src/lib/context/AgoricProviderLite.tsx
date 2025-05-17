@@ -78,6 +78,8 @@ export const AgoricProviderLite = ({
   const [smartWalletProvisionFee, setSmartWalletProvisionFee] = useState<
     bigint | undefined
   >(undefined);
+  const [smartWalletProvisionFeeUnit, setSmartWalletProvisionFeeUnit] =
+    useState<string | undefined>(undefined);
   const [postProvisionOffer, setPostProvisionOffer] = useState<
     PostProvisionOffer | undefined
   >(undefined);
@@ -107,6 +109,7 @@ export const AgoricProviderLite = ({
         if (!status) continue;
         setIsSmartWalletProvisioned(status.provisioned);
         setSmartWalletProvisionFee(status.provisionFee);
+        setSmartWalletProvisionFeeUnit(status.feeUnit);
       }
     };
 
@@ -252,6 +255,7 @@ export const AgoricProviderLite = ({
     provisionSmartWallet: walletConnection?.provisionSmartWallet,
     makeOffer: checkSmartWalletProvisionAndMakeOffer,
     smartWalletProvisionFee,
+    smartWalletProvisionFeeUnit,
   };
 
   return (

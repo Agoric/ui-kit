@@ -72,8 +72,10 @@ export const watchWallet = (
   /** @type {Promise<Tendermint34Client> | undefined} */
   let tendermintClientP;
 
-  /** @returns {Promise<NatValue>} */
-  const fetchProvisionFee = async () => {
+  const fetchProvisionFee: () => Promise<{
+    fee: NatValue;
+    unit: string;
+  }> = async () => {
     await null;
     return new Promise((res, rej) => {
       const query = async (attempts = 0) => {
@@ -90,10 +92,10 @@ export const watchWallet = (
             ({ key }) => key === 'feeUnit',
           )?.beans;
           const feeUnitPrice = swingset.params?.feeUnitPrice[0]?.amount;
-
+          const feeUnitName = swingset.params?.feeUnitPrice[0]?.denom;
           if (!(feeUnitPrice && beansPerSmartWallet && feeUnit)) {
             console.error('Provisioning fee missing from swingset params');
-            res(0n);
+            res({ fee: 0n, unit: 'ubld' });
             return;
           }
 
@@ -101,7 +103,7 @@ export const watchWallet = (
             (BigInt(beansPerSmartWallet) / BigInt(feeUnit)) *
             BigInt(feeUnitPrice);
 
-          res(fee);
+          res({ fee, unit: feeUnitName ?? 'ubld' });
         } catch (e) {
           console.error('Error querying smart wallet provision fee', address);
           if (attempts >= MAX_ATTEMPTS_TO_WATCH_BANK) {
@@ -125,7 +127,11 @@ export const watchWallet = (
             .then(provisionFee => {
               if (isWalletMissing) {
                 smartWalletStatusNotifierKit.updater.updateState(
-                  harden({ provisioned: false, provisionFee }),
+                  harden({
+                    provisioned: false,
+                    provisionFee: provisionFee.fee,
+                    feeUnit: provisionFee.unit,
+                  }),
                 );
               }
             })

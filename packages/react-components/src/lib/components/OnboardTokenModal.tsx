@@ -10,14 +10,21 @@ const agoricChainId = 'agoric-3';
 const istSelector: AssetSelector = ['symbol', 'IST'];
 const bldSelector: AssetSelector = ['symbol', 'BLD'];
 
-export const OnboardIstModal = () => {
+type TokenType = 'IST' | 'BLD';
+
+type Props = {
+  token: TokenType;
+};
+
+export const OnboardTokenModal = ({ token }: Props) => {
   const { address } = useAgoric();
   const elementsWalletClient = useElementsWalletClient();
+  const destinationSelector = token === 'IST' ? istSelector : bldSelector;
 
   const renderLiquidityButton = ({ onClick }: { onClick: () => void }) => {
     return (
       <Button onClick={onClick} leftIcon="walletFilled">
-        Deposit IST
+        Deposit {token}
       </Button>
     );
   };
@@ -36,7 +43,7 @@ export const OnboardIstModal = () => {
       defaultActiveTab={Tabs.SWAP}
       config={{
         icon: Ist,
-        title: 'Deposit IST',
+        title: `Deposit ${token}`,
         subtitle: '',
         tabsConfig: {
           [Tabs.BRIDGE_USDC]: {
@@ -49,16 +56,16 @@ export const OnboardIstModal = () => {
             enabled: true,
             defaults: {
               destinationChainId: agoricChainId,
-              destinationAssetSelector: istSelector,
+              destinationAssetSelector: destinationSelector,
             },
           },
           [Tabs.SWAP]: {
             enabled: true,
             defaults: {
               sourceChainId: agoricChainId,
-              sourceAssetSelector: bldSelector,
+              sourceAssetSelector: token === 'IST' ? bldSelector : istSelector,
               destinationChainId: agoricChainId,
-              destinationAssetSelector: istSelector,
+              destinationAssetSelector: destinationSelector,
             },
           },
           [Tabs.TRANSFER]: {
@@ -66,7 +73,7 @@ export const OnboardIstModal = () => {
             defaults: {
               destinationChainId: agoricChainId,
               sourceChainId: agoricChainId,
-              sourceAssetSelector: istSelector,
+              sourceAssetSelector: destinationSelector,
             },
           },
         },

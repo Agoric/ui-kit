@@ -1,6 +1,6 @@
 import { fromBech32, toBase64 } from '@cosmjs/encoding';
 import { assertIsDeliverTxSuccess } from '@cosmjs/stargate';
-import { stableCurrency } from './chainInfo.js';
+import { stakeCurrency } from './chainInfo.js';
 import { AgoricMsgs } from './signerOptions.js';
 import type { StdFee } from '@keplr-wallet/types';
 import type { SigningStargateClient } from '@cosmjs/stargate';
@@ -20,7 +20,7 @@ const PowerFlags = {
 };
 
 const zeroFee = (): StdFee => {
-  const { coinMinimalDenom: denom } = stableCurrency;
+  const { coinMinimalDenom: denom } = stakeCurrency;
   const fee = {
     amount: [{ amount: '0', denom }],
     gas: '300000', // TODO: estimate gas?

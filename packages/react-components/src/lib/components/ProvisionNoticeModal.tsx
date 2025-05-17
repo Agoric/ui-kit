@@ -2,19 +2,25 @@ import { BasicModal, Button, Text } from '@interchain-ui/react';
 import { useAgoric } from '../hooks';
 import { stringifyValue } from '@agoric/web-components';
 import { AssetKind } from '@agoric/ertp';
-import { OnboardIstModal } from './OnboardIstModal';
+import { OnboardTokenModal } from './OnboardTokenModal';
 
 const feeDecimals = 6;
 
-const defaultContent = (fee?: bigint) => {
+const formatFeeUnit = (unit?: string) => {
+  if (!unit) return '';
+  return unit === 'ubld' ? 'BLD' : unit === 'uist' ? 'IST' : unit;
+};
+
+const defaultContent = (fee?: bigint, feeUnit?: string) => {
   const prettyFee = stringifyValue(fee, AssetKind.NAT, feeDecimals);
+  const prettyFeeUnit = formatFeeUnit(feeUnit);
 
   return (
     <Text fontSize="large">
       To interact with contracts on the Agoric chain, a smart wallet must be
       created for your account. You will need{' '}
       <Text fontSize="large" as="span" fontWeight="$bold">
-        {prettyFee} IST
+        {prettyFee} {prettyFeeUnit}
       </Text>{' '}
       to fund its provision which will be deposited into the reserve pool. Click
       "Proceed" to provision wallet and submit transaction.
@@ -25,7 +31,7 @@ const defaultContent = (fee?: bigint) => {
 export type Props = {
   onClose: () => void;
   proceed?: () => void;
-  mainContent?: (fee?: bigint) => JSX.Element;
+  mainContent?: (fee?: bigint, feeUnit?: string) => JSX.Element;
 };
 
 export const ProvisionNoticeModal = ({
@@ -33,11 +39,54 @@ export const ProvisionNoticeModal = ({
   proceed,
   mainContent = defaultContent,
 }: Props) => {
-  const { smartWalletProvisionFee, purses } = useAgoric();
+  const { smartWalletProvisionFee, smartWalletProvisionFeeUnit, purses } =
+    useAgoric();
+  const bldPurse = purses?.find(p => p.brandPetname === 'BLD');
   const istPurse = purses?.find(p => p.brandPetname === 'IST');
   const canProceed =
     !smartWalletProvisionFee ||
-    (istPurse && istPurse.currentAmount.value >= smartWalletProvisionFee);
+    (smartWalletProvisionFeeUnit === 'ubld' &&
+      bldPurse &&
+      bldPurse.currentAmount.value >= smartWalletProvisionFee) ||
+    (smartWalletProvisionFeeUnit === 'uist' &&
+      istPurse &&
+      istPurse.currentAmount.value >= smartWalletProvisionFee);
+
+  const renderBalance = () => {
+    if (smartWalletProvisionFeeUnit === 'ubld' && bldPurse) {
+      return (
+        <div className="flex items-center">
+          <Text fontSize="large">
+            BLD Balance:{' '}
+            <Text as="span" fontSize="large" fontWeight="$bold">
+              {stringifyValue(
+                bldPurse.currentAmount.value,
+                AssetKind.NAT,
+                feeDecimals,
+              )}
+            </Text>
+          </Text>
+        </div>
+      );
+    }
+    if (smartWalletProvisionFeeUnit === 'uist' && istPurse) {
+      return (
+        <div className="flex items-center">
+          <Text fontSize="large">
+            IST Balance:{' '}
+            <Text as="span" fontSize="large" fontWeight="$bold">
+              {stringifyValue(
+                istPurse.currentAmount.value,
+                AssetKind.NAT,
+                feeDecimals,
+              )}
+            </Text>
+          </Text>
+        </div>
+      );
+    }
+    return null;
+  };
 
   return (
     <BasicModal
@@ -48,24 +97,12 @@ export const ProvisionNoticeModal = ({
       onClose={onClose}
     >
       <div className="my-4">
-        {mainContent(smartWalletProvisionFee)}
+        {mainContent(smartWalletProvisionFee, smartWalletProvisionFeeUnit)}
         <div className="my-4 flex justify-center gap-4">
-          {istPurse && (
-            <div className="flex items-center">
-              <Text fontSize="large">
-                IST Balance:{' '}
-                <Text as="span" fontSize="large" fontWeight="$bold">
-                  {istPurse &&
-                    stringifyValue(
-                      istPurse.currentAmount.value,
-                      AssetKind.NAT,
-                      feeDecimals,
-                    )}
-                </Text>
-              </Text>
-            </div>
-          )}
-          <OnboardIstModal />
+          {renderBalance()}
+          <OnboardTokenModal
+            token={smartWalletProvisionFeeUnit === 'ubld' ? 'BLD' : 'IST'}
+          />
         </div>
       </div>
       <div className="flex justify-end gap-2 mt-6">
