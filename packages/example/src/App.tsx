@@ -28,18 +28,18 @@ const App = () => {
   return (
     <ThemeProvider>
       <div className={themeClass}>
-      <AgoricProvider
-        wallets={wallets.extension}
-        agoricNetworkConfigs={[localnet, mainnet]}
-        /**
-         * If unspecified, connects to Agoric Mainnet by default.
-         * See "Network Dropdown" below to see how to switch between Agoric testnets.
-         */
-        defaultChainName="agoric-local"
-      >
-        <ConnectWalletButton />
-      </AgoricProvider>
-    </div>
+        <AgoricProvider
+          wallets={wallets.extension}
+          agoricNetworkConfigs={[localnet, mainnet]}
+          /**
+           * If unspecified, connects to Agoric Mainnet by default.
+           * See "Network Dropdown" below to see how to switch between Agoric testnets.
+           */
+          defaultChainName="agoric-local"
+        >
+          <ConnectWalletButton />
+        </AgoricProvider>
+      </div>
     </ThemeProvider>
   );
 };
