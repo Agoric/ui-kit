@@ -34,6 +34,7 @@ export type AgoricState = {
   provisionSmartWallet?: AgoricWalletConnection['provisionSmartWallet'];
   makeOfferWithoutModal?: AgoricWalletConnection['makeOffer'];
   smartWalletProvisionFee?: bigint;
+  smartWalletProvisionFeeUnit?: string;
   makeOffer?: (
     ...params: Parameters<AgoricWalletConnection['makeOffer']>
   ) => void;

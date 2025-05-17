@@ -12,18 +12,6 @@ export const stakeCurrency: FeeCurrency = {
   },
 };
 
-export const stableCurrency: FeeCurrency = {
-  coinDenom: 'IST',
-  coinMinimalDenom: 'uist',
-  coinDecimals: 6,
-  coinGeckoId: undefined,
-  gasPriceStep: {
-    low: 0,
-    average: 0,
-    high: 0,
-  },
-};
-
 export const bech32Config: Bech32Config = {
   bech32PrefixAccAddr: 'agoric',
   bech32PrefixAccPub: 'agoricpub',

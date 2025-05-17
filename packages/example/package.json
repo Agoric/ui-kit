@@ -11,7 +11,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@agoric/react-components": "0.3.0",
+    "@agoric/react-components": "0.4.0",
     "patch-package": "^7.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

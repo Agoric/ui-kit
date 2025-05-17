@@ -1,4 +1,4 @@
-import { bech32Config, stableCurrency, stakeCurrency } from './chainInfo.js';
+import { bech32Config, stakeCurrency } from './chainInfo.js';
 
 import { NetworkConfig } from '@agoric/casting/src/netconfig';
 import { ChainInfo } from '@keplr-wallet/types';
@@ -35,8 +35,8 @@ const makeChainInfo = (
       coinType: AGORIC_COIN_TYPE,
     },
     bech32Config,
-    currencies: [stakeCurrency, stableCurrency],
-    feeCurrencies: [stableCurrency],
+    currencies: [stakeCurrency],
+    feeCurrencies: [stakeCurrency],
     features: ['stargate', 'ibc-transfer'],
   };
 };
