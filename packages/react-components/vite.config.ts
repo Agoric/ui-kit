@@ -5,6 +5,7 @@ import dts from 'vite-plugin-dts';
 import tailwindcss from 'tailwindcss';
 import { UserConfigExport } from 'vite';
 import { name } from './package.json';
+import { visualizer } from 'rollup-plugin-visualizer';
 
 const app = async (): Promise<UserConfigExport> => {
   /**
@@ -20,6 +21,7 @@ const app = async (): Promise<UserConfigExport> => {
       dts({
         insertTypesEntry: true,
       }),
+      visualizer({ gzipSize: true }),
     ],
     css: {
       postcss: {
@@ -30,17 +32,25 @@ const app = async (): Promise<UserConfigExport> => {
       lib: {
         entry: path.resolve(__dirname, 'src/lib/index.ts'),
         name: formattedName,
-        formats: ['es', 'umd'],
+        formats: ['es'],
         fileName: format => `${formattedName}.${format}.js`,
       },
       rollupOptions: {
-        external: ['react', 'react/jsx-runtime', 'react-dom', 'tailwindcss'],
+        external: ['react', 'react/jsx-runtime', 'react-dom', 'tailwindcss', '@leapwallet/elements', '@interchain-ui/react', 'chain-registry', '@agoric/web-components', '@cosmos-kit/core', '@cosmos-kit/react', 'cosmos-kit'],
         output: {
+          minifyInternalExports: true,
           globals: {
             react: 'React',
             'react/jsx-runtime': 'react/jsx-runtime',
             'react-dom': 'ReactDOM',
             tailwindcss: 'tailwindcss',
+            '@leapwallet/elements': '@leapwallet/elements',
+            '@interchain-ui/react': '@interchain-ui/react',
+            'chain-registry': 'chain-registry',
+            '@agoric/web-components': '@agoric/web-components',
+            '@cosmos-kit/core': '@cosmos-kit/core',
+            '@cosmos-kit/react': '@cosmos-kit/react',
+            'cosmos-kit': 'cosmos-kit',
           },
         },
       },
