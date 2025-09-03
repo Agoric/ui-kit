@@ -2,7 +2,6 @@ import { BasicModal, Button, Text } from '@interchain-ui/react';
 import { useAgoric } from '../hooks';
 import { stringifyValue } from '@agoric/web-components';
 import { AssetKind } from '@agoric/ertp';
-import { OnboardTokenModal } from './OnboardTokenModal';
 
 const feeDecimals = 6;
 
@@ -32,11 +31,13 @@ export type Props = {
   onClose: () => void;
   proceed?: () => void;
   mainContent?: (fee?: bigint, feeUnit?: string) => JSX.Element;
+  renderOnboardTokenTrigger?: () => JSX.Element;
 };
 
 export const ProvisionNoticeModal = ({
   onClose,
   proceed,
+  renderOnboardTokenTrigger,
   mainContent = defaultContent,
 }: Props) => {
   const { smartWalletProvisionFee, smartWalletProvisionFeeUnit, purses } =
@@ -98,12 +99,8 @@ export const ProvisionNoticeModal = ({
     >
       <div className="my-4">
         {mainContent(smartWalletProvisionFee, smartWalletProvisionFeeUnit)}
-        <div className="my-4 flex justify-center gap-4">
-          {renderBalance()}
-          <OnboardTokenModal
-            token={smartWalletProvisionFeeUnit === 'ubld' ? 'BLD' : 'IST'}
-          />
-        </div>
+        <div className="my-4 flex justify-center gap-4">{renderBalance()}</div>
+        {renderOnboardTokenTrigger?.()}
       </div>
       <div className="flex justify-end gap-2 mt-6">
         <Button intent="secondary" onClick={onClose}>
