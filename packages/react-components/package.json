@@ -30,7 +30,6 @@
     "@cosmos-kit/core": "2.8.9",
     "@cosmos-kit/react": "2.10.10",
     "@interchain-ui/react": "1.21.18",
-    "@leapwallet/elements": "0.12.1",
     "chain-registry": "1.28.0",
     "react": "18.2.0",
     "react-dom": "18.2.0"
