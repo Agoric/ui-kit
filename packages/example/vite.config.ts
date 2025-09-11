@@ -28,7 +28,6 @@ export default defineConfig({
     ),
   },
   optimizeDeps: {
-    include: ['@interchain-kit/core', '@interchain-kit/keplr-extension'],
     esbuildOptions: {
       define: {
         global: 'globalThis',

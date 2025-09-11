@@ -18,19 +18,20 @@ const WalletDetails = () => {
       <div>
         <p>
           Purses:{' '}
-          {purses
-            ?.map(
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              (p: PurseJSONState<any>) =>
-                p.brandPetname +
-                ': ' +
-                stringifyAmountValue(
-                  p.currentAmount,
-                  p.displayInfo.assetKind,
-                  p.displayInfo.decimalPlaces,
-                ),
-            )
-            .join(', ') ?? 'Loading...'}
+          {purses?.length
+            ? purses
+                .map(
+                  (p: PurseJSONState<'nat' | 'copyBag' | 'set' | 'copySet'>) =>
+                    p.brandPetname +
+                    ': ' +
+                    stringifyAmountValue(
+                      p.currentAmount,
+                      p.displayInfo.assetKind,
+                      p.displayInfo.decimalPlaces,
+                    ),
+                )
+                .join(', ')
+            : 'Loading...'}
         </p>
       </div>
       <div style={{ display: 'flex', alignItems: 'center' }}></div>

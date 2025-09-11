@@ -31,19 +31,13 @@ export type AgoricProviderProps = PropsWithChildren<{
   rpcEndpoint: string;
   address?: string;
   offlineSigner?: OfflineSigner;
-  chainName?: string;
   onConnectionError?: (e: unknown) => void;
+  chainName?: string;
 }>;
 
 /**
  * Provides access to Agoric-specific account features such as smart wallet
  * provisioning, purses, offer signing, and more.
- *
- * Meant to be used inside a `ChainProvider` from
- * https://github.com/cosmology-tech/cosmos-kit/tree/main/packages/react.
- *
- * If a custom `ChainProvider` is not desired, one can implicitly use
- * the default one via `AgoricProvider`.
  */
 export const AgoricProvider = ({
   children,
@@ -51,8 +45,8 @@ export const AgoricProvider = ({
   rpcEndpoint,
   offlineSigner,
   address,
+  onConnectionError,
   chainName = 'agoric',
-  onConnectionError = () => {},
 }: AgoricProviderProps) => {
   const [walletConnection, setWalletConnection] = useState<
     AgoricWalletConnection | undefined
@@ -137,16 +131,16 @@ export const AgoricProvider = ({
       const watcher = makeAgoricChainStorageWatcher(
         restEndpoint,
         chainName,
-        onConnectionError,
+        onConnectionError ?? (() => {}),
       );
       setChainStorageWatcher(watcher);
     };
 
     getWatcher().catch(e => {
       console.error('error making agoric chain storage watcher', e);
-      onConnectionError(e);
+      onConnectionError?.(e);
     });
-  }, []);
+  }, [restEndpoint, chainName, onConnectionError]);
 
   useEffect(() => {
     const getAgoricWalletConnection = async () => {
@@ -181,7 +175,7 @@ export const AgoricProvider = ({
         rpcEndpoint,
         (e: unknown) => {
           console.error('wallet connection error', e);
-          onConnectionError(e);
+          onConnectionError?.(e);
         },
         { address, client: signingStargateClient },
       );
@@ -194,7 +188,7 @@ export const AgoricProvider = ({
       chainStorageWatcher !== undefined
     ) {
       getAgoricWalletConnection().catch(e => {
-        onConnectionError(e);
+        onConnectionError?.(e);
         console.error('error making agoric wallet connection', e);
       });
     }

@@ -654,33 +654,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@agoric/ui-kit-example@workspace:packages/example":
-  version: 0.0.0-use.local
-  resolution: "@agoric/ui-kit-example@workspace:packages/example"
-  dependencies:
-    "@agoric/react-components": "npm:^0.5.0"
-    "@agoric/rpc": "npm:^0.10.0"
-    "@agoric/web-components": "npm:^0.17.0"
-    "@esbuild-plugins/node-globals-polyfill": "npm:^0.2.3"
-    "@eslint/js": "npm:^9.9.1"
-    "@keplr-wallet/types": "npm:^0.12.271"
-    "@types/react": "npm:^18.3.5"
-    "@types/react-dom": "npm:^18.3.0"
-    "@vitejs/plugin-react": "npm:^4.3.1"
-    buffer: "npm:^6.0.3"
-    eslint: "npm:^9.9.1"
-    eslint-plugin-react-hooks: "npm:^5.1.0-rc.0"
-    eslint-plugin-react-refresh: "npm:^0.4.11"
-    globals: "npm:^15.9.0"
-    react: "npm:^18.3.1"
-    react-dom: "npm:^18.3.1"
-    typescript: "npm:^5.5.3"
-    typescript-eslint: "npm:^8.3.0"
-    vite: "npm:^5.4.2"
-    vite-plugin-node-polyfills: "npm:^0.24.0"
-  languageName: unknown
-  linkType: soft
-
 "@agoric/ui-kit@workspace:.":
   version: 0.0.0-use.local
   resolution: "@agoric/ui-kit@workspace:."
@@ -10498,6 +10471,33 @@ __metadata:
   languageName: node
   linkType: hard
 
+"example@workspace:packages/example":
+  version: 0.0.0-use.local
+  resolution: "example@workspace:packages/example"
+  dependencies:
+    "@agoric/react-components": "npm:^0.5.0"
+    "@agoric/rpc": "npm:^0.10.0"
+    "@agoric/web-components": "npm:^0.17.0"
+    "@esbuild-plugins/node-globals-polyfill": "npm:^0.2.3"
+    "@eslint/js": "npm:^9.9.1"
+    "@keplr-wallet/types": "npm:^0.12.271"
+    "@types/react": "npm:^18.3.5"
+    "@types/react-dom": "npm:^18.3.0"
+    "@vitejs/plugin-react": "npm:^4.3.1"
+    buffer: "npm:^6.0.3"
+    eslint: "npm:^9.9.1"
+    eslint-plugin-react-hooks: "npm:^5.1.0-rc.0"
+    eslint-plugin-react-refresh: "npm:^0.4.11"
+    globals: "npm:^15.9.0"
+    react: "npm:^18.3.1"
+    react-dom: "npm:^18.3.1"
+    typescript: "npm:~5.9.2"
+    typescript-eslint: "npm:^8.3.0"
+    vite: "npm:^5.4.2"
+    vite-plugin-node-polyfills: "npm:^0.24.0"
+  languageName: unknown
+  linkType: soft
+
 "execa@npm:5.0.0":
   version: 5.0.0
   resolution: "execa@npm:5.0.0"
@@ -18775,16 +18775,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^5.5.3":
-  version: 5.9.2
-  resolution: "typescript@npm:5.9.2"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 10c0/cd635d50f02d6cf98ed42de2f76289701c1ec587a363369255f01ed15aaf22be0813226bff3c53e99d971f9b540e0b3cc7583dbe05faded49b1b0bed2f638a18
-  languageName: node
-  linkType: hard
-
 "typescript@npm:~5.1.3":
   version: 5.1.6
   resolution: "typescript@npm:5.1.6"
@@ -18792,6 +18782,16 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 10c0/45ac28e2df8365fd28dac42f5d62edfe69a7203d5ec646732cadc04065331f34f9078f81f150fde42ed9754eed6fa3b06a8f3523c40b821e557b727f1992e025
+  languageName: node
+  linkType: hard
+
+"typescript@npm:~5.9.2":
+  version: 5.9.2
+  resolution: "typescript@npm:5.9.2"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10c0/cd635d50f02d6cf98ed42de2f76289701c1ec587a363369255f01ed15aaf22be0813226bff3c53e99d971f9b540e0b3cc7583dbe05faded49b1b0bed2f638a18
   languageName: node
   linkType: hard
 
@@ -18815,16 +18815,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A^5.5.3#optional!builtin<compat/typescript>":
-  version: 5.9.2
-  resolution: "typescript@patch:typescript@npm%3A5.9.2#optional!builtin<compat/typescript>::version=5.9.2&hash=b45daf"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 10c0/66fc07779427a7c3fa97da0cf2e62595eaff2cea4594d45497d294bfa7cb514d164f0b6ce7a5121652cf44c0822af74e29ee579c771c405e002d1f23cf06bfde
-  languageName: node
-  linkType: hard
-
 "typescript@patch:typescript@npm%3A~5.1.3#optional!builtin<compat/typescript>":
   version: 5.1.6
   resolution: "typescript@patch:typescript@npm%3A5.1.6#optional!builtin<compat/typescript>::version=5.1.6&hash=5da071"
@@ -18832,6 +18822,16 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 10c0/c2bded58ab897a8341fdbb0c1d92ea2362f498cfffebdc8a529d03e15ea2454142dfbf122dabbd9a5cb79b7123790d27def16e11844887d20636226773ed329a
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@npm%3A~5.9.2#optional!builtin<compat/typescript>":
+  version: 5.9.2
+  resolution: "typescript@patch:typescript@npm%3A5.9.2#optional!builtin<compat/typescript>::version=5.9.2&hash=b45daf"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10c0/66fc07779427a7c3fa97da0cf2e62595eaff2cea4594d45497d294bfa7cb514d164f0b6ce7a5121652cf44c0822af74e29ee579c771c405e002d1f23cf06bfde
   languageName: node
   linkType: hard
 

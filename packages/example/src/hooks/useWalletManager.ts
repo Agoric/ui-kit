@@ -9,6 +9,11 @@ export const useWalletManager = () => {
     undefined,
   );
 
+  /**
+   * Connects with keplr.
+   *
+   * See: https://docs.keplr.app/api/use-with/cosmjs#connecting-keplr-with-cosmjs
+   */
   const connectWallet = useCallback(async () => {
     try {
       if (!window.keplr) {
