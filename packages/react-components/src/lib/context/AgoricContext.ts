@@ -25,14 +25,12 @@ export type AgoricWalletConnection = Awaited<
 export type AgoricState = {
   address?: string;
   chainName?: string;
-  connect?: () => Promise<void>;
   chainStorageWatcher?: ChainStorageWatcher;
   walletConnection?: AgoricWalletConnection;
   purses?: PurseJSONState<AssetKind>[];
   offerIdsToPublicSubscribers?: Record<string, Record<string, string>>;
   isSmartWalletProvisioned?: boolean;
   provisionSmartWallet?: AgoricWalletConnection['provisionSmartWallet'];
-  makeOfferWithoutModal?: AgoricWalletConnection['makeOffer'];
   smartWalletProvisionFee?: bigint;
   smartWalletProvisionFeeUnit?: string;
   makeOffer?: (

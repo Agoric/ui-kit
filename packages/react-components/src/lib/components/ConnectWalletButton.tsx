@@ -6,11 +6,17 @@ const truncate = (text: string, startChars: number, endChars: number) => {
   return start + '...' + end;
 };
 
-export const ConnectWalletButton = ({ className }: { className?: string }) => {
+export const ConnectWalletButton = ({
+  className,
+  onClick,
+}: {
+  className?: string;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+}) => {
   const agoric = useAgoric();
 
   return (
-    <button className={className} onClick={agoric.connect}>
+    <button className={className} onClick={onClick}>
       {agoric.address ? truncate(agoric.address, 8, 7) : 'Connect Wallet'}
     </button>
   );

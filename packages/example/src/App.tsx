@@ -1,47 +1,36 @@
-import { AgoricProvider, ConnectWalletButton } from '@agoric/react-components';
-import { wallets } from 'cosmos-kit';
-import { ThemeProvider, useTheme } from '@interchain-ui/react';
-import '@agoric/react-components/dist/style.css';
+import { useEffect } from 'react';
+import WalletDetails from './components/WalletDetails';
+import { useWalletManager } from './hooks/useWalletManager';
+import { AgoricProvider } from '@agoric/react-components';
+import { CHAIN_ID, REST_ENDPOINT, RPC_ENDPOINT } from './utils/constants';
 
-const localnet = {
-  testChain: {
-    chainId: 'agoriclocal',
-    chainName: 'agoric-local',
-  },
-  apis: {
-    rest: ['http://localhost:1317'],
-    rpc: ['http://localhost:26657'],
-    iconUrl: '/agoriclocal.svg', // Optional icon for Network Dropdown component
-  },
-};
+function App() {
+  const { address, connectWallet, offlineSigner } = useWalletManager();
 
-// Omit "testChain" to specify the apis for Agoric Mainnet.
-const mainnet = {
-  apis: {
-    rest: ['https://main.api.agoric.net'],
-    rpc: ['https://main.rpc.agoric.net'],
-  },
-};
+  useEffect(() => {
+    connectWallet();
+  }, [connectWallet]);
 
-const App = () => {
-  const { themeClass } = useTheme();
   return (
-    <ThemeProvider>
-      <div className={themeClass}>
-        <AgoricProvider
-          wallets={wallets.extension}
-          agoricNetworkConfigs={[localnet, mainnet]}
-          /**
-           * If unspecified, connects to Agoric Mainnet by default.
-           * See "Network Dropdown" below to see how to switch between Agoric testnets.
-           */
-          defaultChainName="agoric-local"
-        >
-          <ConnectWalletButton />
-        </AgoricProvider>
+    <AgoricProvider
+      restEndpoint={REST_ENDPOINT}
+      rpcEndpoint={RPC_ENDPOINT}
+      offlineSigner={offlineSigner}
+      address={address}
+      chainName={CHAIN_ID}
+    >
+      <div>
+        <div>
+          <h1> Agoric Wallet</h1>
+          {!address ? (
+            <button onClick={connectWallet}>Connect Keplr</button>
+          ) : (
+            <WalletDetails />
+          )}
+        </div>
       </div>
-    </ThemeProvider>
+    </AgoricProvider>
   );
-};
+}
 
 export default App;
