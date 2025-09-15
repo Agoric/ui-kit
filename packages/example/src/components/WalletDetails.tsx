@@ -18,8 +18,9 @@ const WalletDetails = () => {
       <div>
         <p>
           Purses:{' '}
-          {purses?.length
-            ? purses
+          {purses === undefined
+            ? 'Loading...'
+            : purses
                 .map(
                   (p: PurseJSONState<'nat' | 'copyBag' | 'set' | 'copySet'>) =>
                     p.brandPetname +
@@ -30,8 +31,7 @@ const WalletDetails = () => {
                       p.displayInfo.decimalPlaces,
                     ),
                 )
-                .join(', ')
-            : 'Loading...'}
+                .join(', ')}
         </p>
       </div>
       <div style={{ display: 'flex', alignItems: 'center' }}></div>

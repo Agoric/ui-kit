@@ -23,6 +23,7 @@ export const useWalletManager = () => {
       await window.keplr.enable(CHAIN_ID);
       const signer = await window.keplr.getOfflineSignerOnlyAmino(CHAIN_ID);
 
+      // Assumes that the signer will have one account per keplr docs.
       const [account] = await signer.getAccounts();
       if (!account) {
         throw new Error(
