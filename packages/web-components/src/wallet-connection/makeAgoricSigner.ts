@@ -18,11 +18,15 @@ const PowerFlags = {
   SMART_WALLET: 'SMART_WALLET',
 };
 
+// Empirically Keplr seems to use 15000 ubld and 300000 gas for medium fee preset.
+const defaultFeeAmount = '15000';
+const defaultFeeGas = '300000';
+
 const defaultFee = (): StdFee => {
   const { coinMinimalDenom: denom } = stakeCurrency;
   const fee = {
-    amount: [{ amount: '15000', denom }],
-    gas: '300000', // TODO: estimate gas?
+    amount: [{ amount: defaultFeeAmount, denom }],
+    gas: defaultFeeGas, // TODO: estimate gas?
   };
   return fee;
 };
