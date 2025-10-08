@@ -33,8 +33,11 @@ export const AgoricMsgs = {
 };
 
 export const agoricRegistryTypes: [string, GeneratedType][] = [
-  [AgoricMsgs.MsgWalletSpendAction.typeUrl, MsgWalletSpendAction],
-  [AgoricMsgs.MsgProvision.typeUrl, MsgProvision],
+  [
+    AgoricMsgs.MsgWalletSpendAction.typeUrl,
+    MsgWalletSpendAction as GeneratedType,
+  ],
+  [AgoricMsgs.MsgProvision.typeUrl, MsgProvision as GeneratedType],
 ];
 
 export const agoricConverters: AminoConverters = {

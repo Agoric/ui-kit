@@ -8,7 +8,28 @@ const WalletDetails = () => {
     address,
     provisionSmartWallet,
     smartWalletProvisionFee,
+    makeOffer,
   } = useAgoric();
+  const usdcPurseBrand = purses?.find(p => p.brandPetname === 'USDC')
+    ?.currentAmount.brand;
+
+  const testTransaction = () => {
+    makeOffer?.(
+      {
+        source: 'agoricContract',
+        instancePath: ['fastUsdc'],
+        callPipe: [['makeDepositInvitation', []]],
+      },
+      {
+        give: { USDC: { brand: usdcPurseBrand, value: 10_000n } },
+        want: {},
+      },
+      {},
+      (status: object) => {
+        console.log(status);
+      },
+    );
+  };
 
   return (
     <div>
@@ -77,7 +98,9 @@ const WalletDetails = () => {
             Provision Smart Wallet
           </button>
         </div>
-      ) : null}
+      ) : (
+        <button onClick={testTransaction}>Test Transaction</button>
+      )}
     </div>
   );
 };

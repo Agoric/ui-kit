@@ -12,6 +12,7 @@ export const queryBankBalances = async (
 
   const { balances } = await bankQueryService.AllBalances({
     address,
+    resolveDenom: false,
   });
 
   return balances;
