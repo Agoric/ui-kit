@@ -48,6 +48,10 @@
     "@agoric/swingset-liveslots": "0.10.3-dev-8c14632.0",
     "@agoric/xsnap@npm:^0.14.3-u14.0": "patch:@agoric/xsnap@npm%3A0.14.3-u14.0#~/.yarn/patches/@agoric-xsnap-npm-0.14.3-u14.0-768ce73dba.patch",
     "@agoric/xsnap@npm:^0.14.2": "patch:@agoric/xsnap@npm%3A0.14.3-u14.0#~/.yarn/patches/@agoric-xsnap-npm-0.14.3-u14.0-768ce73dba.patch",
-    "esbuild": "0.21.5"
+    "esbuild": "0.21.5",
+    "@noble/hashes": "^1.5.0",
+    "@cosmjs/stargate": "^0.36.1",
+    "@cosmjs/proto-signing": "^0.36.1",
+    "@cosmjs/tendermint-rpc": "^0.36.1"
   }
 }

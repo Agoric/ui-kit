@@ -2,6 +2,7 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
+    "moduleResolution": "bundler",
     "allowImportingTsExtensions": true, // for tests
     "outDir": "./dist",
     "checkJs": true

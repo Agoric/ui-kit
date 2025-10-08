@@ -1,7 +1,7 @@
 import { QueryClient, createProtobufRpcClient } from '@cosmjs/stargate';
 import { QueryClientImpl } from '@agoric/cosmic-proto/swingset/query.js';
 
-/** @typedef {import('@agoric/cosmic-proto/dist/agoric/swingset/query').QueryParamsResponse} QueryParamsResponse */
+/** @typedef {import('@agoric/cosmic-proto/swingset/query.js').QueryParamsResponse} QueryParamsResponse */
 /** @typedef {import('@cosmjs/tendermint-rpc').Tendermint34Client} Tendermint34Client */
 
 /**
