@@ -2,8 +2,7 @@ import { fromBech32, toBase64 } from '@cosmjs/encoding';
 import { assertIsDeliverTxSuccess } from '@cosmjs/stargate';
 import { stakeCurrency } from './chainInfo.js';
 import { AgoricMsgs } from './signerOptions.js';
-import type { StdFee } from '@keplr-wallet/types';
-import type { SigningStargateClient } from '@cosmjs/stargate';
+import type { SigningStargateClient, StdFee } from '@cosmjs/stargate';
 
 const toAccAddress = (address: string): Uint8Array => {
   return fromBech32(address).data;
@@ -19,10 +18,10 @@ const PowerFlags = {
   SMART_WALLET: 'SMART_WALLET',
 };
 
-const zeroFee = (): StdFee => {
+const defaultFee = (): StdFee => {
   const { coinMinimalDenom: denom } = stakeCurrency;
   const fee = {
-    amount: [{ amount: '0', denom }],
+    amount: [{ amount: '15000', denom }],
     gas: '300000', // TODO: estimate gas?
   };
   return fee;
@@ -38,7 +37,7 @@ export const makeAgoricSigner = (
   signingClient: SigningStargateClient,
   address: string,
 ) => {
-  const fee = zeroFee();
+  const fee = defaultFee();
 
   return harden({
     /**
