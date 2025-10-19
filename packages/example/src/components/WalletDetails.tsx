@@ -1,5 +1,6 @@
 import { useAgoric, type PurseJSONState } from '@agoric/react-components';
 import { stringifyAmountValue, stringifyValue } from '@agoric/web-components';
+import { useState } from 'react';
 
 const WalletDetails = () => {
   const {
@@ -9,9 +10,29 @@ const WalletDetails = () => {
     provisionSmartWallet,
     smartWalletProvisionFee,
     makeOffer,
+    exitOffer,
   } = useAgoric();
   const usdcPurseBrand = purses?.find(p => p.brandPetname === 'USDC')
     ?.currentAmount.brand;
+
+  const [offerIdToExit, setOfferIdToExit] = useState('');
+  const [exitOfferStatus, setExitOfferStatus] = useState('');
+
+  const handleExitOffer = async () => {
+    if (!offerIdToExit) {
+      setExitOfferStatus('Error: Please enter an offer ID');
+      return;
+    }
+    try {
+      setExitOfferStatus('Submitting...');
+      await exitOffer?.(offerIdToExit);
+      setExitOfferStatus('Success! Offer exit submitted.');
+      setOfferIdToExit('');
+    } catch (error: unknown) {
+      console.error('Error exiting offer:', error);
+      setExitOfferStatus('Error: ' + (error as Error).message);
+    }
+  };
 
   const testTransaction = () => {
     makeOffer?.(
@@ -100,6 +121,35 @@ const WalletDetails = () => {
         </div>
       ) : (
         <button onClick={testTransaction}>Test Transaction</button>
+      )}
+      {isSmartWalletProvisioned && (
+        <div style={{ marginTop: '20px', paddingTop: '20px', borderTop: '1px solid #ccc' }}>
+          <h3>Exit Offer</h3>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            <input
+              type="text"
+              placeholder="Enter Offer ID"
+              value={offerIdToExit}
+              onChange={(e) => setOfferIdToExit(e.target.value)}
+              style={{ padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
+            />
+            <button
+              onClick={handleExitOffer}
+              disabled={!offerIdToExit}
+              style={{ padding: '8px' }}
+            >
+              Exit Offer
+            </button>
+            {exitOfferStatus && (
+              <p style={{ 
+                marginTop: '10px',
+                color: exitOfferStatus.includes('Error') ? 'red' : 'green'
+              }}>
+                {exitOfferStatus}
+              </p>
+            )}
+          </div>
+        </div>
       )}
     </div>
   );

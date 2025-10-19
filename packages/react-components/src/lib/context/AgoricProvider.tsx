@@ -208,6 +208,7 @@ export const AgoricProvider = ({
     isSmartWalletProvisioned,
     provisionSmartWallet: walletConnection?.provisionSmartWallet,
     makeOffer: walletConnection?.makeOffer,
+    exitOffer: walletConnection?.exitOffer,
     smartWalletProvisionFee,
     smartWalletProvisionFeeUnit,
   };
