@@ -150,3 +150,23 @@ connection.makeOffer(
   },
 );
 ```
+
+## Exiting Offers
+
+To allow users to exit long-standing offers from your dapp UI:
+
+```ts
+import { makeAgoricChainStorageWatcher } from '@agoric/rpc';
+import { makeAgoricWalletConnection } from '@agoric/web-components';
+
+const watcher = makeAgoricChainStorageWatcher(apiAddr, chainName);
+const connection = await makeAgoricWalletConnection(watcher, rpcAddr);
+
+// Exit an offer by its id
+try {
+  const txn = await connection.exitOffer(offerId);
+  console.log('Offer exit transaction:', txn);
+} catch (error) {
+  console.error('Failed to exit offer:', error);
+}
+```
