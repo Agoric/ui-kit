@@ -114,7 +114,6 @@ export const makeAgoricWalletConnection = async (
       }),
     );
 
-    await null;
     const txn = await submitSpendAction(JSON.stringify(spendAction));
     return txn;
   };
