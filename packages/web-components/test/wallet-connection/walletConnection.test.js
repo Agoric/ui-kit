@@ -134,3 +134,84 @@ it('submits a spend action', async () => {
   connection.provisionSmartWallet();
   expect(mockProvisionSmartWallet).toHaveBeenCalled();
 });
+
+describe('exitOffer', () => {
+  it('submits a tryExitOffer spend action with string offerId', async () => {
+    const watcher = {
+      chainId: 'agoric-foo',
+      watchLatest: (_path, onUpdate) => {
+        onUpdate({ offerToPublicSubscriberPaths: 'foo' });
+      },
+      marshaller: {
+        toCapData: val => val,
+      },
+    };
+
+    const connection = await makeAgoricWalletConnection(
+      // @ts-expect-error fake partial watcher implementation
+      watcher,
+      rpc,
+      undefined,
+      { address: testAddress, client: {} },
+    );
+
+    await connection.exitOffer('123');
+
+    expect(mockSubmitSpendAction).toHaveBeenCalledWith(
+      '{"method":"tryExitOffer","offerId":"123"}',
+    );
+  });
+
+  it('submits a tryExitOffer spend action with numeric offerId', async () => {
+    const watcher = {
+      chainId: 'agoric-foo',
+      watchLatest: (_path, onUpdate) => {
+        onUpdate({ offerToPublicSubscriberPaths: 'foo' });
+      },
+      marshaller: {
+        toCapData: val => val,
+      },
+    };
+
+    const connection = await makeAgoricWalletConnection(
+      // @ts-expect-error fake partial watcher implementation
+      watcher,
+      rpc,
+      undefined,
+      { address: testAddress, client: {} },
+    );
+
+    await connection.exitOffer(456);
+
+    expect(mockSubmitSpendAction).toHaveBeenCalledWith(
+      '{"method":"tryExitOffer","offerId":456}',
+    );
+  });
+
+  it('throws error when submitSpendAction fails', async () => {
+    const watcher = {
+      chainId: 'agoric-foo',
+      watchLatest: (_path, onUpdate) => {
+        onUpdate({ offerToPublicSubscriberPaths: 'foo' });
+      },
+      marshaller: {
+        toCapData: val => val,
+      },
+    };
+
+    const connection = await makeAgoricWalletConnection(
+      // @ts-expect-error fake partial watcher implementation
+      watcher,
+      rpc,
+      undefined,
+      { address: testAddress, client: {} },
+    );
+
+    const testError = new Error('Transaction failed');
+    mockSubmitSpendAction.mockRejectedValueOnce(testError);
+
+    await expect(connection.exitOffer('789')).rejects.toThrow(
+      'Transaction failed',
+    );
+  });
+});
