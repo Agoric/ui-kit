@@ -36,6 +36,7 @@ export type AgoricState = {
   makeOffer?: (
     ...params: Parameters<AgoricWalletConnection['makeOffer']>
   ) => void;
+  exitOffer?: AgoricWalletConnection['exitOffer'];
 };
 
 export const AgoricContext = createContext<AgoricState>({});
