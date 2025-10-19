@@ -105,8 +105,23 @@ export const makeAgoricWalletConnection = async (
     await watchP;
   };
 
+  const exitOffer = async (offerId: string | number) => {
+    const { marshaller } = chainStorageWatcher;
+    const spendAction = marshaller.toCapData(
+      harden({
+        method: 'tryExitOffer',
+        offerId,
+      }),
+    );
+
+    await null;
+    const txn = await submitSpendAction(JSON.stringify(spendAction));
+    return txn;
+  };
+
   return {
     makeOffer,
+    exitOffer,
     address,
     provisionSmartWallet,
     signingClient: client,
