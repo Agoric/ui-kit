@@ -10,9 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@agoric/react-components": "^0.5.0",
+    "@agoric/react-components": "^0.5.3",
     "@agoric/rpc": "^0.10.0",
-    "@agoric/web-components": "^0.17.0",
+    "@agoric/web-components": "^0.17.2",
     "buffer": "^6.0.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
