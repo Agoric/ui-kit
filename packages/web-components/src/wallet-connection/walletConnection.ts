@@ -79,7 +79,7 @@ export const makeAgoricWalletConnection = async (
         // https://github.com/Agoric/agoric-sdk/blob/1b5e57f17a043a43171621bbe3ef68131954f714/packages/zoe/src/zoeService/types.js#L213
         if (update.status.numWantsSatisfied > 0) {
           isFinished = true;
-          onStatusChange({ status: 'accepted' });
+          onStatusChange({ status: 'accepted', data: update.status.result });
           return;
         }
       }
