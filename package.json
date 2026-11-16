@@ -53,5 +53,10 @@
     "@cosmjs/stargate": "^0.36.1",
     "@cosmjs/proto-signing": "^0.36.1",
     "@cosmjs/tendermint-rpc": "^0.36.1"
+  },
+  "dependenciesMeta": {
+    "better-sqlite3": {
+      "built": false
+    }
   }
 }

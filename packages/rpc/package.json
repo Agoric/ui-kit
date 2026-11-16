@@ -23,7 +23,7 @@
     "vite-tsconfig-paths": "^4.2.0"
   },
   "devDependencies": {
-    "@endo/init": "^0.5.60",
+    "@endo/init": "^1.1.13",
     "@typescript-eslint/eslint-plugin": "^7.8.0",
     "@typescript-eslint/parser": "^7.8.0",
     "@vitest/coverage-c8": "^0.25.3",
